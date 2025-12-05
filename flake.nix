@@ -25,8 +25,8 @@
       });
 
       packages = eachSystem (pkgs: {
-          whisper-subs = pkgs.callPackage ./packages/whisper-subs { };
-          inter-subs = pkgs.callPackage ./packages/inter-subs { };
+        whisper-subs = pkgs.callPackage ./packages/whisper-subs { };
+        inter-subs = pkgs.callPackage ./packages/inter-subs { };
       });
     };
 }
