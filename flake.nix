@@ -28,5 +28,12 @@
         whisper-subs = pkgs.callPackage ./packages/whisper-subs { };
         inter-subs = pkgs.callPackage ./packages/inter-subs { };
       });
+
+      overlays.default = final: prev: {
+        mpvScripts = prev.mpvScripts // {
+          whisper-subs = final.callPackage ./packages/whisper-subs { };
+          inter-subs = final.callPackage ./packages/inter-subs { };
+        };
+      };
     };
 }
