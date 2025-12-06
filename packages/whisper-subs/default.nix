@@ -22,6 +22,8 @@ stdenv.mkDerivation rec {
       --replace "ffmpeg" "${ffmpeg}/bin/ffmpeg"
   '';
 
+  passthru.scriptName = "whispersubs.lua";
+
   meta = with lib; {
     description = "WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux";
     homepage = "https://github.com/GhostNaN/whisper-subs";

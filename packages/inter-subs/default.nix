@@ -33,6 +33,8 @@ stdenv.mkDerivation rec {
       --replace "pkill" "${killall}/bin/pkill"
   '';
 
+  passthru.scriptName = "interSubs.lua";
+
   meta = with lib; {
     description = "Interactive subtitles for mpv";
     homepage = "https://github.com/oltodosel/interSubs";
