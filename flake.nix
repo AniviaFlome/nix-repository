@@ -15,11 +15,7 @@
         "aarch64-linux"
         "aarch64-darwin"
       ];
-      packageNames = builtins.attrNames (builtins.readDir ./packages);
-      mkMpvScripts = callPackage: nixpkgs.lib.genAttrs packageNames (name: 
-        callPackage (./packages + "/${name}") { }
-      );
-
+      
       eachSystem = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
     in
@@ -29,23 +25,8 @@
         formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
       });
 
-      packages = eachSystem (pkgs: 
-        let
-          generalPkgs = loadPkgs ./pkgs/applicatons pkgs.callPackage;
-          myMpvScripts = loadPkgs ./pkgs/mpv-scripts pkgs.callPackage;
-        in
-          generalPkgs // { 
-            mpvScripts = myMpvScripts;
-          }
-      );
+      packages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
 
-      overlays.default = final: prev: 
-        let
-          generalPkgs = loadPkgs ./packages final.callPackage;
-          myMpvScripts = loadPkgs ./mpv-scripts final.callPackage;
-        in
-          generalPkgs // { 
-            mpvScripts = myMpvScripts;
-          };
+      overlays.default = final: prev: import ./default.nix { pkgs = final; };
     };
 }
