@@ -7,7 +7,12 @@
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, treefmt-nix }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+    }:
     let
       systems = [
         "x86_64-linux"
@@ -15,7 +20,7 @@
         "aarch64-linux"
         "aarch64-darwin"
       ];
-      
+
       eachSystem = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
     in
@@ -27,6 +32,6 @@
 
       packages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
 
-      overlays.default = final: prev: import ./default.nix { pkgs = final; };
+      overlays.default = final: _prev: import ./default.nix { pkgs = final; };
     };
 }

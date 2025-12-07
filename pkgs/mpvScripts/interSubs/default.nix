@@ -1,16 +1,25 @@
-{ lib, stdenv, fetchFromGitHub, python3, lua, socat, killall, xdotool, makeWrapper, nix-update-script }:
-
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  python3,
+  killall,
+  makeWrapper,
+  nix-update-script,
+}:
 let
-  pythonEnv = python3.withPackages (ps: with ps; [
-    pyqt5
-    numpy
-    beautifulsoup4
-    requests
-    lxml
-    httpx
-  ]);
+  pythonEnv = python3.withPackages (
+    ps: with ps; [
+      pyqt5
+      numpy
+      beautifulsoup4
+      requests
+      lxml
+      httpx
+    ]
+  );
 in
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "inter-subs";
   version = "0-unstable-2025-03-18";
 

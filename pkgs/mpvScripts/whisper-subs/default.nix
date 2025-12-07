@@ -1,6 +1,13 @@
-{ lib, stdenv, fetchFromGitHub, whisper-cpp, ffmpeg, makeWrapper, nix-update-script }:
-
-stdenv.mkDerivation rec {
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  whisper-cpp,
+  ffmpeg,
+  makeWrapper,
+  nix-update-script,
+}:
+stdenv.mkDerivation {
   pname = "whisper-subs";
   version = "0-unstable-2025-02-09";
 
