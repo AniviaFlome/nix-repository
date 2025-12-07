@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, whisper-cpp, ffmpeg, makeWrapper }:
+{ lib, stdenv, fetchFromGitHub, whisper-cpp, ffmpeg, makeWrapper, nix-update-script }:
 
 stdenv.mkDerivation rec {
   pname = "whisper-subs";
@@ -22,12 +22,15 @@ stdenv.mkDerivation rec {
       --replace "ffmpeg" "${ffmpeg}/bin/ffmpeg"
   '';
 
-  passthru.scriptName = "whispersubs.lua";
+  passthru = {
+    scriptName = "whispersubs.lua";
+    updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+  };
 
   meta = with lib; {
     description = "WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux";
     homepage = "https://github.com/GhostNaN/whisper-subs";
     license = licenses.mit;
-    maintainers = with maintainers; [ AniviaFlome ];
+    maintainers = [ ];
   };
 }

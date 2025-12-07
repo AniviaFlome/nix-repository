@@ -24,16 +24,17 @@
         formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
       });
 
-      packages = eachSystem (pkgs: {
-        whisper-subs = pkgs.callPackage ./packages/whisper-subs { };
-        inter-subs = pkgs.callPackage ./packages/inter-subs { };
-      });
+      packages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
 
-      overlays.default = final: prev: {
-        mpvScripts = prev.mpvScripts // {
-          whisper-subs = final.callPackage ./packages/whisper-subs { };
-          inter-subs = final.callPackage ./packages/inter-subs { };
-        };
-      };
+      overlays.default = final: prev:
+        let
+          isReserved = n: n == "lib" || n == "overlays" || n == "modules";
+          nameValuePair = n: v: { name = n; value = v; };
+          nurAttrs = import ./default.nix { pkgs = prev; };
+        in
+        builtins.listToAttrs
+          (map (n: nameValuePair n nurAttrs.${n})
+            (builtins.filter (n: !isReserved n)
+              (builtins.attrNames nurAttrs)));
     };
 }

@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, python3, lua, socat, killall, xdotool, makeWrapper }:
+{ lib, stdenv, fetchFromGitHub, python3, lua, socat, killall, xdotool, makeWrapper, nix-update-script }:
 
 let
   pythonEnv = python3.withPackages (ps: with ps; [
@@ -33,12 +33,15 @@ stdenv.mkDerivation rec {
       --replace "pkill" "${killall}/bin/pkill"
   '';
 
-  passthru.scriptName = "interSubs.lua";
+  passthru = {
+    scriptName = "interSubs.lua";
+    updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+  };
 
   meta = with lib; {
     description = "Interactive subtitles for mpv";
     homepage = "https://github.com/oltodosel/interSubs";
     license = licenses.mit;
-    maintainers = with maintainers; [ AniviaFlome ];
+    maintainers = [ ];
   };
 }
