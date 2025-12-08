@@ -30,7 +30,7 @@
         formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
       });
 
-      packages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
+      legacyPackages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
 
       overlays.default = final: _prev: import ./default.nix { pkgs = final; };
     };
