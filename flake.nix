@@ -32,6 +32,8 @@
 
       legacyPackages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
 
-      overlays.default = final: _prev: import ./default.nix { pkgs = final; };
+      overlays.default = final: prev: {
+        mpvScripts = prev.mpvScripts // (import ./default.nix { pkgs = final; upstreamMpvScripts = prev.mpvScripts; }).mpvScripts;
+      };
     };
 }
