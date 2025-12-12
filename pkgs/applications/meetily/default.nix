@@ -19,10 +19,8 @@
   cmake,
   clang,
   llvmPackages,
+  nix-update-script,
 }:
-let
-  maintainers = import ../../../maintainers.nix;
-in
 rustPlatform.buildRustPackage rec {
   pname = "meetily";
   version = "0.1.1";
@@ -85,11 +83,15 @@ rustPlatform.buildRustPackage rec {
       --prefix PATH : ${lib.makeBinPath [ ffmpeg ]}
   '';
 
+  passthru = {
+    updateScript = nix-update-script { extraArgs = [ "--version=stable" ]; };
+  };
+
   meta = {
     description = "Privacy-first AI meeting assistant with local transcription and summarization";
     homepage = "https://github.com/Zackriya-Solutions/meeting-minutes";
     license = lib.licenses.mit;
-    maintainers = [ maintainers.aniviaflome ];
+    maintainers = [ ];
     platforms = lib.platforms.linux;
     mainProgram = "meetily";
   };
