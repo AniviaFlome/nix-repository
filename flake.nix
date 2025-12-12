@@ -2,54 +2,38 @@
   description = "Nix Repository";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+    }:
+    let
+      forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
+      treefmtEval = system: treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt.nix;
+    in
+    {
+      formatter = forAllSystems (system: (treefmtEval system).config.build.wrapper);
+      checks = forAllSystems (system: {
+        formatting = (treefmtEval system).config.build.check self;
+      });
 
-      imports = [
-        inputs.treefmt-nix.flakeModule
-      ];
-
-      flake.overlays.default =
-        final: prev:
-        let
-          nur = import ./. { pkgs = prev; };
-        in
-        {
-          mpvScripts = prev.mpvScripts // nur.mpvScripts;
+      legacyPackages = forAllSystems (
+        system:
+        import ./default.nix {
+          pkgs = import nixpkgs { inherit system; };
         }
-        // nur.applications;
+      );
 
-      perSystem =
-        { pkgs, ... }:
-        let
-          nur = import ./default.nix { inherit pkgs; };
-        in
-        {
-          legacyPackages = nur;
+      packages = forAllSystems (
+        system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
+      );
 
-          treefmt.config = {
-            projectRootFile = "flake.nix";
-            programs = {
-              nixfmt.enable = true;
-              deadnix.enable = true;
-              statix.enable = true;
-              shfmt.enable = true;
-            };
-          };
-        };
+      overlays.default = import ./overlay.nix;
     };
 }
-

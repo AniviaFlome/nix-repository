@@ -3,7 +3,7 @@
 }:
 let
   flake = builtins.getFlake (toString ./.);
-  packages = flake.legacyPackages.${system};
+  packages = flake.packages.${system};
 
   find =
     prefix: attrs:
