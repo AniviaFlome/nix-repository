@@ -32,16 +32,23 @@
 
       legacyPackages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
 
+      packages = nixpkgs.lib.genAttrs systems (
+        system:
+        let
+          nur = self.legacyPackages.${system};
+        in
+        nur.applications // nur.mpvScripts
+      );
+
       overlays.default =
         final: prev:
+        let
+          inherit (prev.stdenv.hostPlatform) system;
+          nur = self.legacyPackages.${system};
+        in
         {
-          mpvScripts =
-            prev.mpvScripts
-            // (import ./. {
-              pkgs = final;
-              upstreamMpvScripts = prev.mpvScripts;
-            }).mpvScripts;
+          mpvScripts = prev.mpvScripts // nur.mpvScripts;
         }
-        // (import ./. { pkgs = final; }).applications;
+        // nur.applications;
     };
 }
