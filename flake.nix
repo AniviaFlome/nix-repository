@@ -19,9 +19,18 @@
       ];
 
       imports = [
-        inputs.flake-parts.flakeModules.easyOverlay
         inputs.treefmt-nix.flakeModule
       ];
+
+      flake.overlays.default =
+        final: prev:
+        let
+          nur = import ./. { pkgs = prev; };
+        in
+        {
+          mpvScripts = prev.mpvScripts // nur.mpvScripts;
+        }
+        // nur.applications;
 
       perSystem =
         { pkgs, ... }:
@@ -30,10 +39,6 @@
         in
         {
           legacyPackages = nur;
-
-          overlayAttrs = {
-            mpvScripts = pkgs.mpvScripts // nur.mpvScripts;
-          } // nur.applications;
 
           treefmt.config = {
             projectRootFile = "flake.nix";
@@ -47,3 +52,4 @@
         };
     };
 }
+
