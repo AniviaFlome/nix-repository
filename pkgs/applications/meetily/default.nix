@@ -20,6 +20,9 @@
   clang,
   llvmPackages,
 }:
+let
+  maintainers = import ../../../maintainers.nix;
+in
 rustPlatform.buildRustPackage rec {
   pname = "meetily";
   version = "0.1.1";
@@ -41,6 +44,7 @@ rustPlatform.buildRustPackage rec {
       sourceRoot
       ;
     hash = lib.fakeHash;
+    fetcherVersion = 2;
   };
 
   cargoRoot = "src-tauri";
@@ -85,7 +89,7 @@ rustPlatform.buildRustPackage rec {
     description = "Privacy-first AI meeting assistant with local transcription and summarization";
     homepage = "https://github.com/Zackriya-Solutions/meeting-minutes";
     license = lib.licenses.mit;
-    maintainers = [ ];
+    maintainers = [ maintainers.aniviaflome ];
     platforms = lib.platforms.linux;
     mainProgram = "meetily";
   };

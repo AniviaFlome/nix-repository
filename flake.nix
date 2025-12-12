@@ -3,52 +3,47 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      treefmt-nix,
-    }:
-    let
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
-        "x86_64-darwin"
         "aarch64-linux"
+        "x86_64-darwin"
         "aarch64-darwin"
       ];
 
-      eachSystem = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-    in
-    {
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
-      checks = eachSystem (pkgs: {
-        formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
-      });
+      imports = [
+        inputs.flake-parts.flakeModules.easyOverlay
+        inputs.treefmt-nix.flakeModule
+      ];
 
-      legacyPackages = eachSystem (pkgs: import ./default.nix { inherit pkgs; });
-
-      packages = nixpkgs.lib.genAttrs systems (
-        system:
+      perSystem =
+        { pkgs, ... }:
         let
-          nur = self.legacyPackages.${system};
-        in
-        nur.applications // nur.mpvScripts
-      );
-
-      overlays.default =
-        final: prev:
-        let
-          inherit (prev.stdenv.hostPlatform) system;
-          nur = self.legacyPackages.${system};
+          nur = import ./default.nix { inherit pkgs; };
         in
         {
-          mpvScripts = prev.mpvScripts // nur.mpvScripts;
-        }
-        // nur.applications;
+          legacyPackages = nur;
+
+          overlayAttrs = {
+            mpvScripts = pkgs.mpvScripts // nur.mpvScripts;
+          } // nur.applications;
+
+          treefmt.config = {
+            projectRootFile = "flake.nix";
+            programs = {
+              nixfmt.enable = true;
+              deadnix.enable = true;
+              statix.enable = true;
+              shfmt.enable = true;
+            };
+          };
+        };
     };
 }

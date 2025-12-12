@@ -7,6 +7,9 @@
   makeWrapper,
   nix-update-script,
 }:
+let
+  maintainers = import ../../../maintainers.nix;
+in
 stdenv.mkDerivation {
   pname = "whisper-subs";
   version = "0-unstable-2025-02-09";
@@ -38,6 +41,6 @@ stdenv.mkDerivation {
     description = "WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux";
     homepage = "https://github.com/GhostNaN/whisper-subs";
     license = licenses.mit;
-    maintainers = [ ];
+    maintainers = [ maintainers.aniviaflome ];
   };
 }

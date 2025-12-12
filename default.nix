@@ -1,10 +1,9 @@
 {
   pkgs ? import <nixpkgs> { },
-  upstreamMpvScripts ? pkgs.mpvScripts,
 }:
 {
   # MPV Scripts
-  mpvScripts = pkgs.callPackage ./pkgs/mpvScripts { inherit upstreamMpvScripts; };
+  mpvScripts = pkgs.callPackage ./pkgs/mpvScripts { };
 
   # Applications
   applications = pkgs.callPackage ./pkgs/applications { };
