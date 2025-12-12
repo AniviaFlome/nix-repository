@@ -1,0 +1,4 @@
+{ callPackage }:
+{
+  meetily = callPackage ./meetily { };
+}
