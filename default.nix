@@ -9,6 +9,6 @@
 
   mpvScripts = {
     interSubs = pkgs.callPackage ./pkgs/mpvScripts/interSubs { };
-    whisperSubs = pkgs.callPackage ./pkgs/mpvScripts/whisper-subs { };
+    whisper-subs = pkgs.callPackage ./pkgs/mpvScripts/whisper-subs { };
   };
 }
