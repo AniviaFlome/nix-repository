@@ -52,7 +52,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-kn5U/qgQFVRegFkGusJgrqAdgJOQRwyQfpl6btJ8ovY=";
+    outputHash = "sha256-i/l1FORAwceNtGp46+vhm560EwBkmz8jqAApUW8rVvQ=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
