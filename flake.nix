@@ -34,8 +34,6 @@
         system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
       );
 
-      overlays.default = _final: prev: {
-        mpvScripts = prev.mpvScripts // (import ./default.nix { pkgs = prev; }).mpvScripts;
-      };
+      overlays.default = import ./overlay.nix;
     };
 }
