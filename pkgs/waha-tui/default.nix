@@ -12,13 +12,13 @@ let
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "waha-tui";
-  version = "1.4.2";
+  version = "1.4.4";
 
   src = fetchFromGitHub {
     owner = "muhammedaksam";
     repo = "waha-tui";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-/YBjnXKp1S+ptIQtIboq8LNSDl2g8yr+11nxtxiiD68=";
+    hash = "sha256-Iv9baSPiwLLrCL18+1NQqdY07pkX0243uYUql6v6Njk=";
   };
 
   bunDeps = stdenvNoCC.mkDerivation {
