@@ -2,7 +2,7 @@
   system ? builtins.currentSystem,
 }:
 let
-  flake = builtins.getFlake (toString ./.);
+  flake = builtins.getFlake (toString ./..);  # parent directory
   packages = flake.packages.${system};
 
   find =

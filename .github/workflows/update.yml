@@ -16,7 +16,7 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
       - name: Update packages
-        run: ./update.sh
+        run: ./scripts/update.sh
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "flake: update inputs"

@@ -75,7 +75,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    updateScript = nix-update-script;
+    inherit (finalAttrs) bunDeps;
+    updateScript = nix-update-script { extraArgs = [ "--subpackage=bunDeps" ]; };
   };
 
   meta = with lib; {
