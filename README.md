@@ -5,8 +5,8 @@ My nix packages repository.
 ## Packages
 
 - **interSubs**: [interSubs](https://github.com/oltodosel/interSubs) - Interactive subtitles for MPV.
-- **whisper-subs**: [WhisperSubs](https://github.com/GhostNaN/whisper-subs) - MPV lua script to generate subtitles at runtime with whisper.cpp.
 - **waha-tui**: [waha-tui](https://github.com/muhammedaksam/waha-tui) - A beautiful Terminal User Interface for WhatsApp using WAHA (WhatsApp HTTP API).
+- **whisper-subs**: [WhisperSubs](https://github.com/GhostNaN/whisper-subs) - MPV lua script to generate subtitles at runtime with whisper.cpp.
 
 ## Usage
 
@@ -24,7 +24,7 @@ My nix packages repository.
 nixpkgs.overlays = [ inputs.nix-repository.overlays.default ];
 ```
 
-Then packages are available as `pkgs.meetily`, `pkgs.mpvScripts.interSubs`, etc.
+Then packages are available as , `pkgs.mpvScripts.interSubs`, etc.
 
 ### Install packages directly (without overlay)
 
@@ -32,6 +32,6 @@ Then packages are available as `pkgs.meetily`, `pkgs.mpvScripts.interSubs`, etc.
 
 ```nix
 environment.systemPackages = [
-  inputs.nix-repository.legacyPackages.${pkgs.stdenv.hostPlatform.system}.applications.meetily
+  inputs.nix-repository.legacyPackages.${pkgs.stdenv.hostPlatform.system}.applications.waha-tui
 ];
 ```

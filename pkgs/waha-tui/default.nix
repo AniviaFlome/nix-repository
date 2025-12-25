@@ -25,7 +25,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "${finalAttrs.pname}-bun-deps";
     inherit (finalAttrs) version src;
 
-    nativeBuildInputs = [ bun cacert ];
+    nativeBuildInputs = [
+      bun
+      cacert
+    ];
 
     dontConfigure = true;
     dontFixup = true;
