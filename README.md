@@ -4,9 +4,9 @@ My nix packages repository.
 
 ## Packages
 
+- **interSubs**: [interSubs](https://github.com/oltodosel/interSubs) - Interactive subtitles for MPV.
 - **whisper-subs**: [WhisperSubs](https://github.com/GhostNaN/whisper-subs) - MPV lua script to generate subtitles at runtime with whisper.cpp.
-- **inter-subs**: [interSubs](https://github.com/oltodosel/interSubs) - Interactive subtitles for MPV.
-- **meetily**: [Meetily](https://github.com/Zackriya-Solutions/meeting-minutes) - Privacy-first AI meeting assistant with local transcription and summarization.
+- **waha-tui**: [waha-tui](https://github.com/muhammedaksam/waha-tui) - A beautiful Terminal User Interface for WhatsApp using WAHA (WhatsApp HTTP API).
 
 ## Usage
 

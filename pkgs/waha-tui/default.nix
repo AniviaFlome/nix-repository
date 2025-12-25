@@ -5,6 +5,7 @@
   bun,
   cacert,
   makeWrapper,
+  nix-update-script,
 }:
 let
   maintainers = import ../../maintainers.nix;
