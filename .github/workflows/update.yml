@@ -17,6 +17,6 @@ jobs:
             experimental-features = nix-command flakes
       - name: Update packages
         run: ./scripts/update.sh
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "flake: update inputs"
