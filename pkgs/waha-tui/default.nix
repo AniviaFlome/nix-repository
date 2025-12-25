@@ -82,7 +82,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     description = "A beautiful Terminal User Interface for WhatsApp using WAHA (WhatsApp HTTP API)";
     homepage = "https://github.com/muhammedaksam/waha-tui";
     license = licenses.mit;
-    maintainers = [ maintainers.aniviaflome ];
+    maintainers = [ ];
     mainProgram = "waha-tui";
     platforms = platforms.all;
   };

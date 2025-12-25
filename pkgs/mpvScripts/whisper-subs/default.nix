@@ -41,6 +41,6 @@ stdenv.mkDerivation {
     description = "WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux";
     homepage = "https://github.com/GhostNaN/whisper-subs";
     license = licenses.mit;
-    maintainers = [ maintainers.aniviaflome ];
+    maintainers = [ ];
   };
 }
