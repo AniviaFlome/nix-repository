@@ -8,5 +8,5 @@ targets=$(nix eval --json --impure --expr 'import ./get-update-targets.nix {}' |
 
 for package in $targets; do
   echo "Updating $package..."
-  nix shell nixpkgs#nix-update -c nix-update --flake --version=branch "$package"
+  nix shell nixpkgs#nix-update -c nix-update --flake "$package"
 done
