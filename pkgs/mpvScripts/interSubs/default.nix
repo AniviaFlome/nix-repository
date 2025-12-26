@@ -37,6 +37,9 @@ buildLua {
       --replace-fail "python3" "${pythonEnv}/bin/python3" \
       --replace-fail "~/.config/mpv/scripts/interSubs.py" "$out/share/mpv/scripts/interSubs.py" \
       --replace-fail "pkill" "${killall}/bin/killall"
+
+    substituteInPlace $out/share/mpv/scripts/interSubs.py \
+      --replace-fail "pth = os.path.expanduser('~/.config/mpv/scripts/')" "pth = '$out/share/mpv/scripts/'"
     runHook postInstall
   '';
 
