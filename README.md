@@ -12,7 +12,7 @@ My nix packages repository.
 
 ### Binary Cache (Cachix)
 
-This repository uses [Cachix](https://cachix.org) to provide pre-built binaries. You can use the cache to avoid building packages from source.
+This repository uses [Cachix](https://cachix.org) to provide pre-built binaries.
 
 #### Using with nix.settings (flakes)
 
@@ -22,15 +22,6 @@ This repository uses [Cachix](https://cachix.org) to provide pre-built binaries.
     substituters = [ "https://aniviaflome-nix-repository.cachix.org" ];
     trusted-public-keys = [ "aniviaflome-nix-repository.cachix.org-1:P+CE5AN1cNlYCvfAr/8xbKpD3MjdL1ZL9OiA5HJSBBo=" ];
   };
-}
-```
-
-#### Using with NixOS/nix-darwin
-
-```nix
-{
-  nix.settings.substituters = [ "https://aniviaflome-nix-repository.cachix.org" ];
-  nix.settings.trusted-public-keys = [ "aniviaflome-nix-repository.cachix.org-1:P+CE5AN1cNlYCvfAr/8xbKpD3MjdL1ZL9OiA5HJSBBo=" ];
 }
 ```
 
