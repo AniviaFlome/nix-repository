@@ -7,9 +7,6 @@
   makeWrapper,
   nix-update-script,
 }:
-let
-  maintainers = import ../../maintainers.nix;
-in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "waha-tui";
   version = "1.4.4";

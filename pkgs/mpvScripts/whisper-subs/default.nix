@@ -7,9 +7,6 @@
   makeWrapper,
   nix-update-script,
 }:
-let
-  maintainers = import ../../../maintainers.nix;
-in
 stdenv.mkDerivation {
   pname = "whisper-subs";
   version = "0-unstable-2025-02-09";

@@ -5,14 +5,17 @@
 _final: prev:
 let
   isReserved = n: n == "lib" || n == "overlays" || n == "modules";
+  # Automatically merge if attr exists in prev and both are attr sets
+  shouldMerge = n: prev ? ${n} && builtins.isAttrs prev.${n} && builtins.isAttrs nurAttrs.${n};
   nameValuePair = n: v: {
     name = n;
     value = v;
   };
   nurAttrs = import ./default.nix { pkgs = prev; };
+  filteredNames = builtins.filter (n: !isReserved n) (builtins.attrNames nurAttrs);
 in
 builtins.listToAttrs (
-  map (n: nameValuePair n nurAttrs.${n}) (
-    builtins.filter (n: !isReserved n) (builtins.attrNames nurAttrs)
-  )
+  map (
+    n: nameValuePair n (if shouldMerge n then prev.${n} // nurAttrs.${n} else nurAttrs.${n})
+  ) filteredNames
 )
