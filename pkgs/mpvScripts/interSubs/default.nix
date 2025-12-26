@@ -1,11 +1,9 @@
 {
   lib,
-  stdenv,
+  buildLua,
   fetchFromGitHub,
   python3,
   killall,
-  makeWrapper,
-  nix-update-script,
 }:
 let
   pythonEnv = python3.withPackages (
@@ -19,38 +17,33 @@ let
     ]
   );
 in
-stdenv.mkDerivation {
-  pname = "inter-subs";
-  version = "0-unstable-2025-03-18";
+buildLua {
+  pname = "interSubs";
+  version = "unstable-2025-03-18";
 
   src = fetchFromGitHub {
     owner = "oltodosel";
     repo = "interSubs";
     rev = "a4113586db8f60f1c533f717c1c1a928f3723049";
-    sha256 = "0xp1jz85nff99fnbqn2p1vigrr1z2msd7y4bj70fwa3kp88iyzdp";
+    hash = "sha256-t30fEbpzKO7AkYv403QVP+T84g5XWLysS8k5W9CX4XY=";
   };
-
-  nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
-    mkdir -p $out/share/mpv/scripts
-    cp interSubs.lua interSubs.py interSubs_config.py $out/share/mpv/scripts/
+    runHook preInstall
+    mkdir -p $out/share/mpv/scripts/interSubs
+    install -D -t $out/share/mpv/scripts/interSubs interSubs.lua interSubs.py interSubs_config.py
 
-    substituteInPlace $out/share/mpv/scripts/interSubs.lua \
-      --replace "python3" "${pythonEnv}/bin/python3" \
-      --replace "~/.config/mpv/scripts/interSubs.py" "$out/share/mpv/scripts/interSubs.py" \
-      --replace "pkill" "${killall}/bin/pkill"
+    substituteInPlace $out/share/mpv/scripts/interSubs/interSubs.lua \
+      --replace-fail "python3" "${pythonEnv}/bin/python3" \
+      --replace-fail "~/.config/mpv/scripts/interSubs.py" "$out/share/mpv/scripts/interSubs/interSubs.py" \
+      --replace-fail "pkill" "${killall}/bin/killall"
+    runHook postInstall
   '';
 
-  passthru = {
-    scriptName = "interSubs.lua";
-    updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
-  };
-
-  meta = with lib; {
+  meta = {
     description = "Interactive subtitles for mpv";
     homepage = "https://github.com/oltodosel/interSubs";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
   };
 }

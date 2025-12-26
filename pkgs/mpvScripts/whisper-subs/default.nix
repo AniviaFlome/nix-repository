@@ -1,43 +1,46 @@
 {
   lib,
-  stdenv,
+  buildLua,
   fetchFromGitHub,
   whisper-cpp,
   ffmpeg,
-  makeWrapper,
-  nix-update-script,
 }:
-stdenv.mkDerivation {
+
+buildLua {
   pname = "whisper-subs";
-  version = "0-unstable-2025-02-09";
+  version = "unstable-2025-02-09";
 
   src = fetchFromGitHub {
     owner = "GhostNaN";
     repo = "whisper-subs";
     rev = "721f97adb70a04bb62fd6c134b3b0b6441e6cf75";
-    sha256 = "0aizzbcmcm6m3117wb4i20jj1cn1qn3i0mwsbvbfwq31v74dbd3c";
+    hash = "sha256-bLTVyNlhYO7WXppXEIfFwbIgJRCRLH5CGNVUVtn6Pyo=";
   };
-
-  nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
-    mkdir -p $out/share/mpv/scripts
-    cp whispersubs.lua $out/share/mpv/scripts/
+    runHook preInstall
+    install -D -t $out/share/mpv/scripts/whisper-subs whispersubs.lua
 
-    substituteInPlace $out/share/mpv/scripts/whispersubs.lua \
-      --replace "whisper-cli" "${whisper-cpp}/bin/whisper-cpp" \
-      --replace "ffmpeg" "${ffmpeg}/bin/ffmpeg"
+    substituteInPlace $out/share/mpv/scripts/whisper-subs/whispersubs.lua \
+      --replace-fail "whisper-cli" "${whisper-cpp}/bin/whisper-cpp" \
+      --replace-fail "ffmpeg" "${ffmpeg}/bin/ffmpeg"
+    runHook postInstall
   '';
 
-  passthru = {
-    scriptName = "whispersubs.lua";
-    updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
-  };
+  passthru.extraWrapperArgs = [
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath [
+      whisper-cpp
+      ffmpeg
+    ])
+  ];
 
-  meta = with lib; {
+  meta = {
     description = "WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux";
     homepage = "https://github.com/GhostNaN/whisper-subs";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
   };
 }
