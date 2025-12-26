@@ -19,23 +19,15 @@ buildLua {
 
   installPhase = ''
     runHook preInstall
-    install -D -t $out/share/mpv/scripts/whisper-subs whispersubs.lua
+    install -D -m644 whispersubs.lua $out/share/mpv/scripts/whispersubs.lua
 
-    substituteInPlace $out/share/mpv/scripts/whisper-subs/whispersubs.lua \
+    substituteInPlace $out/share/mpv/scripts/whispersubs.lua \
       --replace-fail "whisper-cli" "${whisper-cpp}/bin/whisper-cpp" \
-      --replace-fail "ffmpeg" "${ffmpeg}/bin/ffmpeg"
+      --replace-fail 'ffmpeg' "${ffmpeg}/bin/ffmpeg"
     runHook postInstall
   '';
 
-  passthru.extraWrapperArgs = [
-    "--prefix"
-    "PATH"
-    ":"
-    (lib.makeBinPath [
-      whisper-cpp
-      ffmpeg
-    ])
-  ];
+  passthru.scriptName = "whispersubs.lua";
 
   meta = {
     description = "WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux";

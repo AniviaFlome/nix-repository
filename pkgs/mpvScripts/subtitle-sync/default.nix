@@ -15,13 +15,13 @@ buildLua {
     hash = "sha256-lyYoHPbQu7HpSKZ6hZFZ85FyT4IYajYoLEcDBk4Fmz0=";
   };
 
-  scriptPath = "subtitle-sync";
-
   installPhase = ''
     runHook preInstall
-    install -D -t $out/share/mpv/scripts/subtitle-sync subtitle-sync/main.lua
+    install -D -m644 subtitle-sync/main.lua $out/share/mpv/scripts/subtitle-sync.lua
     runHook postInstall
   '';
+
+  passthru.scriptName = "subtitle-sync.lua";
 
   meta = {
     description = "MPV script to mark subtitle start times and calculate the difference between them";

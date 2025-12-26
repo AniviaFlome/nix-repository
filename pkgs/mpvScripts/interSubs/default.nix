@@ -30,15 +30,17 @@ buildLua {
 
   installPhase = ''
     runHook preInstall
-    mkdir -p $out/share/mpv/scripts/interSubs
-    install -D -t $out/share/mpv/scripts/interSubs interSubs.lua interSubs.py interSubs_config.py
+    mkdir -p $out/share/mpv/scripts
+    install -m644 interSubs.lua interSubs.py interSubs_config.py $out/share/mpv/scripts/
 
-    substituteInPlace $out/share/mpv/scripts/interSubs/interSubs.lua \
+    substituteInPlace $out/share/mpv/scripts/interSubs.lua \
       --replace-fail "python3" "${pythonEnv}/bin/python3" \
-      --replace-fail "~/.config/mpv/scripts/interSubs.py" "$out/share/mpv/scripts/interSubs/interSubs.py" \
+      --replace-fail "~/.config/mpv/scripts/interSubs.py" "$out/share/mpv/scripts/interSubs.py" \
       --replace-fail "pkill" "${killall}/bin/killall"
     runHook postInstall
   '';
+
+  passthru.scriptName = "interSubs.lua";
 
   meta = {
     description = "Interactive subtitles for mpv";
