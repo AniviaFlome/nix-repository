@@ -34,7 +34,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       runHook preBuild
 
       export HOME=$(mktemp -d)
-      bun install --frozen-lockfile
+      bun install --frozen-lockfile --ignore-scripts
 
       runHook postBuild
     '';

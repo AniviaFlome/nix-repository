@@ -47,6 +47,6 @@ Then packages are available as , `pkgs.mpvScripts.interSubs`, etc.
 
 ```nix
 environment.systemPackages = [
-  inputs.nix-repository.legacyPackages.${pkgs.stdenv.hostPlatform.system}.applications.waha-tui
+  inputs.nix-repository.legacyPackages.${pkgs.stdenv.hostPlatform.system}.waha-tui
 ];
 ```
