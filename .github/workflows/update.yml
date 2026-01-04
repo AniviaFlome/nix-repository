@@ -19,4 +19,4 @@ jobs:
         run: ./scripts/update.sh
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "flake: update inputs"
+          commit_message: "pkgs: auto-update"

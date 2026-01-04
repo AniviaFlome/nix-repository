@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-nix flake update
-
 # Get update targets using Nix evaluation (returns JSON array of {name, extraArgs})
 targets_json=$(nix eval --json --impure --expr 'import ./scripts/get-update-targets.nix {}')
 
