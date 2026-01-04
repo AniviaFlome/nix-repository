@@ -4,6 +4,7 @@
   fetchFromGitHub,
   python3,
   killall,
+  nix-update-script,
 }:
 let
   pythonEnv = python3.withPackages (
@@ -43,7 +44,12 @@ buildLua {
     runHook postInstall
   '';
 
-  passthru.scriptName = "interSubs.lua";
+  passthru = {
+    scriptName = "interSubs.lua";
+    updateScript = nix-update-script {
+      extraArgs = [ "--version=branch" ];
+    };
+  };
 
   meta = {
     description = "Interactive subtitles for mpv";
