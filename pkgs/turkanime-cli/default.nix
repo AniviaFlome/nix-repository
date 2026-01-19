@@ -3,6 +3,9 @@
   python3Packages,
   fetchPypi,
   mpv,
+  aria2,
+  geckodriver,
+  yt-dlp,
   makeWrapper,
   nix-update-script,
 }:
@@ -35,7 +38,7 @@ python3Packages.buildPythonApplication rec {
 
   postInstall = ''
     wrapProgram $out/bin/turkanime \
-      --prefix PATH : ${lib.makeBinPath [ mpv ]}
+      --prefix PATH : ${lib.makeBinPath [ mpv aria2 geckodriver yt-dlp ]}
   '';
 
   # No tests available
