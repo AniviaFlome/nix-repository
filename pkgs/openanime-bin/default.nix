@@ -2,6 +2,8 @@
   lib,
   appimageTools,
   fetchurl,
+  makeWrapper,
+  vulkan-loader,
   nix-update-script,
 }:
 let
@@ -18,11 +20,18 @@ in
 appimageTools.wrapType2 {
   inherit pname version src;
 
+  extraPkgs = pkgs: [ pkgs.vulkan-loader ];
+
   extraInstallCommands = ''
     install -Dm444 ${appimageContents}/openanime.desktop $out/share/applications/openanime.desktop
     install -Dm444 ${appimageContents}/openanime.png $out/share/icons/hicolor/512x512/apps/openanime.png
     substituteInPlace $out/share/applications/openanime.desktop \
       --replace-fail 'Exec=AppRun' 'Exec=openanime'
+    
+    # Wrap with Vulkan ICD
+    source ${makeWrapper}/nix-support/setup-hook
+    wrapProgram $out/bin/openanime \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ vulkan-loader ]}
   '';
 
   passthru.updateScript = nix-update-script { };
