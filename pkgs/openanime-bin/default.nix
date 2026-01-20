@@ -28,10 +28,8 @@ appimageTools.wrapType2 {
     substituteInPlace $out/share/applications/openanime.desktop \
       --replace-fail 'Exec=AppRun' 'Exec=openanime'
     
-    # Wrap with Vulkan ICD
-    source ${makeWrapper}/nix-support/setup-hook
-    wrapProgram $out/bin/openanime \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ vulkan-loader ]}
+    # Rename binary from openanime-bin to openanime
+    mv $out/bin/openanime-bin $out/bin/openanime
   '';
 
   passthru.updateScript = nix-update-script { };

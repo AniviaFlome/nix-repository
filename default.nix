@@ -7,6 +7,8 @@
   modules = import ./modules;
   overlays = import ./overlays;
 
+  dwproton-bin = pkgs.callPackage ./pkgs/dwproton-bin { };
+  proton-cachyos-bin = pkgs.callPackage ./pkgs/proton-cachyos-bin { };
   waha-tui = pkgs.callPackage ./pkgs/waha-tui { };
   torrra = pkgs.callPackage ./pkgs/torrra { };
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
