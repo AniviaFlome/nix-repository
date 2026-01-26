@@ -12,7 +12,7 @@ let
 
   src = fetchurl {
     url = "https://github.com/tuanapi/OpenAnime-Linux-Desktop-App/releases/download/v${version}/OpenAnime-${version}.AppImage";
-    hash = "sha256-J9CMq/y3E07MsSfJMzdizCMF02eMC10RnmQVUM+4wws=";
+    hash = "sha256-eUkKIuS/3Xn7WLaW31Phf5FyxEaeBiTsQonMfZU2u30=";
   };
 
   appimageContents = appimageTools.extractType2 { inherit pname version src; };
