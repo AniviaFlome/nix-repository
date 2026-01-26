@@ -17,10 +17,12 @@
     }:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
+      
       treefmtEval = system: treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt.nix;
     in
     {
       formatter = forAllSystems (system: (treefmtEval system).config.build.wrapper);
+      
       checks = forAllSystems (system: {
         formatting = (treefmtEval system).config.build.check self;
       });
