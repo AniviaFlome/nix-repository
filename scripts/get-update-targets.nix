@@ -5,30 +5,40 @@ let
   flake = builtins.getFlake (toString ./..); # parent directory
   packages = flake.packages.${system};
 
-  # Extract extra args from updateScript (it's a list like ["/nix/store/.../nix-update", "--subpackage=bunDeps"])
-  getExtraArgs =
+  # Determine if updateScript is a custom script or nix-update style
+  getScriptInfo =
     pkg:
     if pkg ? passthru && pkg.passthru ? updateScript then
       let
         script = pkg.passthru.updateScript;
       in
       if builtins.isList script then
-        # Filter out the nix-update binary path and keep only the args
-        builtins.filter (arg: builtins.isString arg && builtins.substring 0 1 arg == "-") script
+        # nix-update style: list like ["/nix/store/.../nix-update", "--subpackage=bunDeps"]
+        {
+          useUpdateScript = false;
+          extraArgs = builtins.filter (arg: builtins.isString arg && builtins.substring 0 1 arg == "-") script;
+        }
       else
-        [ ]
+        # Custom script (writeScript, path, derivation) - use nix-update --use-update-script
+        {
+          useUpdateScript = true;
+          extraArgs = [ ];
+        }
     else
-      [ ];
+      null;
 
   find =
     prefix: attrs:
     if builtins.isAttrs attrs then
       if (attrs ? type && attrs.type == "derivation") then
-        if (attrs.passthru ? updateScript) then
+        let
+          info = getScriptInfo attrs;
+        in
+        if info != null then
           [
             {
               name = prefix;
-              extraArgs = getExtraArgs attrs;
+              inherit (info) useUpdateScript extraArgs;
             }
           ]
         else

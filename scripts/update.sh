@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# Get update targets using Nix evaluation (returns JSON array of {name, extraArgs})
+# Get update targets using Nix evaluation
 targets_json=$(nix eval --json --impure --expr 'import ./scripts/get-update-targets.nix {}')
 
 # Process each target
@@ -14,6 +14,13 @@ for target in targets:
     extra_args = target.get('extraArgs', [])
     
     print(f'Updating {name}...')
-    cmd = ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', name] + extra_args
+    
+    cmd = ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', name]
+    
+    # Use package's custom updateScript if it has one
+    if target.get('useUpdateScript', False):
+        cmd.append('--use-update-script')
+    
+    cmd.extend(extra_args)
     subprocess.run(cmd, check=True)
 "

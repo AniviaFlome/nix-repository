@@ -49,7 +49,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     #!/usr/bin/env nix-shell
     #!nix-shell -i bash -p curl jq common-updater-scripts
     repo="https://dawn.wine/api/v1/repos/dawn-winery/dwproton/releases"
-    version="$(curl -sL "$repo" | jq -r 'map(select(.prerelease == false)) | .[0].tag_name | sub("^dwproton-"; "")')"
+    version="$(curl -sL "$repo" | jq 'map(select(.prerelease == false)) | .[0].tag_name' --raw-output | sed 's/^dwproton-//')"
     update-source-version dwproton "$version"
   '';
 
