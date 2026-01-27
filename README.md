@@ -4,10 +4,24 @@ My nix packages repository.
 
 ## Packages
 
-- **interSubs**: [interSubs](https://github.com/oltodosel/interSubs) - Interactive subtitles for MPV.
-- **waha-tui**: [waha-tui](https://github.com/muhammedaksam/waha-tui) - A beautiful Terminal User Interface for WhatsApp using WAHA (WhatsApp HTTP API).
-- **whisper-subs**: [WhisperSubs](https://github.com/GhostNaN/whisper-subs) - MPV lua script to generate subtitles at runtime with whisper.cpp.
-- **torrra**: [torrra](https://github.com/stabldev/torrra) - A CLI tool to download torrents.
+### Applications
+
+| Package | Description |
+|---------|-------------|
+| [dwproton](https://dawn.wine/dawn-winery/dwproton) | Proton builds with Dawn Winery fixes for Genshin Impact, Zenless Zone Zero, etc. (Steam compatibility tool) |
+| [proton-cachyos](https://github.com/CachyOS/proton-cachyos) | CachyOS optimized Proton with x86_64_v3 optimizations, DXVK-Sarek, FSR4, NTSync (Steam compatibility tool) |
+| [openanime-bin](https://github.com/tuanapi/OpenAnime-Linux-Desktop-App) | Unofficial OpenAnime Linux client with WebGPU/Vulkan support |
+| [turkanime-cli](https://github.com/KebabLord/turkanime-indirici) | Türk Anime python library and downloader |
+| [torrra](https://github.com/stabldev/torrra) | A Python CLI tool to search and download torrents |
+| [waha-tui](https://github.com/muhammedaksam/waha-tui) | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API) |
+
+### MPV Scripts
+
+| Package | Description |
+|---------|-------------|
+| [mpvScripts.interSubs](https://github.com/oltodosel/interSubs) | Interactive subtitles for MPV |
+| [mpvScripts.whisper-subs](https://github.com/GhostNaN/whisper-subs) | MPV lua script to generate subtitles at runtime with whisper.cpp |
+| [mpvScripts.subtitle-sync](https://github.com/AniviaFlome/mpv-scripts) | MPV script to mark subtitle start times and calculate differences |
 
 ## Usage
 
@@ -40,7 +54,7 @@ This repository uses [Cachix](https://cachix.org) to provide pre-built binaries.
 nixpkgs.overlays = [ inputs.nix-repository.overlays.default ];
 ```
 
-Then packages are available as , `pkgs.mpvScripts.interSubs`, etc.
+Then packages are available as `pkgs.dwproton`, `pkgs.mpvScripts.interSubs`, etc.
 
 ### Install packages directly (without overlay)
 
