@@ -21,6 +21,11 @@ python3Packages.buildPythonApplication rec {
     hash = "sha256-/nLqbp6D+m7URKerNJb4f0OU0o41slMzpcJPgJQhqb4=";
   };
 
+  postPatch = ''
+    substituteInPlace turkanime_api/bypass.py \
+      --replace-fail 'impersonate="firefox"' 'impersonate="chrome110"'
+  '';
+
   build-system = [ python3Packages.poetry-core ];
 
   nativeBuildInputs = [ makeWrapper ];
@@ -38,7 +43,7 @@ python3Packages.buildPythonApplication rec {
 
   postInstall = ''
     wrapProgram $out/bin/turkanime \
-      --prefix PATH : ${lib.makeBinPath [ mpv aria2 geckodriver yt-dlp ]}
+      --suffix PATH : ${lib.makeBinPath [ mpv aria2 geckodriver yt-dlp ]}
   '';
 
   # No tests available

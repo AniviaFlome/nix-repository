@@ -10,7 +10,6 @@ My nix packages repository.
 |---------|-------------|
 | [dwproton](https://dawn.wine/dawn-winery/dwproton) | Proton builds with Dawn Winery fixes for Genshin Impact, Zenless Zone Zero, etc. (Steam compatibility tool) |
 | [proton-cachyos](https://github.com/CachyOS/proton-cachyos) | CachyOS optimized Proton with x86_64_v3 optimizations, DXVK-Sarek, FSR4, NTSync (Steam compatibility tool) |
-| [openanime-bin](https://github.com/tuanapi/OpenAnime-Linux-Desktop-App) | Unofficial OpenAnime Linux client with WebGPU/Vulkan support |
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici) | Türk Anime python library and downloader |
 | [torrra](https://github.com/stabldev/torrra) | A Python CLI tool to search and download torrents |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui) | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API) |
