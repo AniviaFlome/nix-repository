@@ -26,7 +26,13 @@ buildGoModule {
 
   postInstall = ''
     wrapProgram $out/bin/anitr-cli \
-      --suffix PATH : ${lib.makeBinPath [ mpv fzf rofi ]}
+      --suffix PATH : ${
+        lib.makeBinPath [
+          mpv
+          fzf
+          rofi
+        ]
+      }
   '';
 
   passthru.updateScript = nix-update-script { };

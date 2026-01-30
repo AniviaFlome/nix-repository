@@ -16,7 +16,9 @@ let
         # nix-update style: list like ["/nix/store/.../nix-update", "--subpackage=bunDeps"]
         {
           useUpdateScript = false;
-          extraArgs = builtins.filter (arg: builtins.isString arg && builtins.substring 0 1 arg == "-") script;
+          extraArgs = builtins.filter (
+            arg: builtins.isString arg && builtins.substring 0 1 arg == "-"
+          ) script;
         }
       else
         # Custom script (writeScript, path, derivation) - use nix-update --use-update-script

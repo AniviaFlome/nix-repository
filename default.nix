@@ -12,7 +12,6 @@
   waha-tui = pkgs.callPackage ./pkgs/waha-tui { };
   torrra = pkgs.callPackage ./pkgs/torrra { };
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
-  crystal-realms = pkgs.callPackage ./pkgs/crystal-realms { };
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
   mpvScripts = {
     interSubs = pkgs.callPackage ./pkgs/mpvScripts/interSubs {
