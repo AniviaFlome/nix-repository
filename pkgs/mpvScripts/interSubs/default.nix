@@ -20,7 +20,7 @@ let
 in
 buildLua {
   pname = "interSubs";
-  version = "unstable-2025-03-18";
+  version = "0-unstable-2025-03-18";
 
   src = fetchFromGitHub {
     owner = "oltodosel";

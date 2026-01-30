@@ -9,14 +9,14 @@
   nix-update-script,
 }:
 
-buildGoModule {
+buildGoModule (finalAttrs: {
   pname = "anitr-cli";
-  version = "unstable-2025-01-29";
+  version = "4.7.0";
 
   src = fetchFromGitHub {
     owner = "axrona";
     repo = "anitr-cli";
-    rev = "main";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-QEuzHqfz35bEUxACpUQgU6cu+2NmLof6lNUJcTwatkk=";
   };
 
@@ -44,4 +44,4 @@ buildGoModule {
     mainProgram = "anitr-cli";
     platforms = platforms.linux;
   };
-}
+})

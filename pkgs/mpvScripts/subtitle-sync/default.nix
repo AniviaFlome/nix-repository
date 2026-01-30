@@ -7,13 +7,13 @@
 
 buildLua {
   pname = "subtitle-sync";
-  version = "unstable-2025-12-05";
+  version = "0-unstable-2025-12-26";
 
   src = fetchFromGitHub {
     owner = "AniviaFlome";
     repo = "mpv-scripts";
-    rev = "ae581c4591a77ada96d7bc36762038b938730b90";
-    hash = "sha256-lyYoHPbQu7HpSKZ6hZFZ85FyT4IYajYoLEcDBk4Fmz0=";
+    rev = "417da706fafac5a1871c3238bb79fb78cdcac52f";
+    hash = "sha256-trrFwqqcPIfr5ajyKhClu+r0LLNan1N4dXbmrOIToOA=";
   };
 
   installPhase = ''
