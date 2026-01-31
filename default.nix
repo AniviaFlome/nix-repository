@@ -13,6 +13,7 @@
   torrra = pkgs.callPackage ./pkgs/torrra { };
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
+  turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
   mpvScripts = {
     interSubs = pkgs.callPackage ./pkgs/mpvScripts/interSubs {
       inherit (pkgs.mpvScripts) buildLua;

@@ -4,8 +4,6 @@
   fetchFromGitHub,
   makeWrapper,
   mpv,
-  fzf,
-  rofi,
   nix-update-script,
 }:
 
@@ -29,8 +27,6 @@ buildGoModule (finalAttrs: {
       --suffix PATH : ${
         lib.makeBinPath [
           mpv
-          fzf
-          rofi
         ]
       }
   '';
