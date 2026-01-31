@@ -3,7 +3,6 @@
   buildLua,
   fetchFromGitHub,
   python3,
-  killall,
   nix-update-script,
 }:
 let
@@ -37,7 +36,7 @@ buildLua {
     substituteInPlace $out/share/mpv/scripts/interSubs.lua \
       --replace-fail "python3" "${pythonEnv}/bin/python3" \
       --replace-fail "~/.config/mpv/scripts/interSubs.py" "$out/share/mpv/scripts/interSubs.py" \
-      --replace-fail "pkill" "${killall}/bin/killall"
+      --replace-fail "pkill" "${procps}/bin/pkill"
 
     substituteInPlace $out/share/mpv/scripts/interSubs.py \
       --replace-fail "pth = os.path.expanduser('~/.config/mpv/scripts/')" "pth = '$out/share/mpv/scripts/'"

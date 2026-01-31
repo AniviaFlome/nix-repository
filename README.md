@@ -8,9 +8,10 @@ My nix packages repository.
 
 | Package | Description |
 |---------|-------------|
+| [anitr-cli](https://github.com/axrona/anitr-cli) | Terminalde Türkçe altyazılı anime arama ve izleme aracı |
 | [dwproton](https://dawn.wine/dawn-winery/dwproton) | Proton builds with Dawn Winery fixes for Genshin Impact, Zenless Zone Zero, etc. (Steam compatibility tool) |
 | [proton-cachyos](https://github.com/CachyOS/proton-cachyos) | CachyOS optimized Proton with x86_64_v3 optimizations, DXVK-Sarek, FSR4, NTSync (Steam compatibility tool) |
-| [turkanime-cli](https://github.com/KebabLord/turkanime-indirici) | Türk Anime python library and downloader |
+| [turkanime-cli](https://github.com/KebabLord/turkanime-indirici) | Türk Anime python kütüphanesi ve tarayıcısı  |
 | [torrra](https://github.com/stabldev/torrra) | A Python CLI tool to search and download torrents |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui) | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API) |
 
@@ -19,8 +20,8 @@ My nix packages repository.
 | Package | Description |
 |---------|-------------|
 | [mpvScripts.interSubs](https://github.com/oltodosel/interSubs) | Interactive subtitles for MPV |
-| [mpvScripts.whisper-subs](https://github.com/GhostNaN/whisper-subs) | MPV lua script to generate subtitles at runtime with whisper.cpp |
-| [mpvScripts.subtitle-sync](https://github.com/AniviaFlome/mpv-scripts) | MPV script to mark subtitle start times and calculate differences |
+| [mpvScripts.whisper-subs](https://github.com/GhostNaN/whisper-subs) | WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux |
+| [mpvScripts.subtitle-sync](https://github.com/AniviaFlome/mpv-scripts) | MPV script to mark subtitle start times and calculate the difference between them |
 
 ## Usage
 
