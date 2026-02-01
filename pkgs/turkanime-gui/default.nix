@@ -15,7 +15,7 @@ python3Packages.buildPythonApplication rec {
   src = fetchPypi {
     pname = "turkanime_gui";
     inherit version;
-    hash = "sha256-PanEFy+QsxyMEa3DBbDtuU/evyXPKo1OrwTKo9QEynE=";
+    hash = "sha256-PanEFy+Qsx7BMa3DBbDtuU/evvJc8qjU6vBMQ94EynE=";
   };
 
   build-system = [ python3Packages.poetry-core ];

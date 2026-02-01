@@ -15,10 +15,16 @@ buildGoModule (finalAttrs: {
     owner = "axrona";
     repo = "anitr-cli";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-QEuzHqfz35bEUxACpUQgU6cu+2NmLof6lNUJcTwatkk=";
+    hash = "sha256-KBFWSNu0KgruFgZP3Qdv1Fj3QYJqg/75ruj+T+KIulg=";
   };
 
   vendorHash = "sha256-XGErf+LACVenbUfnvCPNfs3iCAK2Rzrtys5YKxrkkMc=";
+
+  ldflags = [
+    "-s"
+    "-w"
+    "-X github.com/axrona/anitr-cli/internal/update.version=${finalAttrs.version}"
+  ];
 
   nativeBuildInputs = [ makeWrapper ];
 
