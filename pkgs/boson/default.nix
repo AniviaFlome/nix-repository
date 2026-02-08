@@ -50,7 +50,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --replace-fail '"display_name" "Boson"' '"display_name" "${steamDisplayName}"'
 
     wrapProgram $out/boson \
-      --set ELECTRON_PATH "${electron}/bin/electron"
+      --set ELECTRON_PATH "${electron}/bin/electron" \
+      --set GDK_BACKEND x11 \
+      --set ELECTRON_ENABLE_LOGGING 1
   '';
 
   passthru = {
