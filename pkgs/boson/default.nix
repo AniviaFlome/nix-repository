@@ -7,6 +7,7 @@
   zstd,
   # Can be overridden to alter the display name in steam
   steamDisplayName ? "Boson",
+  makeWrapper,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -22,6 +23,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   dontUnpack = true;
   dontConfigure = true;
   dontBuild = true;
+
+  nativeBuildInputs = [ makeWrapper ]; # Added nativeBuildInputs here
 
   installPhase = ''
     runHook preInstall
@@ -45,6 +48,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   preFixup = ''
     substituteInPlace "$out/compatibilitytool.vdf" \
       --replace-fail '"display_name" "Boson"' '"display_name" "${steamDisplayName}"'
+
+    wrapProgram $out/boson \
+      --set ELECTRON_PATH "${electron}/bin/electron"
   '';
 
   passthru = {
