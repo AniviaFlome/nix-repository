@@ -16,6 +16,7 @@
   turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
   nativecookie = pkgs.callPackage ./pkgs/nativecookie { };
   boson = pkgs.callPackage ./pkgs/boson { };
+  cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
   mpvScripts =
     let
       callMpvScript =

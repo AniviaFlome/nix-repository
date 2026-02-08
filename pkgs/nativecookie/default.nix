@@ -26,45 +26,39 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [ makeWrapper ];
 
-  outputs = [
-    "out"
-    "steamcompattool"
-  ];
+
 
   installPhase = ''
     runHook preInstall
 
-    # Make it impossible to add to an environment. You should use the appropriate NixOS option.
-    echo "${finalAttrs.pname} should not be installed into environments. Please use programs.steam.extraCompatPackages instead." > $out
-
-    mkdir -p $steamcompattool
+    mkdir -p $out
 
     # Link all files except electron directory (which contains placeholders)
     # and compatibilitytool.vdf (which we need to modify)
     for f in $src/*; do
       name=$(basename "$f")
       if [[ "$name" != "electron" && "$name" != "compatibilitytool.vdf" ]]; then
-        ln -s "$f" "$steamcompattool/$name"
+        ln -s "$f" "$out/$name"
       fi
     done
 
     # Copy compatibilitytool.vdf so we can modify it
-    cp $src/compatibilitytool.vdf $steamcompattool/compatibilitytool.vdf
+    cp $src/compatibilitytool.vdf $out/compatibilitytool.vdf
 
     # Set up electron symlinks - the binary expects electron at ./electron/electron or ./electron/cookie-electron
-    mkdir -p $steamcompattool/electron
-    ln -s ${electron}/bin/electron $steamcompattool/electron/electron
-    ln -s ${electron}/bin/electron $steamcompattool/electron/cookie-electron
+    mkdir -p $out/electron
+    ln -s ${electron}/bin/electron $out/electron/electron
+    ln -s ${electron}/bin/electron $out/electron/cookie-electron
 
     runHook postInstall
   '';
 
   preFixup = ''
-    substituteInPlace "$steamcompattool/compatibilitytool.vdf" \
+    substituteInPlace "$out/compatibilitytool.vdf" \
       --replace-fail '"display_name" "NativeCookie"' '"display_name" "${steamDisplayName}"'
 
     # Wrap the binary to ensure xdg-utils is in PATH
-    wrapProgram $steamcompattool/nativecookie \
+    wrapProgram $out/nativecookie \
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]}
   '';
 

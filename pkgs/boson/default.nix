@@ -23,35 +23,27 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   dontConfigure = true;
   dontBuild = true;
 
-  outputs = [
-    "out"
-    "steamcompattool"
-  ];
-
   installPhase = ''
     runHook preInstall
 
-    # Make it impossible to add to an environment. You should use the appropriate NixOS option.
-    echo "${finalAttrs.pname} should not be installed into environments. Please use programs.steam.extraCompatPackages instead." > $out
-
-    mkdir -p $steamcompattool
+    mkdir -p $out
 
     # Link all files except compatibilitytool.vdf (which we need to modify)
     for f in $src/*; do
       name=$(basename "$f")
       if [[ "$name" != "compatibilitytool.vdf" ]]; then
-        ln -s "$f" "$steamcompattool/$name"
+        ln -s "$f" "$out/$name"
       fi
     done
 
     # Copy compatibilitytool.vdf so we can modify it
-    cp $src/compatibilitytool.vdf $steamcompattool/compatibilitytool.vdf
+    cp $src/compatibilitytool.vdf $out/compatibilitytool.vdf
 
     runHook postInstall
   '';
 
   preFixup = ''
-    substituteInPlace "$steamcompattool/compatibilitytool.vdf" \
+    substituteInPlace "$out/compatibilitytool.vdf" \
       --replace-fail '"display_name" "Boson"' '"display_name" "${steamDisplayName}"'
   '';
 
