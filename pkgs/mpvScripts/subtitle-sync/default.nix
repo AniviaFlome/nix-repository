@@ -16,6 +16,8 @@ buildLua {
     hash = "sha256-trrFwqqcPIfr5ajyKhClu+r0LLNan1N4dXbmrOIToOA=";
   };
 
+  dontBuild = true;
+
   installPhase = ''
     runHook preInstall
     install -D -m644 subtitle-sync/main.lua $out/share/mpv/scripts/subtitle-sync.lua
