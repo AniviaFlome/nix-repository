@@ -52,7 +52,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     wrapProgram $out/boson \
       --set ELECTRON_PATH "${electron}/bin/electron" \
       --set GDK_BACKEND x11 \
-      --set ELECTRON_ENABLE_LOGGING 1
+      --set ELECTRON_ENABLE_LOGGING 1 \
+      --add-flags "--disable-gpu --disable-software-rasterizer"
   '';
 
   passthru = {
