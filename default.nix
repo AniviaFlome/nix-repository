@@ -14,6 +14,8 @@
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
   turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
+  nativecookie = pkgs.callPackage ./pkgs/nativecookie { };
+  boson = pkgs.callPackage ./pkgs/boson { };
   mpvScripts = {
     interSubs = pkgs.callPackage ./pkgs/mpvScripts/interSubs {
       inherit (pkgs.mpvScripts) buildLua;
