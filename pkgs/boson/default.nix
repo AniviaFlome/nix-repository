@@ -24,6 +24,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   dontConfigure = true;
   dontBuild = true;
 
+  preferLocalBuild = true;
+
   nativeBuildInputs = [ makeWrapper ]; # Added nativeBuildInputs here
 
   installPhase = ''
@@ -42,6 +44,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # Copy compatibilitytool.vdf so we can modify it
     cp $src/compatibilitytool.vdf $out/compatibilitytool.vdf
 
+    # Symlink electron so boson can find it locally (fallback 3)
+    mkdir -p $out/electron
+    ln -s ${electron}/bin/electron $out/electron/electron
+
     runHook postInstall
   '';
 
@@ -51,9 +57,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     wrapProgram $out/boson \
       --set ELECTRON_PATH "${electron}/bin/electron" \
-      --set GDK_BACKEND x11 \
-      --set ELECTRON_ENABLE_LOGGING 1 \
-      --add-flags "--disable-gpu --disable-software-rasterizer"
+      --set GDK_BACKEND x11
   '';
 
   passthru = {

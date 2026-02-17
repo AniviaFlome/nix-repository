@@ -20,6 +20,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   dontConfigure = true;
   dontBuild = true;
 
+  preferLocalBuild = true;
+
   outputs = [
     "out"
     "steamcompattool"

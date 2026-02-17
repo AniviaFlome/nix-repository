@@ -17,6 +17,7 @@
   nativecookie = pkgs.callPackage ./pkgs/nativecookie { };
   boson = pkgs.callPackage ./pkgs/boson { };
   cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
+  gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { };
   mpvScripts =
     let
       callMpvScript =
