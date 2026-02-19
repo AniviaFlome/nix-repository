@@ -42,7 +42,7 @@ buildGoModule (finalAttrs: {
   meta = with lib; {
     description = "Anime tracker and streamer CLI";
     homepage = "https://github.com/axrona/anitr-cli";
-    license = licenses.mit; # Assumption, will verify
+    license = licenses.mit;
     mainProgram = "anitr-cli";
     platforms = platforms.linux;
   };

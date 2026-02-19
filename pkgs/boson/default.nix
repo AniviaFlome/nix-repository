@@ -26,7 +26,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   preferLocalBuild = true;
 
-  nativeBuildInputs = [ makeWrapper ]; # Added nativeBuildInputs here
+  nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
     runHook preInstall

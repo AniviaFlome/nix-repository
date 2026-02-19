@@ -20,11 +20,13 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     stripRoot = false;
   };
 
+  nativeBuildInputs = [ makeWrapper ];
+
   dontUnpack = true;
   dontConfigure = true;
   dontBuild = true;
 
-  nativeBuildInputs = [ makeWrapper ];
+  preferLocalBuild = true;
 
   installPhase = ''
     runHook preInstall

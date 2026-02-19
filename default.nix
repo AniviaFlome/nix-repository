@@ -18,6 +18,7 @@
   boson = pkgs.callPackage ./pkgs/boson { };
   cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
   gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { };
+  getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
   mpvScripts =
     let
       callMpvScript =

@@ -15,8 +15,6 @@ buildLua {
     hash = "sha256-AtIaCuxEE18rKlcm6/NqxHu+XSLOysWm+eSuYi11/p8=";
   };
 
-  dontBuild = true;
-
   installPhase = ''
     runHook preInstall
     install -D -m644 cheatsheet/main.lua $out/share/mpv/scripts/cheatsheet.lua

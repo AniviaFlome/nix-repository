@@ -40,6 +40,8 @@ stdenv.mkDerivation rec {
     makeWrapper
   ];
 
+  preferLocalBuild = true;
+
   buildInputs = [
     gtk3
     glib
