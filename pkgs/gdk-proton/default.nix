@@ -13,7 +13,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   src = fetchzip {
     url = "https://github.com/Weather-OS/GDK-Proton/releases/download/release${finalAttrs.version}/GDK-Proton${finalAttrs.version}.tar.gz";
-    hash = "sha256-kYv5f+g9aWqF4v5ZSKZHK2tJjOqM3Q5H0uWn+9vJ9+8=";
+    hash = "sha256-MtasTr8lXBY0vQlOPaXU94CO6O//l1qwAqFDbu5os+M=";
   };
 
   dontUnpack = true;
