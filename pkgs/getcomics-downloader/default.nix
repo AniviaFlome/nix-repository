@@ -14,7 +14,7 @@ let
     ps.rich
   ]);
 in
-python3.pkgs.buildPythonPackage (finalAttrs: {
+python3.pkgs.buildPythonPackage rec {
   pname = "getcomics-downloader";
   version = "1.1";
   pyproject = false;
@@ -22,7 +22,7 @@ python3.pkgs.buildPythonPackage (finalAttrs: {
   src = fetchFromGitHub {
     owner = "UlucKaymak";
     repo = "getcomics-downloader";
-    rev = "v${finalAttrs.version}";
+    rev = "v${version}";
     hash = "sha256-dSq1BsImzwyOUqa8fB9V5MPsyymWnodZGtHcB9Glxuk=";
   };
 
@@ -52,4 +52,4 @@ python3.pkgs.buildPythonPackage (finalAttrs: {
     mainProgram = "getcomics-downloader";
     platforms = platforms.linux;
   };
-})
+}
