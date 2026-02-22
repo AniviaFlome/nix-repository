@@ -43,7 +43,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   preFixup = ''
     substituteInPlace "$out/compatibilitytool.vdf" \
-      --replace-fail '"display_name" "GDK-Proton"' '"display_name" "${steamDisplayName}"'
+      --replace-warn "GE-Proton${finalAttrs.version}" "${steamDisplayName}"
   '';
 
   passthru = {
