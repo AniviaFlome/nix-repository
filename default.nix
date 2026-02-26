@@ -15,6 +15,7 @@
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
   turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
   nativecookie = pkgs.callPackage ./pkgs/nativecookie { };
+  osu-beatmap-manager = pkgs.callPackage ./pkgs/osu-beatmap-manager { };
   boson = pkgs.callPackage ./pkgs/boson { };
   cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
   gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { };
