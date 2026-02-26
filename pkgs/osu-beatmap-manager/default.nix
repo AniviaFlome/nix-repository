@@ -8,16 +8,16 @@
 
 buildDotnetModule rec {
   pname = "osu-beatmap-manager";
-  version = "0-unstable-2026-02-25";
+  version = "0-unstable-2026-02-26";
 
   src = fetchFromGitHub {
     owner = "AniviaFlome";
     repo = pname;
-    rev = "ab2b711d0de7ec8058aa40cd79a02774e654a8f9";
-    hash = "sha256-WFQMTgObCr0kp0jcNdtJlVUeJzisT6jAaVKVMd8tbNA=";
+    rev = "57f960243ac5bd1c2cbf0c9704d82b502f974f24";
+    hash = "sha256-PDh50sf/r+vXYZRep5JEzO9sZZjEh5q/Fc+70LVGsDE=";
   };
 
-  projectFile = "src/OsuBeatmapManager/OsuBeatmapManager.csproj";
+  projectFile = "src/obm/obm.csproj";
   nugetDeps = ./deps.json;
 
   dotnet-sdk = dotnetCorePackages.sdk_8_0;
