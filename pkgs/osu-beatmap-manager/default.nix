@@ -26,9 +26,9 @@ buildDotnetModule rec {
   passthru.updateScript = writeScript "update-osu-beatmap-manager" ''
     #!/usr/bin/env nix-shell
     #!nix-shell -i bash -p nix-update
-    
+
     set -euo pipefail
-    
+
     nix-update osu-beatmap-manager --version branch
     $(nix-build -A osu-beatmap-manager.fetch-deps --no-out-link) ./pkgs/osu-beatmap-manager/deps.json
   '';
