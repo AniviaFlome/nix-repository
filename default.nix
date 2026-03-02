@@ -23,7 +23,7 @@ in
   cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
   gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { inherit (lib) makeReleaseUpdater; };
   getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
-  
+
   artcnn = pkgs.callPackage ./pkgs/artcnn { };
   anime4k = pkgs.callPackage ./pkgs/anime4k { };
   re-sisr-soft = pkgs.callPackage ./pkgs/re-sisr-soft { };

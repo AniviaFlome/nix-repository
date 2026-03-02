@@ -20,7 +20,7 @@ stdenvNoCC.mkDerivation {
 
   installPhase = ''
     runHook preInstall
-    
+
     install -D -m644 $src $out/share/mpv/shaders/Fallin_Strong.onnx
 
     runHook postInstall
