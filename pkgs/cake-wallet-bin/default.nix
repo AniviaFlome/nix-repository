@@ -74,10 +74,6 @@ stdenv.mkDerivation rec {
     wrapProgram $out/bin/cake-wallet \
       --set GDK_BACKEND x11 # Does not work with wayland
 
-    # Install icon
-    # mkdir -p $out/share/icons/hicolor/512x512/apps
-    # cp -r data/flutter_assets/assets/images/app_logo.png $out/share/icons/hicolor/512x512/apps/cake-wallet.png
-
     runHook postInstall
   '';
 
