@@ -1,10 +1,7 @@
 {
-  system ? builtins.currentSystem,
+  packages,
 }:
 let
-  flake = builtins.getFlake (toString ./..); # parent directory
-  packages = flake.packages.${system};
-
   # Determine if updateScript is a custom script or nix-update style
   getScriptInfo =
     pkg:
