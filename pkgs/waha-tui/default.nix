@@ -9,13 +9,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "waha-tui";
-  version = "1.5.15";
+  version = "1.5.16";
 
   src = fetchFromGitHub {
     owner = "muhammedaksam";
     repo = "waha-tui";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-Dzz09Ejdo9v7JzlnMQVXNHWuSR9hTZHEB+OBn8IkzYQ=";
+    hash = "sha256-R4Won77gA891mB4DdPrJXvMdFMFELKdWixuPJx/kD+Y=";
   };
 
   bunDeps = stdenvNoCC.mkDerivation {
@@ -49,7 +49,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-TJoXhKBlVOWQp2BVmPydMs9JtlUOqNHv1HmuQTpbfKU=";
+    outputHash = "sha256-usrdKZrJUQfV2WipDbhmdrMVN/Gl3luK3HgYzA1HqhY=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
