@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  writeScript,
+  makeReleaseUpdater,
   # Can be overridden to alter the display name in steam
   # This could be useful if multiple versions should be installed together
   steamDisplayName ? "dwproton",
@@ -46,13 +46,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --replace-fail "dwproton-${finalAttrs.version}" "${steamDisplayName}"
   '';
 
-  passthru.updateScript = writeScript "update-dwproton" ''
-    #!/usr/bin/env nix-shell
-    #!nix-shell -i bash -p curl jq common-updater-scripts
-    repo="https://dawn.wine/api/v1/repos/dawn-winery/dwproton/releases"
-    version="$(curl -sL "$repo" | jq 'map(select(.prerelease == false)) | .[0].tag_name' --raw-output | sed 's/^dwproton-//')"
-    update-source-version dwproton "$version"
-  '';
+  passthru.updateScript = makeReleaseUpdater {
+    name = "dwproton";
+    repo = "https://dawn.wine/api/v1/repos/dawn-winery/dwproton/releases";
+    versionFilter = "sed 's/^dwproton-//'";
+  };
 
   meta = {
     description = ''

@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  writeScript,
+  makeReleaseUpdater,
   electron,
   zstd,
   # Can be overridden to alter the display name in steam
@@ -65,13 +65,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # Usage: ELECTRON_PATH=${boson.electronPath} %command%
     electronPath = "${electron}/bin/electron";
 
-    updateScript = writeScript "update-boson" ''
-      #!/usr/bin/env nix-shell
-      #!nix-shell -i bash -p curl jq common-updater-scripts
-      repo="https://api.github.com/repos/FyraLabs/boson/releases"
-      version="$(curl -sL "$repo" | jq 'map(select(.prerelease == false)) | .[0].tag_name' --raw-output | sed 's/^v//')"
-      update-source-version boson "$version"
-    '';
+    updateScript = makeReleaseUpdater {
+      name = "boson";
+      repo = "https://api.github.com/repos/FyraLabs/boson/releases";
+    };
   };
 
   meta = {
