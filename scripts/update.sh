@@ -2,7 +2,8 @@
 set -e
 
 # Get update targets using Nix evaluation
-targets_json=$(nix eval --json --impure --expr 'import ./scripts/get-update-targets.nix {}')
+system=$(nix eval --impure --raw --expr 'builtins.currentSystem')
+targets_json=$(nix eval --json --impure --apply "pkgs: import ./scripts/get-update-targets.nix { packages = pkgs; }" ".#packages.${system}")
 
 # Process each target
 echo "$targets_json" | python3 -c "
