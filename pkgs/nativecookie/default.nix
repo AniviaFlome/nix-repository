@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  writeScript,
+  makeReleaseUpdater,
   electron,
   xdg-utils,
   makeWrapper,
@@ -62,13 +62,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]}
   '';
 
-  passthru.updateScript = writeScript "update-nativecookie" ''
-    #!/usr/bin/env nix-shell
-    #!nix-shell -i bash -p curl jq common-updater-scripts
-    repo="https://api.github.com/repos/Kesefon/NativeCookie/releases"
-    version="$(curl -sL "$repo" | jq 'map(select(.prerelease == false)) | .[0].tag_name' --raw-output | sed 's/^v//')"
-    update-source-version nativecookie "$version"
-  '';
+  passthru.updateScript = makeReleaseUpdater {
+    name = "nativecookie";
+    repo = "https://api.github.com/repos/Kesefon/NativeCookie/releases";
+  };
 
   meta = {
     description = ''

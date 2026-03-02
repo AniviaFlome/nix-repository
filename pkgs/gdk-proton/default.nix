@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  writeScript,
+  makeReleaseUpdater,
   # Can be overridden to alter the display name in steam
   steamDisplayName ? "GDK-Proton",
 }:
@@ -47,13 +47,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    updateScript = writeScript "update-gdk-proton" ''
-      #!/usr/bin/env nix-shell
-      #!nix-shell -i bash -p curl jq common-updater-scripts
-      repo="https://api.github.com/repos/Weather-OS/GDK-Proton/releases"
-      version="$(curl -sL "$repo" | jq 'map(select(.prerelease == false)) | .[0].tag_name' --raw-output | sed 's/^release//')"
-      update-source-version gdk-proton "$version"
-    '';
+    updateScript = makeReleaseUpdater {
+      name = "gdk-proton";
+      repo = "https://api.github.com/repos/Weather-OS/GDK-Proton/releases";
+      versionFilter = "sed 's/^release//'";
+    };
   };
 
   meta = {

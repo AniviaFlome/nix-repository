@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  writeScript,
+  makeReleaseUpdater,
   # Can be overridden to alter the display name in steam
   steamDisplayName ? "proton-cachyos",
   # x86_64 microarchitecture level: "" (baseline), "_v2", "_v3", or "_v4"
@@ -48,13 +48,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --replace-fail "proton-cachyos-${finalAttrs.version}" "${steamDisplayName}"
   '';
 
-  passthru.updateScript = writeScript "update-proton-cachyos" ''
-    #!/usr/bin/env nix-shell
-    #!nix-shell -i bash -p curl jq common-updater-scripts
-    repo="https://api.github.com/repos/CachyOS/proton-cachyos/releases"
-    version="$(curl -sL "$repo" | jq 'map(select(.prerelease == false)) | .[0].tag_name' --raw-output | sed 's/^cachyos-//' | sed 's/-slr$//')"
-    update-source-version proton-cachyos "$version"
-  '';
+  passthru.updateScript = makeReleaseUpdater {
+    name = "proton-cachyos";
+    repo = "https://api.github.com/repos/CachyOS/proton-cachyos/releases";
+    versionFilter = "sed 's/^cachyos-//' | sed 's/-slr$//'";
+  };
 
   meta = {
     description = ''
