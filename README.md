@@ -9,19 +9,24 @@ My nix packages repository.
 | Package | Description |
 |---------|-------------|
 | [anitr-cli](https://github.com/axrona/anitr-cli) | Terminalde Türkçe altyazılı anime arama ve izleme aracı |
-| [boson](https://github.com/FyraLabs/boson) | Run Electron Steam games natively on Linux (Steam compatibility tool) |
 | [cake-wallet-bin](https://cakewallet.com/) | A non-custodial multi-currency wallet |
-| [dwproton](https://dawn.wine/dawn-winery/dwproton) | Proton builds with Dawn Winery fixes for Genshin Impact, Zenless Zone Zero, etc. (Steam compatibility tool) |
-| [gdk-proton](https://github.com/Weather-OS/GDK-Proton) | Proton fork that includes the GDK (Game Development Kit) for Linux (Steam compatibility tool) |
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info |
-| [hyprism](https://github.com/HyPrismTeam/HyPrism) | Hytale launcher with mod management |
-| [nativecookie](https://github.com/Kesefon/NativeCookie) | Run Cookie Clicker Steam edition with native Electron on Linux (Steam compatibility tool) |
+| [hyprism](https://github.com/HyPrismTeam/HyPrism) | Hytale launcher with mod management, and more! |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager) | osu! Beatmap Manager |
-| [proton-cachyos](https://github.com/CachyOS/proton-cachyos) | CachyOS optimized Proton with x86_64_v3 optimizations, DXVK-Sarek, FSR4, NTSync (Steam compatibility tool) |
 | [torrra](https://github.com/stabldev/torrra) | A Python CLI tool to search and download torrents |
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici) | Türk Anime python kütüphanesi ve tarayıcısı |
 | [turkanime-gui](https://github.com/barkeser2002/turkanime-gui) | Türkanime video oynatıcı ve indirici (GUI) |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui) | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API) |
+
+### Steam Compatibility Tools
+
+| Package | Description |
+|---------|-------------|
+| [boson](https://github.com/FyraLabs/boson) | Run Electron Steam games natively on Linux* |
+| [dwproton](https://dawn.wine/dawn-winery/dwproton) | Proton builds with Dawn Winery fixes for Genshin Impact, Zenless Zone Zero, etc. |
+| [gdk-proton](https://github.com/Weather-OS/GDK-Proton) | WineGDK Protonified |
+| [nativecookie](https://github.com/Kesefon/NativeCookie) | Run Cookie Clicker Steam edition with native Electron on Linux |
+| [proton-cachyos](https://github.com/CachyOS/proton-cachyos) | Compatibility tool for Steam Play based on Wine and additional components  |
 
 ### MPV Shaders
 

@@ -3,7 +3,7 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
-  makeReleaseUpdater,
+  nix-update-script,
   gtk3,
   glib,
   nss,
@@ -18,9 +18,6 @@
   cairo,
   at-spi2-atk,
   gdk-pixbuf,
-  makeWrapper,
-  makeDesktopItem,
-  copyDesktopItems,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -29,13 +26,11 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = fetchurl {
     url = "https://github.com/hyprismteam/HyPrism/releases/download/v${finalAttrs.version}/HyPrism-linux-x64-${finalAttrs.version}.tar.xz";
-    hash = "sha256-rtXlv7BTsYt1iwKCPlM3iUfDY8C5JH7CV92Vy20Gi3s=";
+    hash = "sha256-uelinfGoJrvEvKKMP+jgZRU3sQln0Aup9oUqlLVVS2g=";
   };
 
   nativeBuildInputs = [
     autoPatchelfHook
-    copyDesktopItems
-    makeWrapper
   ];
 
   preferLocalBuild = true;
@@ -57,6 +52,8 @@ stdenv.mkDerivation (finalAttrs: {
     gdk-pixbuf
   ];
 
+  autoPatchelfIgnoreMissingDeps = [ "liblttng-ust.so.0" ];
+
   installPhase = ''
     runHook preInstall
 
@@ -64,26 +61,12 @@ stdenv.mkDerivation (finalAttrs: {
 
     cp -r * $out/lib/hyprism/
 
+    ln -s $out/lib/hyprism/HyPrism $out/bin/hyprism
+
     runHook postInstall
   '';
 
-  desktopItems = [
-    (makeDesktopItem {
-      name = "hyprism";
-      desktopName = "HyPrism";
-      exec = "hyprism";
-      icon = "hyprism";
-      comment = "Hytale launcher with mod management";
-      categories = [
-        "Game"
-      ];
-    })
-  ];
-
-  passthru.updateScript = makeReleaseUpdater {
-    name = "hyprism";
-    repo = "https://api.github.com/repos/hyprismteam/HyPrism/releases";
-  };
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Hytale launcher with mod management";
