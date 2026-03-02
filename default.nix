@@ -26,8 +26,8 @@ in
 
   artcnn = pkgs.callPackage ./pkgs/artcnn { };
   anime4k = pkgs.callPackage ./pkgs/anime4k { };
-  re-sisr-soft = pkgs.callPackage ./pkgs/re-sisr-soft { };
-  re-sisr-strong = pkgs.callPackage ./pkgs/re-sisr-strong { };
+  fallin-soft = pkgs.callPackage ./pkgs/fallin-soft { };
+  fallin-strong = pkgs.callPackage ./pkgs/fallin-strong { };
 
   mpvScripts =
     let
