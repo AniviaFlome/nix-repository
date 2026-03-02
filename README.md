@@ -14,12 +14,23 @@ My nix packages repository.
 | [dwproton](https://dawn.wine/dawn-winery/dwproton) | Proton builds with Dawn Winery fixes for Genshin Impact, Zenless Zone Zero, etc. (Steam compatibility tool) |
 | [gdk-proton](https://github.com/Weather-OS/GDK-Proton) | Proton fork that includes the GDK (Game Development Kit) for Linux (Steam compatibility tool) |
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info |
+| [hyprism](https://github.com/HyPrismTeam/HyPrism) | Hytale launcher with mod management |
 | [nativecookie](https://github.com/Kesefon/NativeCookie) | Run Cookie Clicker Steam edition with native Electron on Linux (Steam compatibility tool) |
+| [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager) | osu! Beatmap Manager |
 | [proton-cachyos](https://github.com/CachyOS/proton-cachyos) | CachyOS optimized Proton with x86_64_v3 optimizations, DXVK-Sarek, FSR4, NTSync (Steam compatibility tool) |
 | [torrra](https://github.com/stabldev/torrra) | A Python CLI tool to search and download torrents |
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici) | Türk Anime python kütüphanesi ve tarayıcısı |
 | [turkanime-gui](https://github.com/barkeser2002/turkanime-gui) | Türkanime video oynatıcı ve indirici (GUI) |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui) | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API) |
+
+### MPV Shaders
+
+| Package | Description |
+|---------|-------------|
+| [anime4k](https://github.com/bloc97/Anime4K) | A High-Quality Real Time Upscaler for Anime Video |
+| [artcnn](https://github.com/Artoriuz/ArtCNN) | ArtCNN shaders for MPV |
+| [fallin-soft](https://github.com/renarchi/Re-SISR) | Pre-trained models for Re-SISR (soft) |
+| [fallin-strong](https://github.com/renarchi/Re-SISR) | Pre-trained models for Re-SISR (strong) |
 
 ### MPV Scripts
 

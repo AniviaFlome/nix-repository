@@ -5,7 +5,7 @@
 }:
 
 stdenvNoCC.mkDerivation {
-  pname = "re-sisr-soft";
+  pname = "fallin-soft";
   version = "latest";
 
   src = fetchurl {

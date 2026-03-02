@@ -5,7 +5,7 @@
 }:
 
 stdenvNoCC.mkDerivation {
-  pname = "re-sisr-strong";
+  pname = "fallin-strong";
   version = "latest";
 
   src = fetchurl {
