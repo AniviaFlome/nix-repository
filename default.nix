@@ -27,8 +27,7 @@ in
 
   artcnn = pkgs.callPackage ./pkgs/artcnn { };
   anime4k = pkgs.callPackage ./pkgs/anime4k { };
-  fallin-soft = pkgs.callPackage ./pkgs/fallin-soft { };
-  fallin-strong = pkgs.callPackage ./pkgs/fallin-strong { };
+  fallin = pkgs.callPackage ./pkgs/fallin { };
 
   mpvScripts =
     let

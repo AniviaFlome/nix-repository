@@ -22,7 +22,7 @@ stdenvNoCC.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    install -D -m644 $src/GLSL/Anime4K_*.glsl $out/share/mpv/shaders/Anime4K
+    install -Dm644 -t $out/ $src/Anime4K_*.glsl
 
     runHook postInstall
   '';

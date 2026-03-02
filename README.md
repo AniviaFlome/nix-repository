@@ -34,8 +34,7 @@ My nix packages repository.
 |---------|-------------|
 | [anime4k](https://github.com/bloc97/Anime4K) | A High-Quality Real Time Upscaler for Anime Video |
 | [artcnn](https://github.com/Artoriuz/ArtCNN) | ArtCNN shaders for MPV |
-| [fallin-soft](https://github.com/renarchi/Re-SISR) | Pre-trained models for Re-SISR (soft) |
-| [fallin-strong](https://github.com/renarchi/Re-SISR) | Pre-trained models for Re-SISR (strong) |
+| [fallin](https://github.com/renarchi/Re-SISR) | A collection of custom Super-Resolution models and restoration experiments. |
 
 ### MPV Scripts
 

@@ -45,7 +45,9 @@ let
       else
         builtins.concatLists (
           builtins.attrValues (
-            builtins.mapAttrs (name: value: find (if prefix == "" then name else "${prefix}.${name}") value) attrs
+            builtins.mapAttrs (
+              name: value: find (if prefix == "" then name else "${prefix}.${name}") value
+            ) attrs
           )
         )
     else

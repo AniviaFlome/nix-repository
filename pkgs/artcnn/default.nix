@@ -23,7 +23,7 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    install -D -m644 $src/GLSL/ArtCNN.glsl $out/share/mpv/shaders/ArtCNN.glsl
+    install -D -m644 $src/GLSL/*.glsl -t $out/
 
     runHook postInstall
   '';
