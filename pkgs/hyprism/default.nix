@@ -22,6 +22,8 @@
   gdk-pixbuf,
   makeDesktopItem,
   copyDesktopItems,
+  icu,
+  openssl,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -40,6 +42,8 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   preferLocalBuild = true;
+
+  dontStrip = true;
 
   buildInputs = [
     gtk3
@@ -81,7 +85,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     ln -s $out/lib/hyprism/HyPrism $out/bin/hyprism
     wrapProgram $out/bin/hyprism \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libGL ]}
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libGL icu openssl ]}
 
     runHook postInstall
   '';
