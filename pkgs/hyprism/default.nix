@@ -113,7 +113,9 @@ buildFHSEnv {
     in
     ''
       mkdir -p $out/share
-      ${lib.concatMapStringsSep "\n" (item: "cp -r --no-preserve=mode ${item}/share/* $out/share/") desktopItems}
+      ${lib.concatMapStringsSep "\n" (
+        item: "cp -r --no-preserve=mode ${item}/share/* $out/share/"
+      ) desktopItems}
       install -Dm644 ${hyprism-unwrapped}/lib/hyprism/resources/bin/wwwroot/icon.png $out/share/icons/hicolor/800x800/apps/hyprism.png
     '';
 
