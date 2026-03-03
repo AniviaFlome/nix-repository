@@ -3,6 +3,7 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
+  makeWrapper,
   nix-update-script,
   gtk3,
   glib,
@@ -35,6 +36,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [
     autoPatchelfHook
     copyDesktopItems
+    makeWrapper
   ];
 
   preferLocalBuild = true;
@@ -78,6 +80,8 @@ stdenv.mkDerivation (finalAttrs: {
     cp -r * $out/lib/hyprism/
 
     ln -s $out/lib/hyprism/HyPrism $out/bin/hyprism
+    wrapProgram $out/bin/hyprism \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libGL ]}
 
     runHook postInstall
   '';
