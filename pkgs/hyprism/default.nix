@@ -21,7 +21,6 @@
   at-spi2-atk,
   gdk-pixbuf,
   makeDesktopItem,
-  copyDesktopItems,
   icu,
   openssl,
 }:
@@ -90,14 +89,12 @@ buildFHSEnv {
   pname = "hyprism";
   inherit (hyprism-unwrapped) version meta;
 
-  targetPkgs =
-    _:
-    [
-      hyprism-unwrapped
-      icu
-      openssl
-      libGL
-    ];
+  targetPkgs = _: [
+    hyprism-unwrapped
+    icu
+    openssl
+    libGL
+  ];
 
   runScript = "${hyprism-unwrapped}/lib/hyprism/HyPrism";
 
@@ -115,8 +112,9 @@ buildFHSEnv {
       ];
     in
     ''
-      ${lib.concatMapStringsSep "\n" (item: "cp -r ${item}/share $out/") desktopItems}
-      install -Dm644 ${./icon.png} $out/share/icons/hicolor/800x800/apps/hyprism.png
+      mkdir -p $out/share
+      ${lib.concatMapStringsSep "\n" (item: "cp -r --no-preserve=mode ${item}/share/* $out/share/") desktopItems}
+      install -Dm644 ${hyprism-unwrapped}/lib/hyprism/resources/bin/wwwroot/icon.png $out/share/icons/hicolor/800x800/apps/hyprism.png
     '';
 
   passthru.updateScript = nix-update-script { };
