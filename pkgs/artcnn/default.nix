@@ -7,7 +7,7 @@
 
 stdenvNoCC.mkDerivation {
   pname = "artcnn";
-  version = "0-unstable-2025-02-14";
+  version = "1.6.1-unstable-2026-03-01";
 
   src = fetchFromGitHub {
     owner = "Artoriuz";
