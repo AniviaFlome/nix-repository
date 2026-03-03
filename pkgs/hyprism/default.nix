@@ -14,10 +14,13 @@
   expat,
   libxkbcommon,
   mesa,
+  libGL,
   pango,
   cairo,
   at-spi2-atk,
   gdk-pixbuf,
+  makeDesktopItem,
+  copyDesktopItems,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -31,6 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     autoPatchelfHook
+    copyDesktopItems
   ];
 
   preferLocalBuild = true;
@@ -46,6 +50,7 @@ stdenv.mkDerivation (finalAttrs: {
     expat
     libxkbcommon
     mesa
+    libGL
     pango
     cairo
     at-spi2-atk
@@ -53,6 +58,17 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   autoPatchelfIgnoreMissingDeps = [ "liblttng-ust.so.0" ];
+
+  desktopItems = [
+    (makeDesktopItem {
+      name = "hyprism";
+      exec = "hyprism";
+      icon = "hyprism";
+      comment = "Hytale launcher with mod management";
+      desktopName = "HyPrism";
+      categories = [ "Game" ];
+    })
+  ];
 
   installPhase = ''
     runHook preInstall
