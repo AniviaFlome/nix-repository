@@ -1,5 +1,6 @@
-{ pkgs }:
-
+{ 
+  pkgs 
+}:
 with pkgs.lib;
 {
   makeReleaseUpdater =

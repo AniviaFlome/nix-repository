@@ -119,5 +119,5 @@ buildFHSEnv {
       install -Dm644 ${hyprism-unwrapped}/lib/hyprism/resources/bin/wwwroot/icon.png $out/share/icons/hicolor/800x800/apps/hyprism.png
     '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.unwrapped = hyprism-unwrapped;
 }
