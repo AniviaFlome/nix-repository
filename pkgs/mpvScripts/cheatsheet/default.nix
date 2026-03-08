@@ -21,12 +21,7 @@ buildLua {
     runHook postInstall
   '';
 
-  passthru = {
-    scriptName = "cheatsheet.lua";
-    updateScript = nix-update-script {
-      extraArgs = [ "--version=branch" ];
-    };
-  };
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = {
     description = "MPV cheatsheet script";

@@ -42,5 +42,6 @@ in
       subtitle-sync = callMpvScript ./pkgs/mpvScripts/subtitle-sync;
       whisper-subs = callMpvScript ./pkgs/mpvScripts/whisper-subs;
       cheatsheet = callMpvScript ./pkgs/mpvScripts/cheatsheet;
+      file-browser = callMpvScript ./pkgs/mpvScripts/file-browser;
     };
 }

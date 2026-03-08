@@ -41,6 +41,7 @@ My nix packages repository.
 | Package | Description |
 |---------|-------------|
 | [mpvScripts.cheatsheet](https://github.com/AniviaFlome/mpv-scripts/tree/main/cheatsheet) | MPV cheatsheet script showing keybindings in an interactive overlay |
+| [mpvScripts.file-browser](https://github.com/CogentRedTester/mpv-file-browser) | A simple no-dependency file browser for mpv player |
 | [mpvScripts.interSubs](https://github.com/oltodosel/interSubs) | Interactive subtitles for MPV |
 | [mpvScripts.subtitle-sync](https://github.com/AniviaFlome/mpv-scripts) | MPV script to mark subtitle start times and calculate the difference between them |
 | [mpvScripts.whisper-subs](https://github.com/GhostNaN/whisper-subs) | WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux |

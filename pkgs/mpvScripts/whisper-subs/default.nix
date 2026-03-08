@@ -28,12 +28,7 @@ buildLua {
     runHook postInstall
   '';
 
-  passthru = {
-    scriptName = "whispersubs.lua";
-    updateScript = nix-update-script {
-      extraArgs = [ "--version=branch" ];
-    };
-  };
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = {
     description = "WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux";

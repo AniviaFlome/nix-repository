@@ -43,12 +43,7 @@ buildLua {
     runHook postInstall
   '';
 
-  passthru = {
-    scriptName = "interSubs.lua";
-    updateScript = nix-update-script {
-      extraArgs = [ "--version=branch" ];
-    };
-  };
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = {
     description = "Interactive subtitles for mpv";

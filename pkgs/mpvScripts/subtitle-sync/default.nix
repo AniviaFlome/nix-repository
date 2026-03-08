@@ -22,12 +22,7 @@ buildLua {
     runHook postInstall
   '';
 
-  passthru = {
-    scriptName = "subtitle-sync.lua";
-    updateScript = nix-update-script {
-      extraArgs = [ "--version=branch" ];
-    };
-  };
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = {
     description = "MPV script to mark subtitle start times and calculate the difference between them";
