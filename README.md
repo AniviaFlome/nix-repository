@@ -11,6 +11,7 @@ My nix packages repository.
 | [anitr-cli](https://github.com/axrona/anitr-cli) | Terminalde Türkçe altyazılı anime arama ve izleme aracı |
 | [cake-wallet-bin](https://cakewallet.com/) | A non-custodial multi-currency wallet |
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info |
+| [helium](https://helium.computer/) | Private, fast, and honest web browser based on Chromium |
 | [hyprism](https://github.com/HyPrismTeam/HyPrism) | Hytale launcher with mod management, and more! |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager) | osu! Beatmap Manager |
 | [torrra](https://github.com/stabldev/torrra) | A Python CLI tool to search and download torrents |
