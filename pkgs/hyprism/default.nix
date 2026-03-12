@@ -39,7 +39,10 @@ buildFHSEnv {
       ${lib.concatMapStringsSep "\n" (
         item: "cp -r --no-preserve=mode ${item}/share/* $out/share/"
       ) desktopItems}
-      install -Dm644 ${hyprism-unwrapped}/lib/hyprism/resources/app/dist/icon.png $out/share/icons/hicolor/512x512/apps/hyprism.png
+      for size in 16 24 32 48 64 128 256 512; do
+        install -Dm644 ${hyprism-unwrapped}/lib/hyprism/resources/bin/wwwroot/icon.png \
+          $out/share/icons/hicolor/''${size}x''${size}/apps/hyprism.png
+      done
     '';
 
   passthru.unwrapped = hyprism-unwrapped;
