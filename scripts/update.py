@@ -28,6 +28,7 @@ def get_targets():
 
 def main():
     targets = get_targets()
+    failed = []
     for target in targets:
         name = target['name']
         extra_args = target.get('extraArgs', [])
@@ -41,7 +42,15 @@ def main():
             cmd.append('--use-update-script')
 
         cmd.extend(extra_args)
-        subprocess.run(cmd, check=True)
+
+        try:
+            subprocess.run(cmd, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f'Warning: Failed to update {name} (exit code {e.returncode})', file=sys.stderr)
+            failed.append(name)
+
+    if failed:
+        print(f'\nFailed to update: {", ".join(failed)}', file=sys.stderr)
 
 if __name__ == '__main__':
     main()
