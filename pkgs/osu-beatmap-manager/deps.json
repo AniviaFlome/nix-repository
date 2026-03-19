@@ -550,11 +550,6 @@
     "hash": "sha256-4U4/XNQAnddgQIHIJq3P2T80hN0oPdU2uCeghsDTWng="
   },
   {
-    "pname": "System.Resources.Extensions",
-    "version": "8.0.0",
-    "hash": "sha256-5dHZdRwq0tdQanaU5Hw3QISvqSijSGrTa2VdgwifGDI="
-  },
-  {
     "pname": "System.Resources.ResourceManager",
     "version": "4.0.1",
     "hash": "sha256-cZ2/3/fczLjEpn6j3xkgQV9ouOVjy4Kisgw5xWw9kSw="
