@@ -11,11 +11,11 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "proton-cachyos";
-  version = "10.0-20260319";
+  version = "10.0-20260320";
 
   src = fetchzip {
     url = "https://github.com/CachyOS/proton-cachyos/releases/download/cachyos-${finalAttrs.version}-slr/proton-cachyos-${finalAttrs.version}-slr-x86_64${marchLevel}.tar.xz";
-    hash = "sha256-GbO1Q4O2EqwdQdFso2SoZq49/8REXDo7eM6pma94lWg=";
+    hash = "sha256-vVAWphVI8fTSvfelVn4KNksrbPnbgtTLNZ3xSooP9rY=";
   };
 
   dontUnpack = true;
