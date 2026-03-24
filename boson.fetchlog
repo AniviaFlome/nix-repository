@@ -1,0 +1,83 @@
+this derivation will be built:
+  /nix/store/dzfi5vs4afrlrcbdzjlzbbmvg6739azh-source.drv
+these 18 paths will be fetched (5.49 MiB download, 22.94 MiB unpacked):
+  /nix/store/kd8dhq718czwzzx9gmzdyb7fi87z20yd-curl-8.18.0
+  /nix/store/qj6h0nl2w716pjwx7q1vayhd6h3a01da-curl-8.18.0-bin
+  /nix/store/vbzlwjmaacsrvs0qy4cmrbmphp37xh5p-curl-8.18.0-dev
+  /nix/store/3j24gy7bkgv9n5phdnbfaqwgzb7xlksp-curl-8.18.0-man
+  /nix/store/am7xrra55vgnc2dy98hlabggvnmscamg-glibc-locales-2.42-51
+  /nix/store/a3lphspaf0qsg3m33hcp89cpphdkp1n0-krb5-1.22.1
+  /nix/store/kga1i51gjq4zfjy0i8zbiga8cv0jynbj-krb5-1.22.1-dev
+  /nix/store/8vxbhw5pr1ham3ic32n2v9985944z4k7-krb5-1.22.1-lib
+  /nix/store/cwd41i7h2plm58d1s5z38p06jcasmci6-libssh2-1.11.1
+  /nix/store/hy2zsnzlsfz2r1lfh5vamjbvn94ipgrb-libssh2-1.11.1-dev
+  /nix/store/m1a6q6rclqyvsg8grsp3wr0nrmvc1h0v-mirrors-list
+  /nix/store/wfqh8lmmqwy3r9w4lyvm2df5m7lpfd1i-nghttp2-1.67.1
+  /nix/store/nsc5ws3p2h5yivd3i5gjh5kbi8wlrpgv-nghttp2-1.67.1-dev
+  /nix/store/nmd3mxa5xlx6lidvkzq6f8824mfb6vnl-nghttp2-1.67.1-lib
+  /nix/store/05wd2yjaa5v7i5nn8q2jb4bs442m7kb2-openssl-3.6.1
+  /nix/store/d2x69y1nxx8vxdh25zw94wi9j0ca1f31-openssl-3.6.1-bin
+  /nix/store/1l5jgzy26hkjz1y3apn1051asvn42sfn-openssl-3.6.1-dev
+  /nix/store/2x87m8sh0cm6qbh2myjppisxcb3j961m-unzip-6.0
+copying path '/nix/store/am7xrra55vgnc2dy98hlabggvnmscamg-glibc-locales-2.42-51' from 'https://cache.nixos.org'...
+copying path '/nix/store/m1a6q6rclqyvsg8grsp3wr0nrmvc1h0v-mirrors-list' from 'https://cache.nixos.org'...
+copying path '/nix/store/3j24gy7bkgv9n5phdnbfaqwgzb7xlksp-curl-8.18.0-man' from 'https://cache.nixos.org'...
+copying path '/nix/store/wfqh8lmmqwy3r9w4lyvm2df5m7lpfd1i-nghttp2-1.67.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/2x87m8sh0cm6qbh2myjppisxcb3j961m-unzip-6.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/nmd3mxa5xlx6lidvkzq6f8824mfb6vnl-nghttp2-1.67.1-lib' from 'https://cache.nixos.org'...
+copying path '/nix/store/05wd2yjaa5v7i5nn8q2jb4bs442m7kb2-openssl-3.6.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/nsc5ws3p2h5yivd3i5gjh5kbi8wlrpgv-nghttp2-1.67.1-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/8vxbhw5pr1ham3ic32n2v9985944z4k7-krb5-1.22.1-lib' from 'https://cache.nixos.org'...
+copying path '/nix/store/cwd41i7h2plm58d1s5z38p06jcasmci6-libssh2-1.11.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/d2x69y1nxx8vxdh25zw94wi9j0ca1f31-openssl-3.6.1-bin' from 'https://cache.nixos.org'...
+copying path '/nix/store/1l5jgzy26hkjz1y3apn1051asvn42sfn-openssl-3.6.1-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/kd8dhq718czwzzx9gmzdyb7fi87z20yd-curl-8.18.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/a3lphspaf0qsg3m33hcp89cpphdkp1n0-krb5-1.22.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/hy2zsnzlsfz2r1lfh5vamjbvn94ipgrb-libssh2-1.11.1-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/kga1i51gjq4zfjy0i8zbiga8cv0jynbj-krb5-1.22.1-dev' from 'https://cache.nixos.org'...
+copying path '/nix/store/qj6h0nl2w716pjwx7q1vayhd6h3a01da-curl-8.18.0-bin' from 'https://cache.nixos.org'...
+copying path '/nix/store/vbzlwjmaacsrvs0qy4cmrbmphp37xh5p-curl-8.18.0-dev' from 'https://cache.nixos.org'...
+building '/nix/store/dzfi5vs4afrlrcbdzjlzbbmvg6739azh-source.drv'...
+structuredAttrs is enabled
+
+trying https://github.com/FyraLabs/boson/releases/download/v/boson--x86_64-musl.tar.zst
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+curl: (22) The requested URL returned error: 404
+Warning: Problem (retrying all errors). Will retry in 1 second. 3 retries left.
+  0      0   0      0   0      0      0      0                              0
+curl: (22) The requested URL returned error: 404
+Warning: Problem (retrying all errors). Will retry in 2 seconds. 2 retries 
+Warning: left.
+  0      0   0      0   0      0      0      0                              0
+curl: (22) The requested URL returned error: 404
+Warning: Problem (retrying all errors). Will retry in 4 seconds. 1 retry left.
+  0      0   0      0   0      0      0      0                              0
+curl: (22) The requested URL returned error: 404
+error: cannot download source from any mirror
+error: Cannot build '/nix/store/dzfi5vs4afrlrcbdzjlzbbmvg6739azh-source.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/v9w7kypyfqxxdm55nm6i407rca74dpss-source
+       Last 18 log lines:
+       > structuredAttrs is enabled
+       >
+       > trying https://github.com/FyraLabs/boson/releases/download/v/boson--x86_64-musl.tar.zst
+       >   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+       >                                  Dload  Upload  Total   Spent   Left   Speed
+       >   0      0   0      0   0      0      0      0                              0
+       > curl: (22) The requested URL returned error: 404
+       > Warning: Problem (retrying all errors). Will retry in 1 second. 3 retries left.
+       >   0      0   0      0   0      0      0      0                              0
+       > curl: (22) The requested URL returned error: 404
+       > Warning: Problem (retrying all errors). Will retry in 2 seconds. 2 retries
+       > Warning: left.
+       >   0      0   0      0   0      0      0      0                              0
+       > curl: (22) The requested URL returned error: 404
+       > Warning: Problem (retrying all errors). Will retry in 4 seconds. 1 retry left.
+       >   0      0   0      0   0      0      0      0                              0
+       > curl: (22) The requested URL returned error: 404
+       > error: cannot download source from any mirror
+       For full logs, run:
+         nix log /nix/store/dzfi5vs4afrlrcbdzjlzbbmvg6739azh-source.drv
