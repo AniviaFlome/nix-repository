@@ -31,6 +31,7 @@ in
   artcnn = pkgs.callPackage ./pkgs/artcnn { };
   anime4k = pkgs.callPackage ./pkgs/anime4k { };
   fallin = pkgs.callPackage ./pkgs/fallin { };
+  crankshaft = pkgs.callPackage ./pkgs/crankshaft { };
 
   mpvScripts =
     let
