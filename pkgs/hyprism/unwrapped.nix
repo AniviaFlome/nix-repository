@@ -34,9 +34,10 @@ stdenv.mkDerivation (finalAttrs: {
     autoPatchelfHook
   ];
 
-  preferLocalBuild = true;
-
+  dontConfigure = true;
+  dontBuild = true;
   dontStrip = true;
+  preferLocalBuild = true;
 
   buildInputs = [
     gtk3

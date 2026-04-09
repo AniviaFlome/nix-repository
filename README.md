@@ -11,7 +11,6 @@ My nix packages repository.
 | [anitr-cli](https://github.com/axrona/anitr-cli) | Terminalde Türkçe altyazılı anime arama ve izleme aracı |
 | [cake-wallet-bin](https://github.com/cake-tech/cake_wallet) | A non-custodial multi-currency wallet |
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info |
-| [helium](https://github.com/imputnet/helium) | Private, fast, and honest web browser based on Chromium |
 | [handy](https://github.com/cjpais/Handy) | A free, open source, and extensible speech-to-text application that works completely offline. |
 | [hyprism](https://github.com/HyPrismTeam/HyPrism) | Hytale launcher with mod management, and more! |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager) | osu! Beatmap Manager |
@@ -34,7 +33,6 @@ My nix packages repository.
 
 | Package | Description |
 |---------|-------------|
-| [anime4k](https://github.com/bloc97/Anime4K) | A High-Quality Real Time Upscaler for Anime Video |
 | [artcnn](https://github.com/Artoriuz/ArtCNN) | ArtCNN shaders for MPV |
 | [fallin](https://github.com/renarchi/Re-SISR) | A collection of custom Super-Resolution models and restoration experiments. |
 

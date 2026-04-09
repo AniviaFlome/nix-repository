@@ -24,7 +24,11 @@ let
           extraArgs = [ ];
         }
     else
-      null;
+      # No updateScript — nix-update will auto-detect version and hash
+      {
+        useUpdateScript = false;
+        extraArgs = [ ];
+      };
 
   find =
     prefix: attrs:
@@ -33,15 +37,12 @@ let
         let
           info = getScriptInfo attrs;
         in
-        if info != null then
-          [
-            {
-              name = prefix;
-              inherit (info) useUpdateScript extraArgs;
-            }
-          ]
-        else
-          [ ]
+        [
+          {
+            name = prefix;
+            inherit (info) useUpdateScript extraArgs;
+          }
+        ]
       else
         builtins.concatLists (
           builtins.attrValues (

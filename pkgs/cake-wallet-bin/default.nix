@@ -23,6 +23,7 @@
   lz4,
   libgpg-error,
   makeWrapper,
+  nix-update-script,
 }:
 
 stdenv.mkDerivation rec {
@@ -40,6 +41,8 @@ stdenv.mkDerivation rec {
     makeWrapper
   ];
 
+  dontConfigure = true;
+  dontBuild = true;
   preferLocalBuild = true;
 
   buildInputs = [
@@ -76,6 +79,8 @@ stdenv.mkDerivation rec {
 
     runHook postInstall
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   desktopItems = [
     (makeDesktopItem {

@@ -2,6 +2,7 @@
   lib,
   stdenvNoCC,
   fetchurl,
+  nix-update-script,
 }:
 
 let
@@ -20,9 +21,9 @@ stdenvNoCC.mkDerivation {
   version = "latest";
 
   dontUnpack = true;
+  dontConfigure = true;
   dontBuild = true;
   preferLocalBuild = true;
-  allowSubstitutes = false;
 
   installPhase = ''
     runHook preInstall
@@ -32,6 +33,8 @@ stdenvNoCC.mkDerivation {
 
     runHook postInstall
   '';
+
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = {
     description = "A collection of custom Super-Resolution models and restoration experiments.";
