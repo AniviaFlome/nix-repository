@@ -6,7 +6,7 @@
 }:
 
 stdenvNoCC.mkDerivation {
-  pname = "artcnn-git";
+  pname = "artcnn";
   version = "1.6.2-unstable-2026-03-14";
 
   src = fetchFromGitHub {
