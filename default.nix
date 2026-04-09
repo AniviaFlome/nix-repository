@@ -32,6 +32,7 @@ in
   anime4k = pkgs.callPackage ./pkgs/anime4k { };
   fallin = pkgs.callPackage ./pkgs/fallin { };
   crankshaft = pkgs.callPackage ./pkgs/crankshaft { };
+  claw-code = pkgs.callPackage ./pkgs/claw-code { };
 
   mpvScripts =
     let

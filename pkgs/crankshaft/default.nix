@@ -23,7 +23,7 @@ appimageTools.wrapType2 {
 
   extraInstallCommands = ''
     install -Dm444 ${appimageContents}/crankshaft.desktop -t $out/share/applications/
-    cp -r ${appimageContents}/usr/share/icons $out/share/
+    install -Dm444 ${appimageContents}/usr/share/icons/hicolor/0x0/apps/crankshaft.png $out/share/icons/hicolor/512x512/apps/crankshaft.png
     substituteInPlace $out/share/applications/crankshaft.desktop \
       --replace-warn 'Exec=AppRun' 'Exec=crankshaft'
   '';
@@ -34,6 +34,7 @@ appimageTools.wrapType2 {
     description = "A fast, feature-rich krunker client written in typescript";
     homepage = "https://github.com/KraXen72/crankshaft";
     license = licenses.gpl3;
+    maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "crankshaft";
   };

@@ -6,7 +6,6 @@
   electron,
   xdg-utils,
   makeWrapper,
-  # Can be overridden to alter the display name in steam
   steamDisplayName ? "NativeCookie",
 }:
 
@@ -33,8 +32,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     mkdir -p $out
 
-    # Link all files except electron directory (which contains placeholders)
-    # and compatibilitytool.vdf (which we need to modify)
+    # Link all files except electron directory and compatibilitytool.vdf
     for f in $src/*; do
       name=$(basename "$f")
       if [[ "$name" != "electron" && "$name" != "compatibilitytool.vdf" ]]; then
