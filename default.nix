@@ -30,8 +30,8 @@ in
   hyprism = pkgs.callPackage ./pkgs/hyprism {
     hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
   };
-  artcnn-git = pkgs.callPackage ./pkgs/artcnn-git { };
-  fallin-bin = pkgs.callPackage ./pkgs/fallin-bin { };
+  artcnn = pkgs.callPackage ./pkgs/artcnn { };
+  fallin = pkgs.callPackage ./pkgs/fallin { };
   crankshaft-bin = pkgs.callPackage ./pkgs/crankshaft-bin { };
   motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
 
