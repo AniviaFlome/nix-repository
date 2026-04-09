@@ -6,7 +6,7 @@
 }:
 
 let
-  pname = "handy";
+  pname = "handy-bin";
   version = "0.8.2";
   name = "${pname}-${version}";
 

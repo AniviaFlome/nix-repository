@@ -4,16 +4,18 @@
   fetchzip,
   makeReleaseUpdater,
   # Can be overridden to alter the display name in steam
-  # This could be useful if multiple versions should be installed together
-  steamDisplayName ? "dwproton",
+  steamDisplayName ? "proton-cachyos",
+  # x86_64 microarchitecture level: "" (baseline), "_v2", "_v3", or "_v4"
+  # Most modern CPUs support v3 (Haswell+), but v2 is safer for older hardware
+  marchLevel ? "_v3",
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "dwproton";
-  version = "10.0-23";
+  pname = "proton-cachyos-bin";
+  version = "";
 
   src = fetchzip {
-    url = "https://dawn.wine/dawn-winery/dwproton/releases/download/dwproton-${finalAttrs.version}/dwproton-${finalAttrs.version}-x86_64.tar.xz";
-    hash = "sha256-XqXXxsTekvTUNsykpWu4vbZ4Mi+2tMR57zngaOt+3gQ=";
+    url = "https://github.com/CachyOS/proton-cachyos/releases/download/cachyos-${finalAttrs.version}-slr/proton-cachyos-${finalAttrs.version}-slr-x86_64${marchLevel}.tar.xz";
+    hash = "sha256-AzH1rZFqEH8sovZZfJykvsEmCedEZWigQFHWHl6/PdE=";
   };
 
   dontUnpack = true;
@@ -42,22 +44,22 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   preFixup = ''
     substituteInPlace "$steamcompattool/compatibilitytool.vdf" \
-      --replace-fail "dwproton-${finalAttrs.version}" "${steamDisplayName}"
+      --replace-fail "proton-cachyos-${finalAttrs.version}" "${steamDisplayName}"
   '';
 
   passthru.updateScript = makeReleaseUpdater {
-    name = "dwproton";
-    repo = "https://dawn.wine/api/v1/repos/dawn-winery/dwproton/releases";
-    versionFilter = "sed 's/^dwproton-//'";
+    name = "proton-cachyos-bin";
+    repo = "https://api.github.com/repos/CachyOS/proton-cachyos/releases";
+    versionFilter = "sed 's/^cachyos-//' | sed 's/-slr$//'";
   };
 
   meta = {
     description = ''
-      Proton builds with the latest Dawn Winery fixes for games like Genshin Impact, Zenless Zone Zero.
+      CachyOS optimized Proton with x86_64${marchLevel} optimizations, DXVK-Sarek, FSR4, NTSync support.
 
       (This is intended for use in the `programs.steam.extraCompatPackages` option only.)
     '';
-    homepage = "https://dawn.wine/dawn-winery/dwproton";
+    homepage = "https://github.com/CachyOS/proton-cachyos";
     license = lib.licenses.bsd3;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];

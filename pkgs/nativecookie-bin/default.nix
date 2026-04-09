@@ -10,7 +10,7 @@
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "nativecookie";
+  pname = "nativecookie-bin";
   version = "2.8";
 
   src = fetchzip {
@@ -60,7 +60,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru.updateScript = makeReleaseUpdater {
-    name = "nativecookie";
+    name = "nativecookie-bin";
     repo = "https://api.github.com/repos/Kesefon/NativeCookie/releases";
   };
 

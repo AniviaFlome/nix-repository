@@ -7,7 +7,7 @@
   nix-update-script,
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "torrra";
+  pname = "torrra-bin";
   version = "2.0.7";
 
   src = fetchurl {

@@ -11,7 +11,7 @@
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "boson";
+  pname = "boson-bin";
   version = "";
 
   src = fetchzip {
@@ -65,7 +65,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     electronPath = "${electron}/bin/electron";
 
     updateScript = makeReleaseUpdater {
-      name = "boson";
+      name = "boson-bin";
       repo = "https://api.github.com/repos/FyraLabs/boson/releases";
     };
   };

@@ -17,7 +17,7 @@ let
   };
 in
 stdenvNoCC.mkDerivation {
-  pname = "fallin";
+  pname = "fallin-bin";
   version = "latest";
 
   dontUnpack = true;

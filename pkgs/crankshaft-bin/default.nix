@@ -6,7 +6,7 @@
 }:
 
 let
-  pname = "crankshaft";
+  pname = "crankshaft-bin";
   version = "1.11.1";
 
   src = fetchurl {

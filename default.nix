@@ -10,27 +10,30 @@ in
   modules = import ./modules;
   overlays = import ./overlays;
 
-  dwproton = pkgs.callPackage ./pkgs/dwproton { inherit (lib) makeReleaseUpdater; };
-  proton-cachyos = pkgs.callPackage ./pkgs/proton-cachyos { inherit (lib) makeReleaseUpdater; };
+  dwproton-bin = pkgs.callPackage ./pkgs/dwproton-bin { inherit (lib) makeReleaseUpdater; };
+  proton-cachyos-bin = pkgs.callPackage ./pkgs/proton-cachyos-bin {
+    inherit (lib) makeReleaseUpdater;
+  };
   waha-tui = pkgs.callPackage ./pkgs/waha-tui { };
-  torrra = pkgs.callPackage ./pkgs/torrra { };
+  torrra-bin = pkgs.callPackage ./pkgs/torrra-bin { };
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
   turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
-  nativecookie = pkgs.callPackage ./pkgs/nativecookie { inherit (lib) makeReleaseUpdater; };
-  osu-beatmap-manager = pkgs.callPackage ./pkgs/osu-beatmap-manager { };
-  boson = pkgs.callPackage ./pkgs/boson { inherit (lib) makeReleaseUpdater; };
+  nativecookie-bin = pkgs.callPackage ./pkgs/nativecookie-bin { inherit (lib) makeReleaseUpdater; };
+  osu-beatmap-manager-git = pkgs.callPackage ./pkgs/osu-beatmap-manager-git { };
+  boson-bin = pkgs.callPackage ./pkgs/boson-bin { inherit (lib) makeReleaseUpdater; };
   cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
-  gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { inherit (lib) makeReleaseUpdater; };
+  gdk-proton-bin = pkgs.callPackage ./pkgs/gdk-proton-bin { inherit (lib) makeReleaseUpdater; };
   getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
-  handy = pkgs.callPackage ./pkgs/handy { };
+  handy-bin = pkgs.callPackage ./pkgs/handy-bin { };
   hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
   hyprism = pkgs.callPackage ./pkgs/hyprism {
     hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
   };
-  artcnn = pkgs.callPackage ./pkgs/artcnn { };
-  fallin = pkgs.callPackage ./pkgs/fallin { };
-  crankshaft = pkgs.callPackage ./pkgs/crankshaft { };
+  artcnn-git = pkgs.callPackage ./pkgs/artcnn-git { };
+  fallin-bin = pkgs.callPackage ./pkgs/fallin-bin { };
+  crankshaft-bin = pkgs.callPackage ./pkgs/crankshaft-bin { };
+  motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
 
   mpvScripts =
     let
