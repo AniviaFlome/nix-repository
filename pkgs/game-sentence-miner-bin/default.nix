@@ -1,8 +1,16 @@
 {
   lib,
+  stdenv,
   appimageTools,
   fetchurl,
   nix-update-script,
+  libsndfile,
+  portaudio,
+  ffmpeg,
+  libffi,
+  xz,
+  sqlite,
+  libwebp,
 }:
 
 let
@@ -16,6 +24,17 @@ let
 in
 appimageTools.wrapType2 {
   inherit pname version src;
+
+  extraPkgs = _: [
+    stdenv.cc.cc.lib
+    libsndfile
+    portaudio
+    ffmpeg
+    libffi
+    xz
+    sqlite
+    libwebp
+  ];
 
   passthru.updateScript = nix-update-script { };
 
