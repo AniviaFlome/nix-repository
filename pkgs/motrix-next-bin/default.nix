@@ -14,7 +14,7 @@ let
 
   src = fetchurl {
     url = "https://github.com/AnInsomniacy/motrix-next/releases/download/v${version}/MotrixNext_${version}_${arch}.AppImage";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-Scnd+kO7FyQk83Jq7JK/e2DRE8zRcW/WKB5IMTS7nro=";
   };
 in
 appimageTools.wrapType2 {
