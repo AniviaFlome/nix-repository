@@ -15,11 +15,11 @@
 
 let
   pname = "game-sentence-miner-bin";
-  version = "2026.4.4";
+  version = "2026.4.6";
 
   src = fetchurl {
     url = "https://github.com/bpwhelan/GameSentenceMiner/releases/download/v${version}/GameSentenceMiner-${version}.AppImage";
-    hash = "sha256-io8usbhaogp/cgcEiscEAmL+tTwuuMfj2gvPUIVuDtM=";
+    hash = "sha256-FLNlmvY5grxx3pgMbCf891qSCY2DWvaRLRU5fghP89o=";
   };
 in
 appimageTools.wrapType2 {
