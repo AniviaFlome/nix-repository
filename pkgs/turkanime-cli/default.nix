@@ -12,13 +12,13 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "turkanime-cli";
-  version = "9.0.2";
+  version = "9.2.0";
   pyproject = true;
 
   src = fetchPypi {
     pname = "turkanime_cli";
     inherit version;
-    hash = "sha256-/nLqbp6D+m7URKerNJb4f0OU0o41slMzpcJPgJQhqb4=";
+    hash = "sha256-b8hWE6OHz15JaDIW/WOy/+9swVLQGqvuiMy/w9YbPLU=";
   };
 
   postPatch = ''
