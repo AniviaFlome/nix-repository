@@ -3,6 +3,7 @@
   buildLua,
   fetchFromGitHub,
   python3,
+  procps,
   nix-update-script,
 }:
 let

@@ -10,9 +10,12 @@ My nix packages repository.
 |---------|-------------|
 | [anitr-cli](https://github.com/axrona/anitr-cli) | Terminalde Türkçe altyazılı anime arama ve izleme aracı |
 | [cake-wallet-bin](https://github.com/cake-tech/cake_wallet) | A non-custodial multi-currency wallet |
+| [crankshaft-bin](https://github.com/KraXen72/crankshaft) | A fast, feature-rich krunker client written in typescript |
+| [game-sentence-miner-bin](https://github.com/bpwhelan/GameSentenceMiner) | A tool for sentence mining Japanese from video games |
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info |
 | [handy](https://github.com/cjpais/Handy) | A free, open source, and extensible speech-to-text application that works completely offline. |
 | [hyprism](https://github.com/HyPrismTeam/HyPrism) | Hytale launcher with mod management, and more! |
+| [motrix-next-bin](https://github.com/AnInsomniacy/motrix-next) | A full-featured open-source download manager |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager) | osu! Beatmap Manager |
 | [torrra](https://github.com/stabldev/torrra) | A Python CLI tool to search and download torrents |
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici) | Türk Anime python kütüphanesi ve tarayıcısı |
@@ -33,6 +36,7 @@ My nix packages repository.
 
 | Package | Description |
 |---------|-------------|
+| [adore](https://github.com/renarchi/Re-SISR) | A collection of custom Super-Resolution models and restoration experiments. |
 | [artcnn](https://github.com/Artoriuz/ArtCNN) | ArtCNN shaders for MPV |
 | [fallin](https://github.com/renarchi/Re-SISR) | A collection of custom Super-Resolution models and restoration experiments. |
 

@@ -32,6 +32,7 @@ in
   };
   artcnn = pkgs.callPackage ./pkgs/artcnn { };
   fallin = pkgs.callPackage ./pkgs/fallin { };
+  adore = pkgs.callPackage ./pkgs/adore { };
   crankshaft-bin = pkgs.callPackage ./pkgs/crankshaft-bin { };
   motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
   game-sentence-miner-bin = pkgs.callPackage ./pkgs/game-sentence-miner-bin { };
