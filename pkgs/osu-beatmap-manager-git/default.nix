@@ -8,13 +8,13 @@
 
 buildDotnetModule rec {
   pname = "osu-beatmap-manager-git";
-  version = "0-unstable-2026-03-18";
+  version = "0-unstable-2026-04-18";
 
   src = fetchFromGitHub {
     owner = "AniviaFlome";
     repo = "osu-beatmap-manager";
-    rev = "c6981f927ba4ec22f0e7a0d0e8bf744f86980b9e";
-    hash = "sha256-tl7mXRwYrqIOOsOF1dORiSti23jY51mzEdmgaBYV4Aw=";
+    rev = "aaea48ecb3c6875e074389a8b0c059f6e9b7e0ae";
+    hash = "sha256-AUftnZ0/p9INaiKAlO8QBLZVjuI+haBOEJCpqOap9Ko=";
   };
 
   projectFile = "src/obm/obm.csproj";
