@@ -9,6 +9,7 @@ My nix packages repository.
 | Package | Description |
 |---------|-------------|
 | [anitr-cli](https://github.com/axrona/anitr-cli) | Terminalde Türkçe altyazılı anime arama ve izleme aracı |
+| [bloomeetunes-bin](https://github.com/HemantKArya/BloomeeTunes) | Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources. |
 | [cake-wallet-bin](https://github.com/cake-tech/cake_wallet) | A non-custodial multi-currency wallet |
 | [crankshaft-bin](https://github.com/KraXen72/crankshaft) | A fast, feature-rich krunker client written in typescript |
 | [game-sentence-miner-bin](https://github.com/bpwhelan/GameSentenceMiner) | A tool for sentence mining Japanese from video games |
