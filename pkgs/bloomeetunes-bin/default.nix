@@ -8,7 +8,7 @@
   libepoxy,
   wayland,
   libxkbcommon,
-  mpv,
+  mpv-unwrapped,
   copyDesktopItems,
   makeDesktopItem,
   libX11,
@@ -43,7 +43,7 @@ stdenv.mkDerivation {
     wayland
     libxkbcommon
     libepoxy
-    mpv
+    mpv-unwrapped
     libX11
     libXext
     libXcursor
@@ -87,7 +87,7 @@ stdenv.mkDerivation {
   '';
 
   postFixup = ''
-    patchelf --add-rpath ${lib.makeLibraryPath [ mpv ]}:$out/opt/${pname}/lib $out/opt/${pname}/bloomee
+    patchelf --add-rpath ${lib.makeLibraryPath [ mpv-unwrapped ]}:$out/opt/${pname}/lib $out/opt/${pname}/bloomee
   '';
 
   passthru.updateScript = nix-update-script { };
