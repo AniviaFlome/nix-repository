@@ -82,7 +82,7 @@ stdenv.mkDerivation {
     cp -r * $out/opt/${pname}/
 
     makeWrapper $out/opt/${pname}/bloomee $out/bin/bloomeetunes \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ mpv ]}
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ mpv ]}:$out/opt/${pname}/lib
 
     install -Dm644 $out/opt/${pname}/data/flutter_assets/assets/icons/bloomee_new_logo_c.png $out/share/icons/hicolor/512x512/apps/bloomeetunes.png
 
