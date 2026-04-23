@@ -11,6 +11,7 @@
   mpv-unwrapped,
   copyDesktopItems,
   makeDesktopItem,
+  makeWrapper,
   libX11,
   libXrandr,
   libXrender,
@@ -36,6 +37,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     autoPatchelfHook
     copyDesktopItems
+    makeWrapper
   ];
 
   buildInputs = [
@@ -79,15 +81,12 @@ stdenv.mkDerivation {
     mkdir -p $out/bin $out/opt/${pname}
     cp -r * $out/opt/${pname}/
 
-    ln -s $out/opt/${pname}/bloomee $out/bin/bloomeetunes
+    makeWrapper $out/opt/${pname}/bloomee $out/bin/bloomeetunes \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ mpv-unwrapped ]}:$out/opt/${pname}/lib
 
     install -Dm644 $out/opt/${pname}/data/flutter_assets/assets/icons/bloomee_new_logo_c.png $out/share/icons/hicolor/512x512/apps/bloomeetunes.png
 
     runHook postInstall
-  '';
-
-  postFixup = ''
-    patchelf --add-rpath ${lib.makeLibraryPath [ mpv-unwrapped ]}:$out/opt/${pname}/lib $out/opt/${pname}/bloomee
   '';
 
   passthru.updateScript = nix-update-script { };
