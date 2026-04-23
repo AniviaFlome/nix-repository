@@ -17,7 +17,6 @@
   libXinerama,
   libXcursor,
   libXext,
-  libXi,
   libXfixes,
 }:
 
@@ -61,8 +60,16 @@ stdenv.mkDerivation {
       icon = "bloomeetunes";
       desktopName = "BloomeeTunes";
       genericName = "Music Player";
-      categories = [ "AudioVideo" "Audio" "Player" ];
-      keywords = [ "music" "player" "audio" ];
+      categories = [
+        "AudioVideo"
+        "Audio"
+        "Player"
+      ];
+      keywords = [
+        "music"
+        "player"
+        "audio"
+      ];
     })
   ];
 
