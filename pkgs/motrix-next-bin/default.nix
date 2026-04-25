@@ -16,9 +16,17 @@ let
     url = "https://github.com/AnInsomniacy/motrix-next/releases/download/v${version}/MotrixNext_${version}_${arch}.AppImage";
     hash = "sha256-q8R/VPX4c+F+rLzQOF7n5pRORx5YwTyR4K/zC4lxRcU=";
   };
+
+  appimageContents = appimageTools.extractType2 { inherit pname version src; };
 in
 appimageTools.wrapType2 {
   inherit pname version src;
+
+  extraInstallCommands = ''
+    mv $out/bin/${pname} $out/bin/motrix-next
+    install -m 444 -D ${appimageContents}/MotrixNext.desktop -t $out/share/applications
+    cp -r ${appimageContents}/usr/share/icons $out/share
+  '';
 
   passthru.updateScript = nix-update-script { };
 
@@ -27,7 +35,7 @@ appimageTools.wrapType2 {
     homepage = "https://github.com/AnInsomniacy/motrix-next";
     license = licenses.mit;
     maintainers = [ ];
-    mainProgram = "motrix-next-bin";
+    mainProgram = "motrix-next";
     platforms = [
       "x86_64-linux"
       "aarch64-linux"
