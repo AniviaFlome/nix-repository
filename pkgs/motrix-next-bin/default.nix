@@ -8,13 +8,13 @@
 
 let
   pname = "motrix-next-bin";
-  version = "3.8.3";
+  version = "3.8.4";
 
   arch = if stdenv.hostPlatform.isAarch64 then "aarch64" else "amd64";
 
   src = fetchurl {
     url = "https://github.com/AnInsomniacy/motrix-next/releases/download/v${version}/MotrixNext_${version}_${arch}.AppImage";
-    hash = "sha256-IQF6Fnq2O8nj2regRcKcTspJ4HIEqV0vyCa4sNAUPws=";
+    hash = "sha256-q8R/VPX4c+F+rLzQOF7n5pRORx5YwTyR4K/zC4lxRcU=";
   };
 in
 appimageTools.wrapType2 {
