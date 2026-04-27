@@ -66,11 +66,11 @@ python3Packages.buildPythonApplication (finalAttrs: {
     scipy
     opencv4
     torchvision
+    torchsummary # comic_text_detector
     pyclipper
     shapely
-    # rapidocr
-    rapidocr
-    onnxruntime # RapidOCR + NDLOCR-Lite
+    # rapidocr excluded: crashes trying to download models into the read-only nix store
+    onnxruntime # NDLOCR-Lite
     # ndlocr-lite deps (submodule included via fetchSubmodules)
     lxml
     pyyaml
