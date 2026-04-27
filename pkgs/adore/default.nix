@@ -10,35 +10,67 @@ stdenvNoCC.mkDerivation {
   srcs = [
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16.onnx";
-      sha256 = "79e007eda5721cfa596945d5849320e2fad67f8596f9ac31ed06cc8e3ddaf57d";
+      hash = "sha256-eeAH7aVyHPpZaUXVhJMg4vrWf4WW+awx7QbMjj3a9X0=";
     })
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16_DML.onnx";
-      sha256 = "d7c7adaf1507958351da40834fb49f8b1a497da1cc80632c9ccec4e000c0c103";
+      hash = "sha256-18etrxUHlYNR2kCDT7SfixpJfaHMgGMsnM7E4ADAwQM=";
     })
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16_DML_onnxslim.onnx";
-      sha256 = "76dfc549ae8ff97130c839d699619418372066875fce43f777b77ad4d53920da";
+      hash = "sha256-dt/FSa6P+XEwyDnWmWGUGDcgZodfzkP3d7d61NU5INo=";
     })
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16_DML_op23.onnx";
-      sha256 = "d7c7adaf1507958351da40834fb49f8b1a497da1cc80632c9ccec4e000c0c103";
+      hash = "sha256-18etrxUHlYNR2kCDT7SfixpJfaHMgGMsnM7E4ADAwQM=";
     })
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16_DML_op23_onnxslim.onnx";
-      sha256 = "76dfc549ae8ff97130c839d699619418372066875fce43f777b77ad4d53920da";
+      hash = "sha256-dt/FSa6P+XEwyDnWmWGUGDcgZodfzkP3d7d61NU5INo=";
     })
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16_onnxslim.onnx";
-      sha256 = "f3e9dba612a83bfbb57a0fa7aaeb7e111e46753cab277eed2a942300d5ed15e0";
+      hash = "sha256-8+nbphKoO/u1eg+nqut+ER5GdTyrJ37tKpQjANXtFeA=";
     })
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16_op23.onnx";
-      sha256 = "ae76ac6efc513bd131f730754455994fbb91ddc1ef9d3bc31078bcd57bdf4181";
+      hash = "sha256-rnasbvxRO9Ex9zB1RFWZT7uR3cHvnTvDEHi81XvfQYE=";
     })
     (fetchurl {
       url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp16_op23_onnxslim.onnx";
-      sha256 = "6c3a6fdc4db49de207b34a69dd90c0792698eeb9c688070d94e4706ce58519d5";
+      hash = "sha256-bDpv3E20neIHs0pp3ZDAeSaY7rnGiAcNlORwbOWFGdU=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32.onnx";
+      hash = "sha256-UywbMHEcK7fqbd8SP9IZ34fKmBb7uN2qrVwfMR1bfEQ=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32_DML.onnx";
+      hash = "sha256-af9bJtm743JdP0EJiMfVRxmHd4fC2N+7zu2XRT3LwwM=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32_DML_onnxslim.onnx";
+      hash = "sha256-4d+sCk8P6xBli8EzvQMOoi/H/1pMEhn0seOG6TwnaNM=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32_DML_op23.onnx";
+      hash = "sha256-6idKfWuMvZdcMtRmV+5zj/jbc/ewTQ9skZCxS4n1uWE=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32_DML_op23_onnxslim.onnx";
+      hash = "sha256-N3VMdUHs/b8vH2uZ3NVihmq3nFEVpNOfZtJywexlA1Q=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32_onnxslim.onnx";
+      hash = "sha256-dW9C2sUMogw0d/1D0y2N0pXHRzztwSQpMKixUFTAQ1g=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32_op23.onnx";
+      hash = "sha256-ykcpCd0ni+1OrWt5aPuUZmxmyK2+eXu2JcD6txX689w=";
+    })
+    (fetchurl {
+      url = "https://github.com/renarchi/Re-SISR/releases/download/Adore/2x_Adore_renarchi_fp32_op23_onnxslim.onnx";
+      hash = "sha256-sGs4a4blyEIzG83F6usv2Q+QmlFH2Xg0jEwrLPBCxHQ=";
     })
   ];
 
