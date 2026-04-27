@@ -16,7 +16,8 @@ python3Packages.buildPythonApplication (finalAttrs: {
     owner = "AuroraWright";
     repo = "owocr";
     tag = finalAttrs.version;
-    hash = "sha256-bdkhuEH2OJspJ9gBmQQAzCimN1Iuj5D6Cdzr0dO0HEc=";
+    fetchSubmodules = true;
+    hash = "sha256-xAGIxA1W2pr3/mhpJZC2jv85CtsjbuU4XXljj4KYS+E=";
   };
 
   # we use pystray directly to avoid making a new package
@@ -56,12 +57,25 @@ python3Packages.buildPythonApplication (finalAttrs: {
     psutil
     pywinctl
     # extra optional libs for OCR engines
-    azure-ai-vision-imageanalysis
+    azure-ai-documentintelligence # Azure Document Intelligence
     easyocr
-    pyjson5 # Google Lens
+    protobuf # Google Lens + Chrome Screen AI
     google-cloud-vision
     manga-ocr
-    # rapidocr excluded: tries to download models into the nix store at runtime
+    # manga-ocr segmented deps
+    scipy
+    opencv4
+    torchvision
+    pyclipper
+    shapely
+    # rapidocr
+    rapidocr
+    onnxruntime # RapidOCR + NDLOCR-Lite
+    # ndlocr-lite deps (submodule included via fetchSubmodules)
+    lxml
+    pyyaml
+    networkx
+    tqdm
     requests # winRT OCR
     python3Packages.obsws-python
     python3Packages.pystray
