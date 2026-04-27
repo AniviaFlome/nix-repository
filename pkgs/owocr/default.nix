@@ -2,6 +2,7 @@
   lib,
   python3Packages,
   fetchFromGitHub,
+  nix-update-script,
   wrapGAppsHook4,
   gobject-introspection,
   gst_all_1,
@@ -60,7 +61,7 @@ python3Packages.buildPythonApplication (finalAttrs: {
     pyjson5 # Google Lens
     google-cloud-vision
     manga-ocr
-    rapidocr
+    # rapidocr excluded: tries to download models into the nix store at runtime
     requests # winRT OCR
     python3Packages.obsws-python
     python3Packages.pystray
@@ -73,6 +74,8 @@ python3Packages.buildPythonApplication (finalAttrs: {
   ];
 
   doCheck = false; # no tests
+
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Optical character recognition for Japanese text";
