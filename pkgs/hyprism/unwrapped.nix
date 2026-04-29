@@ -23,11 +23,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "hyprism-unwrapped";
-  version = "3.0.2";
+  version = "3.0.3";
 
   src = fetchurl {
     url = "https://github.com/hyprismteam/HyPrism/releases/download/v${finalAttrs.version}/HyPrism-linux-x64-${finalAttrs.version}.tar.xz";
-    hash = "sha256-GfvjL6Fqmta1DyJ1MjerxpM0z3IaMLQ8oFL7VBkXYPs=";
+    hash = "sha256-MGLEG3/68S9o1HNrqld8Ntbhmt6W0LlLp173QHSt9tA=";
   };
 
   nativeBuildInputs = [
