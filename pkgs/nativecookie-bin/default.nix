@@ -11,11 +11,11 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "nativecookie-bin";
-  version = "2.8";
+  version = "2.9";
 
   src = fetchzip {
     url = "https://github.com/Kesefon/NativeCookie/releases/download/v${finalAttrs.version}/nativecookie.tar.gz";
-    hash = "sha256-Jx/eobxIOfPu+3/CdG+WdtCXBwRhfoFamhLjlY6wR/E=";
+    hash = "sha256-rHr9LRj6AaCz1TQYbOXSxWriMKDsaEavFKaQZpqnZ3c=";
     stripRoot = false;
   };
 
