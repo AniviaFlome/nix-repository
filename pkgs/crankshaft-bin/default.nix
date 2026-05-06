@@ -7,11 +7,11 @@
 
 let
   pname = "crankshaft-bin";
-  version = "1.11.1";
+  version = "1.12.0";
 
   src = fetchurl {
     url = "https://github.com/KraXen72/crankshaft/releases/download/${version}/crankshaft-portable-linux-x86_64.AppImage";
-    sha256 = "10yjq2ps8f040vhdmvk348041fyg7g81189jkppc74i46f5kh4hk";
+    sha256 = "sha256-sLX0v1WOotHmnA4TPN8JKtE6xoQqqbKBai9/BYBmwgY=";
   };
 
   appimageContents = appimageTools.extractType2 {
