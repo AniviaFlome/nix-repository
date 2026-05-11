@@ -36,8 +36,8 @@ in
   crankshaft-bin = pkgs.callPackage ./pkgs/crankshaft-bin { };
   motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
   bloomeetunes-bin = pkgs.callPackage ./pkgs/bloomeetunes-bin { };
-  wizard101 = pkgs.callPackage ./pkgs/wizard101 { inherit (lib) makeMirrorUpdater; };
-  crystal-realms = pkgs.callPackage ./pkgs/crystal-realms { inherit (lib) makeMirrorUpdater; };
+  wizard101 = pkgs.callPackage ./pkgs/wizard101 { };
+  crystal-realms = pkgs.callPackage ./pkgs/crystal-realms { };
 
   mpvScripts =
     let

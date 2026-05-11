@@ -1,36 +1,28 @@
 {
   lib,
   stdenv,
-  fetchurl,
   autoPatchelfHook,
-  copyDesktopItems,
-  makeDesktopItem,
-  makeWrapper,
-  makeMirrorUpdater,
   libGL,
   libX11,
   libXcursor,
-  libXext,
-  libXi,
   libXrandr,
-  libXrender,
   libXinerama,
+  libXi,
+  libXext,
+  libXxf86vm,
   alsa-lib,
   libpulseaudio,
-  udev,
-  libudev-zero,
-  vulkan-loader,
-  wayland,
-  libxkbcommon,
+  makeWrapper,
+  copyDesktopItems,
+  makeDesktopItem,
 }:
 
 let
   pname = "crystal-realms";
-  version = "2026-05-11";
+  version = "unstable";
 
-  src = fetchurl {
-    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirror/crystal-realms-${version}.tar.gz";
-    hash = "sha256-12qyjalf9pqk0mba32q25aw66xsiclnrkp41sg49l7mlfxsw4shh";
+  src = builtins.fetchTarball {
+    url = "https://crystalrealmsgame.com/builds/builds/linux_x86/crystal_realms_linux_x86.tar.gz";
   };
 in
 stdenv.mkDerivation {
@@ -38,74 +30,61 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     autoPatchelfHook
-    copyDesktopItems
     makeWrapper
+    copyDesktopItems
   ];
 
   buildInputs = [
     libGL
     libX11
     libXcursor
-    libXext
-    libXi
     libXrandr
-    libXrender
     libXinerama
+    libXi
+    libXext
+    libXxf86vm
     alsa-lib
     libpulseaudio
-    udev
-    libudev-zero
-    vulkan-loader
-    wayland
-    libxkbcommon
+    stdenv.cc.cc.lib
   ];
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin $out/opt/${pname}
-    cp -r * $out/opt/${pname}/
-
-    binary=$(find $out/opt/${pname} -maxdepth 1 -type f -executable ! -name '*.sh' | head -1)
-    if [ -z "$binary" ]; then
-      binary=$(find $out/opt/${pname} -maxdepth 2 -type f -executable | head -1)
-    fi
-
-    makeWrapper "$binary" $out/bin/${pname} \
-      --prefix LD_LIBRARY_PATH : ${
-        lib.makeLibraryPath [
-          libGL
-          vulkan-loader
-          wayland
-          libxkbcommon
-        ]
-      }
-
-    runHook postInstall
-  '';
 
   desktopItems = [
     (makeDesktopItem {
       name = "crystal-realms";
       exec = "crystal-realms";
       desktopName = "Crystal Realms";
-      genericName = "Game";
-      categories = [ "Game" ];
+      genericName = "2D Sandbox MMO";
+      categories = [
+        "Game"
+        "ActionGame"
+      ];
     })
   ];
 
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/opt/${pname} $out/bin
+
+    cp crystal_realms $out/opt/${pname}/
+    cp -r assets $out/opt/${pname}/
+    cp -r credits $out/opt/${pname}/ || true
+
+    chmod +x $out/opt/${pname}/crystal_realms
+
+    makeWrapper $out/opt/${pname}/crystal_realms $out/bin/crystal-realms \
+      --chdir $out/opt/${pname}
+
+    runHook postInstall
+  '';
+
   meta = with lib; {
-    description = "Crystal Realms game";
+    description = "A 2D sandbox MMO where players build worlds, craft items, and explore together";
     homepage = "https://crystalrealmsgame.com";
     license = licenses.unfree;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "crystal-realms";
-  };
-
-  passthru.updateScript = makeMirrorUpdater {
-    name = "crystal-realms";
-    url = "https://crystalrealmsgame.com/builds/builds/linux_x86/crystal_realms_linux_x86.tar.gz";
-    ext = ".tar.gz";
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 }

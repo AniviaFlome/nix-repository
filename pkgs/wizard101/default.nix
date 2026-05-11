@@ -1,97 +1,107 @@
 {
   lib,
   stdenv,
-  fetchurl,
+  dpkg,
   autoPatchelfHook,
+  makeWrapper,
   copyDesktopItems,
   makeDesktopItem,
-  makeWrapper,
-  dpkg,
-  makeMirrorUpdater,
+  perl,
+  python3,
+  openssl,
+  glib,
+  gtk3,
+  gdk-pixbuf,
+  pango,
+  vte,
+  freetype,
+  fontconfig,
   libGL,
   libX11,
+  libXcomposite,
   libXcursor,
   libXext,
+  libXfixes,
   libXi,
+  libXinerama,
   libXrandr,
   libXrender,
-  libXinerama,
-  alsa-lib,
+  libxslt,
+  libxml2,
+  libpng,
   libpulseaudio,
-  udev,
+  alsa-lib,
+  cups,
+  dbus,
+  gnutls,
   vulkan-loader,
-  wayland,
-  libxkbcommon,
-  libudev-zero,
+  libXxf86vm,
+  gst_all_1,
+  udev,
+  sane-backends,
+  nssmdns,
 }:
 
 let
   pname = "wizard101";
-  version = "2026-05-11";
+  version = "1.26-1";
 
-  src = fetchurl {
-    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirror/wizard101-${version}.deb";
-    hash = "sha256-0hy8j2pahbb4jinv4cxpxlbzr777xmjrg1h93c05s0rw7ffwhyyw";
-  };
+  src =
+    builtins.fetchurl "https://www.wizard101.com/downloadGameChromebook";
 in
 stdenv.mkDerivation {
   inherit pname version src;
 
   nativeBuildInputs = [
-    autoPatchelfHook
-    copyDesktopItems
     dpkg
+    autoPatchelfHook
     makeWrapper
+    copyDesktopItems
   ];
 
+  # Match the runtime deps from the .deb's install-wizard101.sh
   buildInputs = [
+    perl
+    python3
+    openssl
+    glib
+    gtk3
+    gdk-pixbuf
+    pango
+    vte
+    freetype
+    fontconfig
     libGL
     libX11
+    libXcomposite
     libXcursor
     libXext
+    libXfixes
     libXi
+    libXinerama
     libXrandr
     libXrender
-    libXinerama
-    alsa-lib
+    libxslt
+    libxml2
+    libpng
     libpulseaudio
-    udev
-    libudev-zero
+    alsa-lib
+    cups
+    dbus
+    gnutls
     vulkan-loader
-    wayland
-    libxkbcommon
+    libXxf86vm
+    udev
+    sane-backends
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
+    gst_all_1.gst-plugins-ugly
+    stdenv.cc.cc.lib
   ];
 
   unpackPhase = ''
-    runHook preUnpack
-    dpkg-deb -x $src unpacked
-    runHook postUnpack
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin $out/opt/${pname}
-    cp -r unpacked/* $out/
-
-    binary=$(find $out -maxdepth 3 -type f -executable -name 'wizard*' | head -1)
-    if [ -z "$binary" ]; then
-      binary=$(find $out/opt -maxdepth 3 -type f -executable | head -1)
-    fi
-
-    if [ -n "$binary" ]; then
-      makeWrapper "$binary" $out/bin/${pname} \
-        --prefix LD_LIBRARY_PATH : ${
-          lib.makeLibraryPath [
-            libGL
-            vulkan-loader
-            wayland
-            libxkbcommon
-          ]
-        }
-    fi
-
-    runHook postInstall
+    dpkg-deb -x $src .
   '';
 
   desktopItems = [
@@ -99,23 +109,80 @@ stdenv.mkDerivation {
       name = "wizard101";
       exec = "wizard101";
       desktopName = "Wizard101";
-      genericName = "Game";
-      categories = [ "Game" ];
+      genericName = "Free-to-play MMO Wizards game";
+      icon = "wizard101";
+      categories = [
+        "Game"
+        "RolePlaying"
+      ];
     })
   ];
 
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/opt
+    cp -r opt/wizard101 $out/opt/wizard101
+
+    # Symlink wineserver
+    if [ -f "$out/opt/wizard101/bin/wineserver64" ]; then
+      ln -sf wineserver64 $out/opt/wizard101/bin/wineserver
+    elif [ -f "$out/opt/wizard101/bin/wineserver32" ]; then
+      ln -sf wineserver32 $out/opt/wizard101/bin/wineserver
+    fi
+
+    mkdir -p $out/bin
+    makeWrapper $out/opt/wizard101/bin/cxbottle $out/bin/wizard101 \
+      --set CX_ROOT $out/opt/wizard101 \
+      --prefix PATH : ${lib.makeBinPath [ perl python3 openssl ]} \
+      --prefix PERL5LIB : $out/opt/wizard101/lib/perl \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [
+        libGL
+        libX11
+        libXcomposite
+        libXcursor
+        libXext
+        libXfixes
+        libXi
+        libXinerama
+        libXrandr
+        libXrender
+        libxslt
+        libxml2
+        libpng
+        libpulseaudio
+        alsa-lib
+        cups
+        dbus
+        gnutls
+        vulkan-loader
+        libXxf86vm
+        freetype
+        fontconfig
+        udev
+        gst_all_1.gstreamer
+        gst_all_1.gst-plugins-base
+      ]}:$out/opt/wizard101/lib
+
+    # Install icon if available
+    if [ -f "$out/opt/wizard101/share/icons/256x256/crossover.png" ]; then
+      install -Dm644 "$out/opt/wizard101/share/icons/256x256/crossover.png" \
+        "$out/share/icons/hicolor/256x256/apps/wizard101.png"
+    fi
+
+    runHook postInstall
+  '';
+
+  # Don't strip Wine binaries
+  dontStrip = true;
+
   meta = with lib; {
-    description = "Wizard101 MMO game";
+    description = "Free-to-play MMO Wizards game (Chromebook/Linux version via CrossOver)";
     homepage = "https://www.wizard101.com";
     license = licenses.unfree;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "wizard101";
-  };
-
-  passthru.updateScript = makeMirrorUpdater {
-    name = "wizard101";
-    url = "https://www.wizard101.com/downloadGameChromebook";
-    ext = ".deb";
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 }
