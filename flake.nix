@@ -7,12 +7,6 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    wizard101-src = {
-      type = "file";
-      url = "https://www.wizard101.com/downloadGameChromebook";
-      flake = false;
-    };
   };
 
   outputs =

@@ -1,0 +1,26 @@
+name: Update AppImages
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-appimages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - name: Check and update mirrored builds
+        id: update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./scripts/update-appimages.sh
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        if: steps.update.outputs.updated == 'true'
+        with:
+          commit_message: "pkgs: update wizard101/crystal-realms mirrored builds"

@@ -2,6 +2,8 @@
   packages,
 }:
 let
+  skipPackages = [ "wizard101" "crystal-realms" ];
+
   # Determine if updateScript is a custom script or nix-update style
   getScriptInfo =
     pkg:
@@ -34,15 +36,18 @@ let
     prefix: attrs:
     if builtins.isAttrs attrs then
       if (attrs ? type && attrs.type == "derivation") then
-        let
-          info = getScriptInfo attrs;
-        in
-        [
-          {
-            name = prefix;
-            inherit (info) useUpdateScript extraArgs;
-          }
-        ]
+        if builtins.elem prefix skipPackages then
+          [ ]
+        else
+          let
+            info = getScriptInfo attrs;
+          in
+          [
+            {
+              name = prefix;
+              inherit (info) useUpdateScript extraArgs;
+            }
+          ]
       else
         builtins.concatLists (
           builtins.attrValues (
