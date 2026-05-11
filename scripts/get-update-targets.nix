@@ -2,12 +2,6 @@
   packages,
 }:
 let
-  skipPackages = [
-    "wizard101"
-    "crystal-realms"
-  ];
-
-  # Determine if updateScript is a custom script or nix-update style
   getScriptInfo =
     pkg:
     if pkg ? passthru && pkg.passthru ? updateScript then
@@ -15,7 +9,6 @@ let
         script = pkg.passthru.updateScript;
       in
       if builtins.isList script then
-        # nix-update style: list like ["/nix/store/.../nix-update", "--subpackage=bunDeps"]
         {
           useUpdateScript = false;
           extraArgs = builtins.filter (
@@ -23,13 +16,11 @@ let
           ) script;
         }
       else
-        # Custom script (writeScript, path, derivation) - use nix-update --use-update-script
         {
           useUpdateScript = true;
           extraArgs = [ ];
         }
     else
-      # No updateScript — nix-update will auto-detect version and hash
       {
         useUpdateScript = false;
         extraArgs = [ ];
@@ -39,18 +30,15 @@ let
     prefix: attrs:
     if builtins.isAttrs attrs then
       if (attrs ? type && attrs.type == "derivation") then
-        if builtins.elem prefix skipPackages then
-          [ ]
-        else
-          let
-            info = getScriptInfo attrs;
-          in
-          [
-            {
-              name = prefix;
-              inherit (info) useUpdateScript extraArgs;
-            }
-          ]
+        let
+          info = getScriptInfo attrs;
+        in
+        [
+          {
+            name = prefix;
+            inherit (info) useUpdateScript extraArgs;
+          }
+        ]
       else
         builtins.concatLists (
           builtins.attrValues (

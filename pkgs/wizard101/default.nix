@@ -7,6 +7,7 @@
   makeDesktopItem,
   makeWrapper,
   dpkg,
+  makeMirrorUpdater,
   libGL,
   libX11,
   libXcursor,
@@ -110,5 +111,11 @@ stdenv.mkDerivation {
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "wizard101";
+  };
+
+  passthru.updateScript = makeMirrorUpdater {
+    name = "wizard101";
+    url = "https://www.wizard101.com/downloadGameChromebook";
+    ext = ".deb";
   };
 }

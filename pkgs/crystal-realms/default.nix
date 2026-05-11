@@ -6,6 +6,7 @@
   copyDesktopItems,
   makeDesktopItem,
   makeWrapper,
+  makeMirrorUpdater,
   libGL,
   libX11,
   libXcursor,
@@ -100,5 +101,11 @@ stdenv.mkDerivation {
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "crystal-realms";
+  };
+
+  passthru.updateScript = makeMirrorUpdater {
+    name = "crystal-realms";
+    url = "https://crystalrealmsgame.com/builds/builds/linux_x86/crystal_realms_linux_x86.tar.gz";
+    ext = ".tar.gz";
   };
 }
