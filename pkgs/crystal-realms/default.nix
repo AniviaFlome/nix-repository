@@ -28,7 +28,7 @@ let
   version = "1970-01-01";
 
   src = fetchurl {
-    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirrored/crystal-realms-${version}.tar.gz";
+    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirror/crystal-realms-${version}.tar.gz";
     hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
   };
 in

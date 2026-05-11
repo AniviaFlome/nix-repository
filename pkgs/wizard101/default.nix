@@ -28,7 +28,7 @@ let
   version = "2026-05-11";
 
   src = fetchurl {
-    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirrored/wizard101-${version}";
+    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirror/wizard101-${version}";
     hash = "sha256-0hy8j2pahbb4jinv4cxpxlbzr777xmjrg1h93c05s0rw7ffwhyyw";
   };
 in

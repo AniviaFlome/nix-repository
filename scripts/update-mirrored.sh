@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="aniviaflome/nix-repository"
-RELEASE_TAG="mirrored"
+RELEASE_TAG="mirror"
 DATE=$(date +%Y-%m-%d)
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
