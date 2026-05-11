@@ -108,7 +108,7 @@ for entry in "${PACKAGES[@]}"; do
 
   if [ "$NEW_NIX_HASH" != "$OLD_HASH" ] || [ -z "$ASSET_EXISTS" ] || [ "$FORCE" = true ]; then
     echo "$name has changed! Updating..."
-    delete_old_assets "${name}-"
+    delete_old_assets "${name}"
     dated_name="${name}-${DATE}${ext}"
     gh release upload "$RELEASE_TAG" "${tmp_file}#${dated_name}" --repo "$REPO"
     update_nix_file "$nix_file" "$DATE" "$NEW_NIX_HASH"
