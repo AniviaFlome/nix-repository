@@ -25,11 +25,11 @@
 
 let
   pname = "crystal-realms";
-  version = "1970-01-01";
+  version = "2026-05-11";
 
   src = fetchurl {
     url = "https://github.com/aniviaflome/nix-repository/releases/download/mirror/crystal-realms-${version}.tar.gz";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-12qyjalf9pqk0mba32q25aw66xsiclnrkp41sg49l7mlfxsw4shh";
   };
 in
 stdenv.mkDerivation {
