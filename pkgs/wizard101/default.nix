@@ -6,11 +6,11 @@
 
 let
   pname = "wizard101";
-  version = "1970-01-01";
+  version = "2026-05-11";
 
   src = fetchurl {
     url = "https://github.com/aniviaflome/nix-repository/releases/download/appimages/wizard101-${version}.AppImage";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-0hy8j2pahbb4jinv4cxpxlbzr777xmjrg1h93c05s0rw7ffwhyyw";
   };
 
   appimageContents = appimageTools.extractType2 {
