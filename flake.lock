@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1775701739,
-        "narHash": "sha256-2FWWY1rr/+pGUJK1npcVcsWNEblzmKs6VxD3VEvwJSs=",
+        "lastModified": 1778458615,
+        "narHash": "sha256-cY07EsdhBJ8tFXPzDYevgqxRev9ZLxFonuq9wmq5kwg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0f7663154ff2fec150f9dbf5f81ec2785dc1e0db",
+        "rev": "c6e5ca3c836a5f4dd9af9f2c1fc1c38f0fac988a",
         "type": "github"
       },
       "original": {
@@ -19,7 +19,8 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
-        "treefmt-nix": "treefmt-nix"
+        "treefmt-nix": "treefmt-nix",
+        "wizard101-src": "wizard101-src"
       }
     },
     "treefmt-nix": {
@@ -40,6 +41,18 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "type": "github"
+      }
+    },
+    "wizard101-src": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-q3dGfzvJ0EqCwr7wI/h4p0y3z/Vl2EXCdhs+8jxeOgw=",
+        "type": "file",
+        "url": "https://www.wizard101.com/downloadGameChromebook"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://www.wizard101.com/downloadGameChromebook"
       }
     }
   },

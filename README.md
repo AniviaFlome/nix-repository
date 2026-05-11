@@ -12,7 +12,6 @@ My nix packages repository.
 | [bloomeetunes-bin](https://github.com/HemantKArya/BloomeeTunes)            | Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources. |
 | [cake-wallet-bin](https://github.com/cake-tech/cake_wallet)                | A non-custodial multi-currency wallet                                                           |
 | [crankshaft-bin](https://github.com/KraXen72/crankshaft)                   | A fast, feature-rich krunker client written in typescript                                       |
-| [crystal-realms](https://crystalrealmsgame.com)                            | A 2D sandbox MMO                                                                                |
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info                      |
 | [handy](https://github.com/cjpais/Handy)                                   | A free, open source, and extensible speech-to-text application that works completely offline.   |
 | [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                  |
@@ -22,7 +21,6 @@ My nix packages repository.
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici)           | Türk Anime python kütüphanesi ve tarayıcısı                                                     |
 | [turkanime-gui](https://github.com/barkeser2002/turkanime-gui)             | Türkanime video oynatıcı ve indirici (GUI)                                                      |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui)                      | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API)                                     |
-| [wizard101](https://www.wizard101.com)                                     | Free-to-play MMO Wizards game                                                                   |
 
 ### Steam Compatibility Tools
 

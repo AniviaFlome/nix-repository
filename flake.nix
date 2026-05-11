@@ -7,6 +7,12 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wizard101-src = {
+      type = "file";
+      url = "https://www.wizard101.com/downloadGameChromebook";
+      flake = false;
+    };
   };
 
   outputs =
@@ -14,7 +20,8 @@
       self,
       nixpkgs,
       treefmt-nix,
-    }:
+      ...
+    }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
       treefmtEval = system: treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt.nix;
@@ -30,6 +37,7 @@
         system:
         import ./default.nix {
           pkgs = import nixpkgs { inherit system; };
+          inherit inputs;
         }
       );
 
