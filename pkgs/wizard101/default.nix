@@ -6,6 +6,7 @@
   copyDesktopItems,
   makeDesktopItem,
   makeWrapper,
+  dpkg,
   libGL,
   libX11,
   libXcursor,
@@ -28,7 +29,7 @@ let
   version = "2026-05-11";
 
   src = fetchurl {
-    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirror/wizard101-${version}";
+    url = "https://github.com/aniviaflome/nix-repository/releases/download/mirror/wizard101-${version}.deb";
     hash = "sha256-0hy8j2pahbb4jinv4cxpxlbzr777xmjrg1h93c05s0rw7ffwhyyw";
   };
 in
@@ -38,6 +39,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     autoPatchelfHook
     copyDesktopItems
+    dpkg
     makeWrapper
   ];
 
@@ -59,24 +61,34 @@ stdenv.mkDerivation {
     libxkbcommon
   ];
 
-  unpackPhase = "true";
+  unpackPhase = ''
+    runHook preUnpack
+    dpkg-deb -x $src unpacked
+    runHook postUnpack
+  '';
 
   installPhase = ''
     runHook preInstall
 
     mkdir -p $out/bin $out/opt/${pname}
-    cp $src $out/opt/${pname}/wizard101
-    chmod +x $out/opt/${pname}/wizard101
+    cp -r unpacked/* $out/
 
-    makeWrapper $out/opt/${pname}/wizard101 $out/bin/${pname} \
-      --prefix LD_LIBRARY_PATH : ${
-        lib.makeLibraryPath [
-          libGL
-          vulkan-loader
-          wayland
-          libxkbcommon
-        ]
-      }
+    binary=$(find $out -maxdepth 3 -type f -executable -name 'wizard*' | head -1)
+    if [ -z "$binary" ]; then
+      binary=$(find $out/opt -maxdepth 3 -type f -executable | head -1)
+    fi
+
+    if [ -n "$binary" ]; then
+      makeWrapper "$binary" $out/bin/${pname} \
+        --prefix LD_LIBRARY_PATH : ${
+          lib.makeLibraryPath [
+            libGL
+            vulkan-loader
+            wayland
+            libxkbcommon
+          ]
+        }
+    fi
 
     runHook postInstall
   '';

@@ -13,8 +13,8 @@ if [[ "${1:-}" == "--force" ]]; then
 fi
 
 PACKAGES=(
-  "wizard101|https://www.wizard101.com/downloadGameChromebook|pkgs/wizard101/default.nix"
-  "crystal-realms|https://crystalrealmsgame.com/builds/builds/linux_x86/crystal_realms_linux_x86.tar.gz|pkgs/crystal-realms/default.nix"
+  "wizard101|https://www.wizard101.com/downloadGameChromebook|pkgs/wizard101/default.nix|.deb"
+  "crystal-realms|https://crystalrealmsgame.com/builds/builds/linux_x86/crystal_realms_linux_x86.tar.gz|pkgs/crystal-realms/default.nix|.tar.gz"
 )
 
 TMPDIR=$(mktemp -d)
@@ -82,7 +82,7 @@ ensure_release
 UPDATED=false
 
 for entry in "${PACKAGES[@]}"; do
-  IFS='|' read -r name url nix_path <<<"$entry"
+  IFS='|' read -r name url nix_path ext <<<"$entry"
   nix_file="$REPO_ROOT/$nix_path"
   tmp_file="$TMPDIR/${name}"
 
@@ -94,8 +94,10 @@ for entry in "${PACKAGES[@]}"; do
   fi
   echo "Downloaded $(stat -c%s "$tmp_file") bytes"
 
-  ext=$(detect_ext "$tmp_file")
-  echo "Detected type: ${ext:-plain binary}"
+  if [ -z "$ext" ]; then
+    ext=$(detect_ext "$tmp_file")
+  fi
+  echo "Extension: ${ext:-none}"
 
   NEW_NIX_HASH="sha256-$(compute_nix_hash "$tmp_file")"
   OLD_HASH=$(fetch_current_hash "$nix_file")
