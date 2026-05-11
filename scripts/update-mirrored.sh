@@ -42,18 +42,6 @@ ensure_release() {
   fi
 }
 
-delete_old_assets() {
-  local prefix="$1"
-  local assets
-  assets=$(gh release view "$RELEASE_TAG" --repo "$REPO" --json assets --jq '.assets[].name' 2>/dev/null || true)
-  for asset in $assets; do
-    if [[ $asset == ${prefix}* ]]; then
-      echo "  Deleting old asset: $asset"
-      gh release delete-asset "$RELEASE_TAG" "$asset" --repo "$REPO" --yes
-    fi
-  done
-}
-
 compute_nix_hash() {
   local file="$1"
   local hex
@@ -108,7 +96,6 @@ for entry in "${PACKAGES[@]}"; do
 
   if [ "$NEW_NIX_HASH" != "$OLD_HASH" ] || [ -z "$ASSET_EXISTS" ] || [ "$FORCE" = true ]; then
     echo "$name has changed! Updating..."
-    delete_old_assets "${name}"
     dated_name="${name}-${DATE}${ext}"
     gh release upload "$RELEASE_TAG" "${tmp_file}#${dated_name}" --repo "$REPO"
     update_nix_file "$nix_file" "$DATE" "$NEW_NIX_HASH"
