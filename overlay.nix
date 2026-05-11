@@ -7,7 +7,7 @@ let
   shouldMerge = n: prev ? ${n} && builtins.isAttrs prev.${n} && builtins.isAttrs nurAttrs.${n};
 in
 builtins.mapAttrs (n: v: if shouldMerge n then prev.${n} // v else v) (
-  builtins.removeAttrs nurAttrs [
+  removeAttrs nurAttrs [
     "lib"
     "overlays"
     "modules"

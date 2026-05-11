@@ -1,12 +1,12 @@
-name: Update AppImages
+name: Update Mirrored Builds
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
-  update-appimages:
+  update-mirrored:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -19,8 +19,8 @@ jobs:
         id: update
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash ./scripts/update-appimages.sh
+        run: bash ./scripts/update-mirrored.sh
       - uses: stefanzweifel/git-auto-commit-action@v7
         if: steps.update.outputs.updated == 'true'
         with:
-          commit_message: "pkgs: update wizard101/crystal-realms mirrored builds"
+          commit_message: "pkgs: update mirrored builds"

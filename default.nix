@@ -1,6 +1,5 @@
 {
   pkgs ? import <nixpkgs> { },
-  inputs ? { },
 }:
 
 let
