@@ -19,8 +19,7 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
-        "treefmt-nix": "treefmt-nix",
-        "wizard101-src": "wizard101-src"
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "treefmt-nix": {
@@ -41,18 +40,6 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "type": "github"
-      }
-    },
-    "wizard101-src": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-q3dGfzvJ0EqCwr7wI/h4p0y3z/Vl2EXCdhs+8jxeOgw=",
-        "type": "file",
-        "url": "https://www.wizard101.com/downloadGameChromebook"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://www.wizard101.com/downloadGameChromebook"
       }
     }
   },

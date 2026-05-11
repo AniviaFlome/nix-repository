@@ -2,7 +2,10 @@
   packages,
 }:
 let
-  skipPackages = [ "wizard101" "crystal-realms" ];
+  skipPackages = [
+    "wizard101"
+    "crystal-realms"
+  ];
 
   # Determine if updateScript is a custom script or nix-update style
   getScriptInfo =

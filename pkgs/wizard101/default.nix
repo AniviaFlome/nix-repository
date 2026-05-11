@@ -69,7 +69,14 @@ stdenv.mkDerivation {
     chmod +x $out/opt/${pname}/wizard101
 
     makeWrapper $out/opt/${pname}/wizard101 $out/bin/${pname} \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libGL vulkan-loader wayland libxkbcommon ]}
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath [
+          libGL
+          vulkan-loader
+          wayland
+          libxkbcommon
+        ]
+      }
 
     runHook postInstall
   '';

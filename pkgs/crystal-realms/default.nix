@@ -71,7 +71,14 @@ stdenv.mkDerivation {
     fi
 
     makeWrapper "$binary" $out/bin/${pname} \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ libGL vulkan-loader wayland libxkbcommon ]}
+      --prefix LD_LIBRARY_PATH : ${
+        lib.makeLibraryPath [
+          libGL
+          vulkan-loader
+          wayland
+          libxkbcommon
+        ]
+      }
 
     runHook postInstall
   '';
