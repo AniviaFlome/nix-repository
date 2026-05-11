@@ -6,6 +6,11 @@ RELEASE_TAG="mirror"
 DATE=$(date +%Y-%m-%d)
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+FORCE=false
+
+if [[ "${1:-}" == "--force" ]]; then
+  FORCE=true
+fi
 
 PACKAGES=(
   "wizard101|https://www.wizard101.com/downloadGameChromebook|pkgs/wizard101/default.nix"
@@ -83,7 +88,7 @@ for entry in "${PACKAGES[@]}"; do
 
   echo "=== Checking $name ==="
   echo "Downloading from $url ..."
-  if ! curl -fSL --max-time 120 -o "$tmp_file" "$url"; then
+  if ! curl -kfSL --max-time 120 -o "$tmp_file" "$url"; then
     echo "ERROR: Failed to download $name, skipping."
     continue
   fi
@@ -97,7 +102,9 @@ for entry in "${PACKAGES[@]}"; do
   echo "Old hash: $OLD_HASH"
   echo "New hash: $NEW_NIX_HASH"
 
-  if [ "$NEW_NIX_HASH" != "$OLD_HASH" ]; then
+  ASSET_EXISTS=$(gh release view "$RELEASE_TAG" --repo "$REPO" --json assets --jq ".assets[].name | select(startswith(\"${name}-\"))" 2>/dev/null || true)
+
+  if [ "$NEW_NIX_HASH" != "$OLD_HASH" ] || [ -z "$ASSET_EXISTS" ] || [ "$FORCE" = true ]; then
     echo "$name has changed! Updating..."
     delete_old_assets "${name}-"
     dated_name="${name}-${DATE}${ext}"
