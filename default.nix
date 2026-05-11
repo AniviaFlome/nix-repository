@@ -36,8 +36,6 @@ in
   crankshaft-bin = pkgs.callPackage ./pkgs/crankshaft-bin { };
   motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
   bloomeetunes-bin = pkgs.callPackage ./pkgs/bloomeetunes-bin { };
-  wizard101 = pkgs.callPackage ./pkgs/wizard101 { };
-  crystal-realms = pkgs.callPackage ./pkgs/crystal-realms { };
 
   mpvScripts =
     let
