@@ -7,13 +7,13 @@
 
 stdenvNoCC.mkDerivation {
   pname = "artcnn";
-  version = "0-unstable-2026-03-14";
+  version = "0-unstable-2026-05-12";
 
   src = fetchFromGitHub {
     owner = "Artoriuz";
     repo = "ArtCNN";
-    rev = "f606e1f0ba7e6f0ab55049f33dac4d854819b00b";
-    hash = "sha256-/cNJj7ah2Jux8pWGngPEjdhKRG1JsPBmb6EsJnQCCAM=";
+    rev = "e13ac6c7c6207e04306047f4f74c8a0bb284b670";
+    hash = "sha256-KwJzM13LWkwfNs44kzDDS3uXHj2PgU4uttutUfmGHrE=";
   };
 
   dontConfigure = true;
