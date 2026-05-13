@@ -36,6 +36,7 @@ in
   crankshaft-bin = pkgs.callPackage ./pkgs/crankshaft-bin { };
   motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
   bloomeetunes-bin = pkgs.callPackage ./pkgs/bloomeetunes-bin { };
+  kopuz-bin = pkgs.callPackage ./pkgs/kopuz-bin { };
 
   mpvScripts =
     let
