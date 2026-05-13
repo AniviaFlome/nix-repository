@@ -1,10 +1,34 @@
 {
   lib,
+  stdenv,
   fetchurl,
   appimageTools,
+  autoPatchelfHook,
+  nix-update-script,
+
   webkitgtk_4_1,
   gtk3,
-  nix-update-script,
+  glib,
+  libsoup_3,
+  openssl,
+  cairo,
+  pango,
+  gdk-pixbuf,
+  harfbuzz,
+  atk,
+  at-spi2-atk,
+  libX11,
+  libXfixes,
+  libXtst,
+  libXinerama,
+  libxkbcommon,
+  wayland,
+  libepoxy,
+  xdotool,
+  alsa-lib,
+  librsvg,
+  dbus,
+  gst_all_1,
 }:
 
 let
@@ -18,19 +42,60 @@ let
 
   appimageContents = appimageTools.extractType2 { inherit pname version src; };
 in
-appimageTools.wrapType2 {
-  inherit pname version src;
+stdenv.mkDerivation {
+  inherit pname version;
 
-  extraPkgs = _pkgs: [
-    webkitgtk_4_1
-    gtk3
+  src = appimageContents;
+
+  dontUnpack = true;
+
+  nativeBuildInputs = [
+    autoPatchelfHook
   ];
 
-  extraInstallCommands = ''
-    install -m 444 -D ${appimageContents}/kopuz.desktop $out/share/applications/kopuz.desktop
-    cp -r ${appimageContents}/usr/share/icons $out/share
-    substituteInPlace $out/share/applications/kopuz.desktop \
-      --replace-warn 'Exec=kopuz' "Exec=$out/bin/${pname}"
+  buildInputs = [
+    webkitgtk_4_1
+    gtk3
+    glib
+    libsoup_3
+    openssl
+    cairo
+    pango
+    gdk-pixbuf
+    harfbuzz
+    atk
+    at-spi2-atk
+    libX11
+    libXfixes
+    libXtst
+    libXinerama
+    libxkbcommon
+    wayland
+    libepoxy
+    xdotool
+    alsa-lib
+    librsvg
+    dbus
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
+    gst_all_1.gst-plugins-bad
+  ];
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/bin
+    install -m755 ${appimageContents}/usr/bin/kopuz $out/bin/kopuz
+
+    install -Dm644 ${appimageContents}/usr/share/applications/kopuz.desktop $out/share/applications/kopuz.desktop
+
+    for size in 256 827; do
+      install -Dm644 ${appimageContents}/usr/share/icons/hicolor/''${size}x''${size}/apps/kopuz.png \
+        $out/share/icons/hicolor/''${size}x''${size}/apps/kopuz.png
+    done
+
+    runHook postInstall
   '';
 
   passthru.updateScript = nix-update-script { };
@@ -40,7 +105,7 @@ appimageTools.wrapType2 {
     homepage = "https://github.com/Kopuz-org/kopuz";
     license = licenses.mit;
     maintainers = [ ];
-    mainProgram = "kopuz-bin";
+    mainProgram = "kopuz";
     platforms = [ "x86_64-linux" ];
     sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
