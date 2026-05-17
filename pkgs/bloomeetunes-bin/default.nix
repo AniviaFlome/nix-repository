@@ -23,14 +23,14 @@
 
 let
   pname = "bloomeetunes-bin";
-  version = "3.0.2+200";
+  version = "3.0.3+201";
 in
 stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchzip {
     url = "https://github.com/HemantKArya/BloomeeTunes/releases/download/v${version}/bloomee_tunes_linux_x64_v${version}.tar.gz";
-    hash = "sha256-YOg+UgmTAfJzzD8BgV2Szwo5chC6M4p1ALV3ZxFcGr4=";
+    hash = "sha256-2UTdy8ifU/mKK4b15eQ3SYfHfBV4i+++0vUUxJTjMMw=";
     stripRoot = false;
   };
 
