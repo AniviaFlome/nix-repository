@@ -20,6 +20,7 @@ My nix packages repository.
 | [torrra](https://github.com/stabldev/torrra)                               | A Python CLI tool to search and download torrents                                               |
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici)           | Türk Anime python kütüphanesi ve tarayıcısı                                                     |
 | [turkanime-gui](https://github.com/barkeser2002/turkanime-gui)             | Türkanime video oynatıcı ve indirici (GUI)                                                      |
+| [sldl-tui](https://github.com/AniviaFlome/sldl-tui)                       | Simple TUI wrapper for sldl                                                                      |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui)                      | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API)                                     |
 
 ### Steam Compatibility Tools
