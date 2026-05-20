@@ -7,13 +7,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "sldl-tui";
-  version = "0-unstable-2026-05-17";
+  version = "0-unstable-2026-05-19";
 
   src = fetchFromGitHub {
     owner = "AniviaFlome";
     repo = "sldl-tui";
-    rev = "8b8ca52b8742833dfdd6661ad777ff527a56e314";
-    hash = "sha256-jZu/pN/xoJrgfbuWqe0y6NbLbR4TVHef6kuEri6Tsgs=";
+    rev = "24085ba7fb06c56d0b99d993a138962b45ef25a0";
+    hash = "sha256-rCm2Ftao1UrBYYZLAlT1PfNCrIvxJ9xygnhIm+AiEfc=";
   };
 
   cargoHash = "sha256-8uOWaA6RK0Nsb3qOx6KBhUnRHI2Z1oQy+AIzkWDAVz0=";
