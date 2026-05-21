@@ -22,7 +22,10 @@ buildLua {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+  passthru = {
+    scriptName = "file-browser";
+    updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+  };
 
   meta = {
     description = "A simple no-dependency file browser for mpv player";
