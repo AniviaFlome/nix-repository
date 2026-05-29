@@ -10,7 +10,6 @@ in
   modules = import ./modules;
   overlays = import ./overlays;
 
-  dwproton-bin = pkgs.callPackage ./pkgs/dwproton-bin { inherit (lib) makeReleaseUpdater; };
   proton-cachyos-bin = pkgs.callPackage ./pkgs/proton-cachyos-bin {
     inherit (lib) makeReleaseUpdater;
   };
