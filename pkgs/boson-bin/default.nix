@@ -2,17 +2,16 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  makeReleaseUpdater,
   electron,
   zstd,
-  # Can be overridden to alter the display name in steam
   steamDisplayName ? "Boson",
   makeWrapper,
+  nix-update,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "boson-bin";
-  version = "";
+  version = "0";
 
   src = fetchzip {
     url = "https://github.com/FyraLabs/boson/releases/download/v${finalAttrs.version}/boson-${finalAttrs.version}-x86_64-musl.tar.zst";
@@ -64,10 +63,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # Usage: ELECTRON_PATH=${boson.electronPath} %command%
     electronPath = "${electron}/bin/electron";
 
-    updateScript = makeReleaseUpdater {
-      name = "boson-bin";
-      repo = "https://api.github.com/repos/FyraLabs/boson/releases";
-    };
+    updateScript = [ nix-update ];
   };
 
   meta = {

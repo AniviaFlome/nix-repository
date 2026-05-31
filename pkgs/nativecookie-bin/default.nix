@@ -2,10 +2,10 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  makeReleaseUpdater,
   electron,
   xdg-utils,
   makeWrapper,
+  nix-update,
   steamDisplayName ? "NativeCookie",
 }:
 
@@ -59,10 +59,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]}
   '';
 
-  passthru.updateScript = makeReleaseUpdater {
-    name = "nativecookie-bin";
-    repo = "https://api.github.com/repos/Kesefon/NativeCookie/releases";
-  };
+  passthru.updateScript = [ nix-update ];
 
   meta = {
     description = ''

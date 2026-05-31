@@ -18,9 +18,9 @@ in
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
   turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
-  nativecookie-bin = pkgs.callPackage ./pkgs/nativecookie-bin { inherit (lib) makeReleaseUpdater; };
+  nativecookie-bin = pkgs.callPackage ./pkgs/nativecookie-bin { };
   osu-beatmap-manager-git = pkgs.callPackage ./pkgs/osu-beatmap-manager-git { };
-  boson-bin = pkgs.callPackage ./pkgs/boson-bin { inherit (lib) makeReleaseUpdater; };
+  boson-bin = pkgs.callPackage ./pkgs/boson-bin { };
   cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
   gdk-proton-bin = pkgs.callPackage ./pkgs/gdk-proton-bin { inherit (lib) makeReleaseUpdater; };
   getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
