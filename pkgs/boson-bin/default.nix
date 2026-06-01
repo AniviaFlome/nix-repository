@@ -11,7 +11,7 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "boson-bin";
-  version = "0";
+  version = "0.3.0";
 
   src = fetchzip {
     url = "https://github.com/FyraLabs/boson/releases/download/v${finalAttrs.version}/boson-${finalAttrs.version}-x86_64-musl.tar.zst";
