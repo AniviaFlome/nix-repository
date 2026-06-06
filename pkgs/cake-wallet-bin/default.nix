@@ -28,11 +28,11 @@
 
 stdenv.mkDerivation rec {
   pname = "cake-wallet-bin";
-  version = "6.1.2";
+  version = "6.2.0";
 
   src = fetchurl {
     url = "https://github.com/cake-tech/cake_wallet/releases/download/v${version}/Cake_Wallet_v${version}_Linux.tar.xz";
-    sha256 = "sha256-awZut6smNYb+HMPYNsRTKlW09PnqGFWCklQddcSXH7A=";
+    sha256 = "sha256-r/cAC5vK8qfnY27HvPRmfxbWsfWzola5+yVahBSZyoQ=";
   };
 
   nativeBuildInputs = [
