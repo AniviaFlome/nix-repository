@@ -36,6 +36,7 @@ in
   motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
   bloomeetunes-bin = pkgs.callPackage ./pkgs/bloomeetunes-bin { };
   sldl-tui = pkgs.callPackage ./pkgs/sldl-tui { };
+  kopuz = pkgs.callPackage ./pkgs/kopuz { };
 
   mpvScripts =
     let
