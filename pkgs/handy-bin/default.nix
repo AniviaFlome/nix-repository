@@ -6,9 +6,8 @@
 }:
 
 let
-  pname = "handy-bin";
+  pname = "handy";
   version = "0.8.3";
-  name = "${pname}-${version}";
 
   src = fetchurl {
     url = "https://github.com/cjpais/Handy/releases/download/v${version}/Handy_${version}_amd64.AppImage";
@@ -26,8 +25,7 @@ appimageTools.wrapType2 {
     install -m 444 -D ${appimageContents}/Handy.desktop $out/share/applications/handy.desktop
     cp -r ${appimageContents}/usr/share/icons $out/share
     substituteInPlace $out/share/applications/handy.desktop \
-      --replace-warn 'Exec=AppRun' "Exec=$out/bin/${name}" \
-      --replace-warn 'Exec=handy' "Exec=$out/bin/${name}"
+      --replace-warn 'Exec=AppRun' 'Exec=handy'
   '';
 
   passthru.updateScript = nix-update-script { };

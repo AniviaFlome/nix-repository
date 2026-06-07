@@ -7,7 +7,7 @@
 }:
 
 let
-  pname = "motrix-next-bin";
+  pname = "motrix-next";
   version = "3.9.4";
 
   arch = if stdenv.hostPlatform.isAarch64 then "aarch64" else "amd64";
@@ -23,7 +23,6 @@ appimageTools.wrapType2 {
   inherit pname version src;
 
   extraInstallCommands = ''
-    mv $out/bin/${pname} $out/bin/motrix-next
     install -m 444 -D ${appimageContents}/MotrixNext.desktop -t $out/share/applications
     cp -r ${appimageContents}/usr/share/icons $out/share
   '';

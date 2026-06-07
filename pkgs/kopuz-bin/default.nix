@@ -23,8 +23,6 @@ appimageTools.wrapType2 {
     install -Dm444 ${appimageContents}/kopuz.desktop -t $out/share/applications/
     install -Dm444 ${appimageContents}/usr/share/icons/hicolor/256x256/apps/kopuz.png -t $out/share/icons/hicolor/256x256/apps/
     install -Dm444 ${appimageContents}/usr/share/icons/hicolor/440x440/apps/kopuz.png -t $out/share/icons/hicolor/440x440/apps/
-    substituteInPlace $out/share/applications/kopuz.desktop \
-      --replace-warn 'Exec=kopuz' 'Exec=kopuz'
   '';
 
   passthru.updateScript = nix-update-script { };
