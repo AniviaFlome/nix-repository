@@ -37,6 +37,7 @@ in
   bloomeetunes-bin = pkgs.callPackage ./pkgs/bloomeetunes-bin { };
   sldl-tui = pkgs.callPackage ./pkgs/sldl-tui { };
   kopuz-bin = pkgs.callPackage ./pkgs/kopuz-bin { };
+  rustypipe-botguard = pkgs.callPackage ./pkgs/rustypipe-botguard { };
 
   mpvScripts =
     let
