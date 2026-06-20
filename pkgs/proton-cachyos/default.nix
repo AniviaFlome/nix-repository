@@ -10,7 +10,7 @@
   marchLevel ? "_v3",
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "proton-cachyos-bin";
+  pname = "proton-cachyos";
   version = "11.0-20260602";
 
   src = fetchzip {
@@ -48,7 +48,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru.updateScript = makeReleaseUpdater {
-    name = "proton-cachyos-bin";
+    name = "proton-cachyos";
     repo = "https://api.github.com/repos/CachyOS/proton-cachyos/releases";
     versionFilter = "sed 's/^cachyos-//' | sed 's/-slr$//'";
   };

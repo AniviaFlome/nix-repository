@@ -10,7 +10,7 @@
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "boson-bin";
+  pname = "boson";
   version = "0.3.0";
 
   src = fetchzip {

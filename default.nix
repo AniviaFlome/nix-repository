@@ -10,21 +10,21 @@ in
   modules = import ./modules;
   overlays = import ./overlays;
 
-  proton-cachyos-bin = pkgs.callPackage ./pkgs/proton-cachyos-bin {
+  proton-cachyos = pkgs.callPackage ./pkgs/proton-cachyos {
     inherit (lib) makeReleaseUpdater;
   };
   waha-tui = pkgs.callPackage ./pkgs/waha-tui { };
-  torrra-bin = pkgs.callPackage ./pkgs/torrra-bin { };
+  torrra = pkgs.callPackage ./pkgs/torrra { };
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
   turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
-  nativecookie-bin = pkgs.callPackage ./pkgs/nativecookie-bin { };
+  nativecookie = pkgs.callPackage ./pkgs/nativecookie { };
   osu-beatmap-manager-git = pkgs.callPackage ./pkgs/osu-beatmap-manager-git { };
-  boson-bin = pkgs.callPackage ./pkgs/boson-bin { };
-  cake-wallet-bin = pkgs.callPackage ./pkgs/cake-wallet-bin { };
-  gdk-proton-bin = pkgs.callPackage ./pkgs/gdk-proton-bin { inherit (lib) makeReleaseUpdater; };
+  boson = pkgs.callPackage ./pkgs/boson { };
+  cake-wallet = pkgs.callPackage ./pkgs/cake-wallet { };
+  gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { inherit (lib) makeReleaseUpdater; };
   getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
-  handy-bin = pkgs.callPackage ./pkgs/handy-bin { };
+  handy = pkgs.callPackage ./pkgs/handy { };
   hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
   hyprism = pkgs.callPackage ./pkgs/hyprism {
     hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
@@ -32,10 +32,12 @@ in
   artcnn = pkgs.callPackage ./pkgs/artcnn { };
   fallin = pkgs.callPackage ./pkgs/fallin { };
   adore = pkgs.callPackage ./pkgs/adore { };
-  crankshaft-bin = pkgs.callPackage ./pkgs/crankshaft-bin { };
-  motrix-next-bin = pkgs.callPackage ./pkgs/motrix-next-bin { };
-  bloomeetunes-bin = pkgs.callPackage ./pkgs/bloomeetunes-bin { };
+  crankshaft = pkgs.callPackage ./pkgs/crankshaft { };
+  motrix-next = pkgs.callPackage ./pkgs/motrix-next { };
+  bloomeetunes = pkgs.callPackage ./pkgs/bloomeetunes { };
   sldl-tui = pkgs.callPackage ./pkgs/sldl-tui { };
+  patent = pkgs.callPackage ./pkgs/patent { };
+  bedrock-on-linux = pkgs.callPackage ./pkgs/bedrock-on-linux { };
 
   mpvScripts =
     let

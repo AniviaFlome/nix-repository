@@ -10,7 +10,7 @@
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "nativecookie-bin";
+  pname = "nativecookie";
   version = "2.9";
 
   src = fetchzip {

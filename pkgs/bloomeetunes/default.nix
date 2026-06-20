@@ -22,7 +22,7 @@
 }:
 
 let
-  pname = "bloomeetunes-bin";
+  pname = "bloomeetunes";
   version = "3.0.4+202";
 in
 stdenv.mkDerivation {

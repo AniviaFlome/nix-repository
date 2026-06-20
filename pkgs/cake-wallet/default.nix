@@ -27,7 +27,7 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "cake-wallet-bin";
+  pname = "cake-wallet";
   version = "6.2.1";
 
   src = fetchurl {

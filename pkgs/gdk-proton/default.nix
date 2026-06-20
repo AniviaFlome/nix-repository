@@ -8,7 +8,7 @@
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "gdk-proton-bin";
+  pname = "gdk-proton";
   version = "10-32";
 
   src = fetchzip {
@@ -47,7 +47,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   passthru = {
     updateScript = makeReleaseUpdater {
-      name = "gdk-proton-bin";
+      name = "gdk-proton";
       repo = "https://api.github.com/repos/Weather-OS/GDK-Proton/releases";
       versionFilter = "sed 's/^release//'";
     };
