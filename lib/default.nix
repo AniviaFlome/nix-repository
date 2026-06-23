@@ -20,5 +20,6 @@ with pkgs.lib;
         exit 1
       fi
       nix-update --flake --version="$version" ${pname}
+      nix-update --flake --version=skip ${pname}
     '';
 }
