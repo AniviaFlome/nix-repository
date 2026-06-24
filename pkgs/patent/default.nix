@@ -9,7 +9,7 @@
 
 let
   hashes = {
-    x86_64-linux = "sha256-nGJtNrVx4NqCRIyRtnbS+F7lMWMeB6emHeFtcfJyX5o=";
+    x86_64-linux = "sha256-mU8umYWl0oI34rRh4YwZaLGjqEAVpqJbXAXntwhpVu0=";
     aarch64-linux = "sha256-IAVlLPxYFM0RAmEo08gsg1zYHYM6A/7H8O1CB4PNTcM=";
   };
 
@@ -22,7 +22,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "patent";
-  version = "0.5.0";
+  version = "0.5.1";
 
   src = fetchurl {
     url = "https://github.com/r14dd/patent/releases/download/v${finalAttrs.version}/patent-${arch}-unknown-linux-gnu.tar.xz";
