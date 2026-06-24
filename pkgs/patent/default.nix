@@ -10,7 +10,7 @@
 let
   hashes = {
     x86_64-linux = "sha256-mU8umYWl0oI34rRh4YwZaLGjqEAVpqJbXAXntwhpVu0=";
-    aarch64-linux = "sha256-IAVlLPxYFM0RAmEo08gsg1zYHYM6A/7H8O1CB4PNTcM=";
+    aarch64-linux = "sha256-yj+aCMYHB8BaQytmWfvx82tRWm6zKxU9ed5Be/UwLng=";
   };
 
   arch =

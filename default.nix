@@ -37,7 +37,10 @@ in
   bloomeetunes = pkgs.callPackage ./pkgs/bloomeetunes { };
   sldl-tui = pkgs.callPackage ./pkgs/sldl-tui { };
   patent = pkgs.callPackage ./pkgs/patent { };
-  bedrock-on-linux = pkgs.callPackage ./pkgs/bedrock-on-linux { };
+  bedrock-on-linux-unwrapped = pkgs.callPackage ./pkgs/bedrock-on-linux/unwrapped.nix { };
+  bedrock-on-linux = pkgs.callPackage ./pkgs/bedrock-on-linux {
+    bedrock-on-linux-unwrapped = pkgs.callPackage ./pkgs/bedrock-on-linux/unwrapped.nix { };
+  };
 
   mpvScripts =
     let
