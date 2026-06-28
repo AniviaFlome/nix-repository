@@ -3,7 +3,6 @@
   stdenvNoCC,
   fetchzip,
   makeReleaseUpdater,
-  # Can be overridden to alter the display name in steam
   steamDisplayName ? "GDK-Proton",
 }:
 
@@ -26,7 +25,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     mkdir -p $out
 
-    # Link all files except compatibilitytool.vdf (which we need to modify)
     for f in $src/*; do
       name=$(basename "$f")
       if [[ "$name" != "compatibilitytool.vdf" ]]; then
@@ -34,7 +32,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       fi
     done
 
-    # Copy compatibilitytool.vdf so we can modify it
     cp $src/compatibilitytool.vdf $out/compatibilitytool.vdf
 
     runHook postInstall
