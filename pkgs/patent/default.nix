@@ -11,13 +11,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "patent";
-  version = "0.5.1";
+  version = "0.6.0";
 
   src = fetchFromGitHub {
     owner = "r14dd";
     repo = "patent";
     rev = "v${version}";
-    hash = "sha256-pkgC4z25Jdh7Erex0UJp/tM3t/QdZyp7YOcjB5qVcpM=";
+    hash = "sha256-+PtRbyHXHPBh81rcKnK3WyYK3pPgGO7OUEMXBNOgRYI=";
   };
 
   # ponytail: fastembed default pulls ort download-binaries (fetches ONNX runtime at build time, breaks sandbox).
@@ -31,7 +31,6 @@ rustPlatform.buildRustPackage rec {
 
   cargoLock = {
     lockFile = ./Cargo.lock;
-    allowBuiltinFetchGit = true;
   };
 
   nativeBuildInputs = [
