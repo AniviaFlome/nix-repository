@@ -11,13 +11,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "patent";
-  version = "0.6.0";
+  version = "0.7.0";
 
   src = fetchFromGitHub {
     owner = "r14dd";
     repo = "patent";
     rev = "v${version}";
-    hash = "sha256-+PtRbyHXHPBh81rcKnK3WyYK3pPgGO7OUEMXBNOgRYI=";
+    hash = "sha256-DbFxzT5129UyifCv5OxHjSR/4/4GNxMyHUH5GU3ikR0=";
   };
 
   # ponytail: fastembed default pulls ort download-binaries (fetches ONNX runtime at build time, breaks sandbox).
