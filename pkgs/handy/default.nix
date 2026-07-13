@@ -7,11 +7,11 @@
 
 let
   pname = "handy";
-  version = "0.9.1";
+  version = "0.9.2";
 
   src = fetchurl {
     url = "https://github.com/cjpais/Handy/releases/download/v${version}/Handy_${version}_amd64.AppImage";
-    sha256 = "sha256-Xl3GkoyGyjF5cp26NI9fI5ptxW/64lXaqzZyaZhKULE=";
+    sha256 = "sha256-YMtpaJN0kY18Bu1T1aPeKW5ruziEAH5tNMbZ9be2Y/w=";
   };
 
   appimageContents = appimageTools.extractType2 {
