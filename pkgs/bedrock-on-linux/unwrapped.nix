@@ -21,7 +21,7 @@ let
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "bedrock-on-linux-unwrapped";
-  version = "1.2.9";
+  version = "1.3.0";
 
   src = fetchurl {
     url = "https://github.com/Wyze3306/BedrockOnLinux/releases/download/v${finalAttrs.version}/bedrock-on-linux_${finalAttrs.version}_all.deb";
