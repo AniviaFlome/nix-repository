@@ -69,7 +69,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     install -Dm644 usr/share/icons/hicolor/256x256/apps/bedrock-on-linux.png $out/share/icons/hicolor/256x256/apps/bedrock-on-linux.png
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--version-regex=^v(\\d+\\.\\d+\\.\\d+)$" ];
+  };
 
   meta = with lib; {
     description = "Run Minecraft Bedrock (Windows GDK) on Linux, multiplayer included";
