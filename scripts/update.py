@@ -2,55 +2,62 @@
 import json
 import subprocess
 import sys
+from typing import TypedDict, cast
 
-def get_targets():
+
+class UpdateTarget(TypedDict):
+    name: str
+    useUpdateScript: bool
+    extraArgs: list[str]
+
+
+def get_targets() -> list[UpdateTarget]:
     """Gets update targets using Nix evaluation."""
-    # Get the current system
-    system_cmd = ['nix', 'eval', '--impure', '--raw', '--expr', 'builtins.currentSystem']
+    system_cmd = ["nix", "eval", "--impure", "--raw", "--expr", "builtins.currentSystem"]
     try:
         system = subprocess.run(system_cmd, check=True, capture_output=True, text=True).stdout.strip()
     except subprocess.CalledProcessError as e:
         print(f"Error getting system: {e}", file=sys.stderr)
         sys.exit(1)
 
-    # Get targets for the system
     targets_cmd = [
-        'nix', 'eval', '--json', '--impure',
-        '--apply', 'pkgs: import ./scripts/get-update-targets.nix { packages = pkgs; }',
-        f'.#packages.{system}'
+        "nix", "eval", "--json", "--impure",
+        "--apply", "pkgs: import ./scripts/get-update-targets.nix { packages = pkgs; }",
+        f".#packages.{system}",
     ]
     try:
         targets_json = subprocess.run(targets_cmd, check=True, capture_output=True, text=True).stdout
-        return json.loads(targets_json)
+        return cast(list[UpdateTarget], json.loads(targets_json))
     except subprocess.CalledProcessError as e:
         print(f"Error getting targets: {e}", file=sys.stderr)
         sys.exit(1)
 
-def main():
+
+def main() -> None:
     targets = get_targets()
-    failed = []
+    failed: list[str] = []
     for target in targets:
-        name = target['name']
-        extra_args = target.get('extraArgs', [])
+        name = target["name"]
+        extra_args = target["extraArgs"]
 
-        print(f'Updating {name}...')
+        print(f"Updating {name}...")
 
-        cmd = ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', name]
+        cmd: list[str] = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update", "--flake", name]
 
-        # Use package's custom updateScript if it has one
-        if target.get('useUpdateScript', False):
-            cmd.append('--use-update-script')
+        if target["useUpdateScript"]:
+            cmd.append("--use-update-script")
 
         cmd.extend(extra_args)
 
         try:
-            subprocess.run(cmd, check=True)
+            _ = subprocess.run(cmd, check=True)
         except subprocess.CalledProcessError as e:
-            print(f'Warning: Failed to update {name} (exit code {e.returncode})', file=sys.stderr)
+            print(f"Warning: Failed to update {name} (exit code {e.returncode})", file=sys.stderr)
             failed.append(name)
 
     if failed:
-        print(f'\nFailed to update: {", ".join(failed)}', file=sys.stderr)
+        print(f"\nFailed to update: {', '.join(failed)}", file=sys.stderr)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -1,6 +1,5 @@
 import json
 from unittest.mock import patch, MagicMock
-import pytest
 from update import main
 
 def create_mock_run(input_data):
