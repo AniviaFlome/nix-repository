@@ -14,6 +14,7 @@ in
     inherit (lib) makeReleaseUpdater;
   };
   waha-tui = pkgs.callPackage ./pkgs/waha-tui { };
+  waytator = pkgs.callPackage ./pkgs/waytator { };
   torrra = pkgs.callPackage ./pkgs/torrra { };
   turkanime-cli = pkgs.callPackage ./pkgs/turkanime-cli { };
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
