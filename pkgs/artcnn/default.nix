@@ -12,8 +12,8 @@ stdenvNoCC.mkDerivation {
   src = fetchFromGitHub {
     owner = "Artoriuz";
     repo = "ArtCNN";
-    rev = "b69b4c705adfba2e511e4f66f4f83119cddd854c";
-    hash = "sha256-O9W5wOtuQsDK32HbgO2eWNRJgWQvY30tjy8MbAnsApQ=";
+    rev = "a91902eeb2f8dc37bdd42892dc502211c6de5525";
+    hash = "sha256-8mErPIewEInu6A4tqkFJetwgP7LEgWwJqiJI51tmjc0=";
   };
 
   dontConfigure = true;
