@@ -2,6 +2,7 @@
   lib,
   python3,
   fetchFromGitHub,
+  fetchpatch,
   nix-update-script,
 }:
 
@@ -16,6 +17,18 @@ python3.pkgs.buildPythonApplication rec {
     rev = version;
     hash = "sha256-l784sTTBDFj+x/yEwz+HHdIRf5lARWHcif9qrNES4s0=";
   };
+
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/linsomniac/spotify_to_ytmusic/pull/249.patch";
+      hash = "sha256-DS/WlJLfTZmQO3azSUfyrSctNQFmBWembNPWVN5PrTw=";
+    })
+    (fetchpatch {
+      url = "https://github.com/linsomniac/spotify_to_ytmusic/pull/184.patch";
+      excludes = [ "settings.json" ];
+      hash = "sha256-TUaefkIdxYDn0R0nTRI4oMraTj5kkmKjPanp2B+KTo4=";
+    })
+  ];
 
   nativeBuildInputs = [ python3.pkgs.poetry-core ];
 
