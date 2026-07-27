@@ -37,7 +37,6 @@ in
   motrix-next = pkgs.callPackage ./pkgs/motrix-next { };
   bloomeetunes = pkgs.callPackage ./pkgs/bloomeetunes { };
   cmdui = pkgs.callPackage ./pkgs/cmdui { };
-  spotify2ytmusic = pkgs.callPackage ./pkgs/spotify2ytmusic { };
 
   bedrock-on-linux-unwrapped = pkgs.callPackage ./pkgs/bedrock-on-linux/unwrapped.nix { };
   bedrock-on-linux = pkgs.callPackage ./pkgs/bedrock-on-linux {
