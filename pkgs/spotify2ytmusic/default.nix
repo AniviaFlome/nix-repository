@@ -20,7 +20,7 @@ python3.pkgs.buildPythonApplication rec {
 
   patches = [
     (fetchpatch {
-      url = "https://github.com/linsomniac/spotify_to_ytmusic/pull/249.patch";
+      url = "https://github.com/linsomniac/spotify_to_ytmusic/commit/d47bcc78bac2d4dc831d8719c90f190e4ffb8913.patch";
       hash = "sha256-DS/WlJLfTZmQO3azSUfyrSctNQFmBWembNPWVN5PrTw=";
     })
     (fetchpatch {
