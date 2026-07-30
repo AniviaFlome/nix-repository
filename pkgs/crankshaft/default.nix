@@ -7,7 +7,7 @@
 
 let
   pname = "crankshaft";
-  version = "2.0.0";
+  version = "2.0.1";
 
   src = fetchurl {
     url = "https://github.com/KraXen72/crankshaft/releases/download/${version}/crankshaft-portable-linux-x86_64.AppImage";
