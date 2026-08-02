@@ -36,6 +36,7 @@ in
   crankshaft = pkgs.callPackage ./pkgs/crankshaft { };
   motrix-next = pkgs.callPackage ./pkgs/motrix-next { };
   bloomeetunes = pkgs.callPackage ./pkgs/bloomeetunes { };
+  amplitude-soundboard = pkgs.callPackage ./pkgs/amplitude-soundboard { };
   cmdui = pkgs.callPackage ./pkgs/cmdui { };
 
   bedrock-on-linux-unwrapped = pkgs.callPackage ./pkgs/bedrock-on-linux/unwrapped.nix { };
