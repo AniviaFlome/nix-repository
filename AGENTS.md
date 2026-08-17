@@ -15,8 +15,6 @@ NUR-style nix package repository (not an official NUR repo). Packages in `pkgs/`
 - `flake.nix` — exposes `packages`, `legacyPackages`, `formatter`, `checks`, `overlays.default`
 - `scripts/update.py` + `scripts/get-update-targets.nix` — CI auto-update logic
 
-`pkgs/rice-cooker/` and `pkgs/ai-skills-bundle/` are empty, not wired in.
-
 ## Commands
 
 ```sh
@@ -51,12 +49,33 @@ Special cases (pass as extra args):
 2. Add `pkgs.callPackage ./pkgs/<name> { … }` entry in `default.nix`
 3. Pass `inherit (lib) makeReleaseUpdater;` if using the release updater
 4. For mpv scripts: add under `mpvScripts` via `callMpvScript`
-5. Run `nix fmt` and `nix flake check`
+5. Add `passthru.tests` only where it catches real bugs (see "Tests" below) — not every package needs tests
+6. Run `nix fmt` and `nix flake check`
+
+## Tests
+
+Tests are attached via `passthru.tests = { <name> = <derivation>; }` and run in two places:
+- **`nix flake check`** — via `flake.nix` `checks` output (keys: `<pkg>-<testName>`, e.g. `anitr-cli-version`).
+- **CI (`build.yml`)** — via `ci.nix`, which recurses `passthru.tests` (alongside the package itself) into `cacheOutputs` and Cachix.
+
+Guidance — add tests where they add signal, not reflexively:
+- **CLI binaries with a `--version` flag** — `testers.testVersion { package = finalAttrs.finalPackage; }` catches version-string regressions. Relies on `meta.mainProgram`; pass `command = "foo --version"` when the binary name differs from pname. Add `testers` to the derivation's arguments (callPackage injects it).
+- **Library code** (`lib/default.nix`) — pure-eval tests via `lib.debug.runTests` in `lib/tests.nix`, plus a `runCommand` script-existence check. Wired into `checks.lib-makeReleaseUpdater`.
+- **AppImages / prebuilt binaries / FHS wrappers / data packages / steam-compat tools** — no tests by default. A `test -x ${pkg}/bin/foo` smoke test is tautological (the build's installPhase already proved the file exists). Add a test only if there's a runtime behavior worth exercising.
+
+When a derivation uses `rec { … }`, convert to `finalAttrs:` so tests can reference `finalAttrs.finalPackage`. Example:
+
+```nix
+passthru = {
+  updateScript = nix-update-script { };
+  tests.version = testers.testVersion { package = finalAttrs.finalPackage; };
+};
+```
 
 ## CI
 
 - `.github/workflows/build.yml` — builds on `nixpkgs-unstable` + `nixos-unstable`, pushes to Cachix (`aniviaflome-nix-repository`), triggers NUR update for repo `aniviaflome`. Runs `nix-build-uncached ci.nix -A cacheOutputs`.
-- `.github/workflows/update.yml` — daily `scripts/update.py`, auto-commits with "pkgs: auto-update".
+- `.github/workflows/update.yml` — daily `scripts/update.py --build`, auto-commits with "pkgs: auto-update". The `--build` flag makes `nix-update` verify each package builds before committing the version bump, so broken updates are skipped (reported as failed) instead of pushed to `main`. Unfree packages (`adore`, `turkanime-cli`, `turkanime-gui`, `getcomics-downloader`) skip `--build` automatically (pure flake eval disallows `NIXPKGS_ALLOW_UNFREE`), so their updates are unverified — consistent with `build.yml`'s `ci.nix` which also filters them out. For local runs without `--build`, updates are fast but unverified.
 
 ## Dev shell
 

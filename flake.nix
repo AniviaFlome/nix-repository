@@ -22,9 +22,28 @@
     {
       formatter = forAllSystems (system: (treefmtEval system).config.build.wrapper);
 
-      checks = forAllSystems (system: {
-        formatting = (treefmtEval system).config.build.check self;
-      });
+      checks = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+          nurAttrs = import ./default.nix { inherit pkgs; };
+          inherit (import ./lib/tests.nix { inherit pkgs; }) collectTests scriptExists pureEvalCheck;
+        in
+        {
+          formatting = (treefmtEval system).config.build.check self;
+          lib-makeReleaseUpdater = scriptExists;
+          lib-makeReleaseUpdater-pureEval = pureEvalCheck;
+        }
+        // collectTests (nurAttrs.mpvScripts or { })
+        // collectTests (
+          removeAttrs nurAttrs [
+            "lib"
+            "modules"
+            "overlays"
+            "mpvScripts"
+          ]
+        )
+      );
 
       legacyPackages = forAllSystems (
         system:

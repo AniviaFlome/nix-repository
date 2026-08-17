@@ -5,6 +5,7 @@
   autoPatchelfHook,
   zlib,
   nix-update-script,
+  testers,
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "torrra";
@@ -31,7 +32,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    updateScript = nix-update-script { };
+    tests.version = testers.testVersion { package = finalAttrs.finalPackage; };
+  };
 
   meta = with lib; {
     description = "A Python tool that lets you search and download torrents without leaving your CLI";

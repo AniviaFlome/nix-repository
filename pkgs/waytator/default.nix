@@ -12,6 +12,7 @@
   wl-clipboard,
   fetchFromGitHub,
   nix-update-script,
+  testers,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -42,7 +43,10 @@ stdenv.mkDerivation (finalAttrs: {
 
   mesonBuildType = "release";
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    updateScript = nix-update-script { };
+    tests.version = testers.testVersion { package = finalAttrs.finalPackage; };
+  };
 
   meta = with lib; {
     description = "Screenshot annotator and lightweight image editor";

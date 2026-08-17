@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import json
 import subprocess
 import sys
@@ -9,6 +10,10 @@ class UpdateTarget(TypedDict):
     name: str
     useUpdateScript: bool
     extraArgs: list[str]
+    # Whether the package has an unfree license. `--build` cannot verify
+    # unfree packages in pure flake eval (NIXPKGS_ALLOW_UNFREE is ignored),
+    # so we skip build verification for them and update without it.
+    unfree: bool
 
 
 def get_targets() -> list[UpdateTarget]:
@@ -34,18 +39,33 @@ def get_targets() -> list[UpdateTarget]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Update NUR packages using nix-update")
+    parser.add_argument(
+        "--build",
+        action="store_true",
+        help="Build each package after updating to verify it compiles (skips broken updates)",
+    )
+    args = parser.parse_args()
+
     targets = get_targets()
     failed: list[str] = []
     for target in targets:
         name = target["name"]
-        extra_args = target["extraArgs"]
+        use_update_script = target.get("useUpdateScript", False)
+        extra_args = target.get("extraArgs", [])
+        unfree = target.get("unfree", False)
 
         print(f"Updating {name}...")
 
         cmd: list[str] = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update", "--flake", name]
 
-        if target["useUpdateScript"]:
+        if use_update_script:
             cmd.append("--use-update-script")
+
+        if args.build and not unfree:
+            cmd.append("--build")
+        elif args.build and unfree:
+            print(f"  (skipping --build for unfree package {name}: pure flake eval disallows it)")
 
         cmd.extend(extra_args)
 

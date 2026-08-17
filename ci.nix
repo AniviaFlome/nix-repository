@@ -42,7 +42,7 @@ let
         if shouldRecurseForDerivations p then
           flattenPkgs p
         else if isDerivation p then
-          [ p ]
+          [ p ] ++ flattenPkgs (p.passthru.tests or { })
         else
           [ ];
     in
