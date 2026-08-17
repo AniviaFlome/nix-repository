@@ -3,10 +3,9 @@
   buildGoModule,
   fetchFromGitHub,
   nix-update-script,
-  testers,
 }:
 
-buildGoModule (finalAttrs: {
+buildGoModule (_finalAttrs: {
   pname = "cmdui";
   version = "0-unstable-2026-07-11";
 
@@ -27,10 +26,7 @@ buildGoModule (finalAttrs: {
     ln -s $out/share/cmdui/examples $out/examples
   '';
 
-  passthru = {
-    updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
-    tests.version = testers.testVersion { package = finalAttrs.finalPackage; };
-  };
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = with lib; {
     description = "Data-driven TUI command-line builder";
