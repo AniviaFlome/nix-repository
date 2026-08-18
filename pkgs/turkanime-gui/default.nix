@@ -39,6 +39,7 @@ python3Packages.buildPythonApplication rec {
     beautifulsoup4
     customtkinter
     packaging
+    rapidfuzz
   ];
 
   nativeBuildInputs = [ makeWrapper ];
