@@ -114,7 +114,7 @@ def test_update_without_build_flag():
             assert '--build' not in call.args[0], "nix-update should not get --build without the flag"
 
 def test_update_build_skipped_for_unfree():
-    """With --build, unfree packages are updated without --build (pure flake eval disallows it)."""
+    """With --build, unfree packages use --file mode (impure, honors NIXPKGS_ALLOW_UNFREE) instead of --flake (pure, disallows it). Both get --build."""
     input_data = [
         {"name": "pkg-free", "unfree": False},
         {"name": "pkg-unfree", "unfree": True}
@@ -122,16 +122,17 @@ def test_update_build_skipped_for_unfree():
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_argv(["update.py", "--build"])
-        # Free package gets --build
+        # Free package uses --flake with --build
         mock_run.assert_any_call(
             ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg-free', '--build'],
             check=True
         )
-        # Unfree package does NOT get --build
+        # Unfree package omits --flake (uses default.nix via --file) with --build
         mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg-unfree'],
+            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', 'pkg-unfree', '--build'],
             check=True
         )
+        # Unfree package must NOT use --flake
         for call in mock_run.call_args_list:
             if 'pkg-unfree' in call.args[0]:
-                assert '--build' not in call.args[0], "unfree package should not get --build"
+                assert '--flake' not in call.args[0], "unfree package should not use --flake with --build"

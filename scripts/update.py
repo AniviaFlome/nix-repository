@@ -10,9 +10,10 @@ class UpdateTarget(TypedDict):
     name: str
     useUpdateScript: bool
     extraArgs: list[str]
-    # Whether the package has an unfree license. `--build` cannot verify
-    # unfree packages in pure flake eval (NIXPKGS_ALLOW_UNFREE is ignored),
-    # so we skip build verification for them and update without it.
+    # Whether the package has an unfree license. Unfree packages can't be
+    # built via `nix-update --flake --build` (pure flake eval ignores
+    # NIXPKGS_ALLOW_UNFREE), so for them we fall back to `--file default.nix`
+    # which uses impure channel eval that honors the env var.
     unfree: bool
 
 
@@ -57,15 +58,19 @@ def main() -> None:
 
         print(f"Updating {name}...")
 
-        cmd: list[str] = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update", "--flake", name]
+        # Unfree packages can't be built via `--flake` (pure eval ignores
+        # NIXPKGS_ALLOW_UNFREE), so use the default `--file default.nix` path
+        # (impure channel eval honors it). Free packages use `--flake`.
+        cmd: list[str] = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update"]
+        if not unfree:
+            cmd.append("--flake")
+        cmd.append(name)
 
         if use_update_script:
             cmd.append("--use-update-script")
 
-        if args.build and not unfree:
+        if args.build:
             cmd.append("--build")
-        elif args.build and unfree:
-            print(f"  (skipping --build for unfree package {name}: pure flake eval disallows it)")
 
         cmd.extend(extra_args)
 

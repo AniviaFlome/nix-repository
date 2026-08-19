@@ -75,7 +75,7 @@ passthru = {
 ## CI
 
 - `.github/workflows/build.yml` — builds on `nixpkgs-unstable` + `nixos-unstable`, pushes to Cachix (`aniviaflome-nix-repository`), triggers NUR update for repo `aniviaflome`. Runs `nix-build-uncached ci.nix -A cacheOutputs`.
-- `.github/workflows/update.yml` — daily `scripts/update.py --build`, auto-commits with "pkgs: auto-update". The `--build` flag makes `nix-update` verify each package builds before committing the version bump, so broken updates are skipped (reported as failed) instead of pushed to `main`. Unfree packages (`adore`, `turkanime-cli`, `turkanime-gui`, `getcomics-downloader`) skip `--build` automatically (pure flake eval disallows `NIXPKGS_ALLOW_UNFREE`), so their updates are unverified — consistent with `build.yml`'s `ci.nix` which also filters them out. For local runs without `--build`, updates are fast but unverified.
+- `.github/workflows/update.yml` — daily `scripts/update.py --build`, auto-commits with "pkgs: auto-update". The `--build` flag makes `nix-update` verify each package builds before committing the version bump, so broken updates are skipped (reported as failed) instead of pushed to `main`. Unfree packages (`adore`, `turkanime-cli`, `turkanime-gui`, `getcomics-downloader`) use `--file default.nix` instead of `--flake` (pure flake eval ignores `NIXPKGS_ALLOW_UNFREE`; impure `--file` mode honors it) so they're build-verified too. Sets `NIXPKGS_ALLOW_UNFREE=1` for the unfree builds. For local runs without `--build`, updates are fast but unverified.
 
 ## Dev shell
 
