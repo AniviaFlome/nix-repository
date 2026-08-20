@@ -5,7 +5,6 @@
   makeWrapper,
   mpv,
   nix-update-script,
-  testers,
 }:
 
 buildGoModule (finalAttrs: {
@@ -38,10 +37,7 @@ buildGoModule (finalAttrs: {
       }
   '';
 
-  passthru = {
-    updateScript = nix-update-script { };
-    tests.version = testers.testVersion { package = finalAttrs.finalPackage; };
-  };
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Anime tracker and streamer CLI";
