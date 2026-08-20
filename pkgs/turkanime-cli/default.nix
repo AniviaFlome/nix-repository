@@ -5,7 +5,6 @@
   mpv,
   aria2,
   geckodriver,
-  yt-dlp,
   makeWrapper,
   nix-update-script,
 }:
@@ -40,7 +39,7 @@ python3Packages'.buildPythonApplication rec {
 
   nativeBuildInputs = [ makeWrapper ];
 
-  dependencies = with python3Packages; [
+  dependencies = with python3Packages'; [
     yt-dlp
     curl-cffi
     pycryptodome
@@ -58,7 +57,7 @@ python3Packages'.buildPythonApplication rec {
           mpv
           aria2
           geckodriver
-          yt-dlp
+          python3Packages'.yt-dlp
         ]
       }
   '';

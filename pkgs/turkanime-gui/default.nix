@@ -29,7 +29,7 @@ python3Packages'.buildPythonApplication rec {
 
   build-system = [ python3Packages.poetry-core ];
 
-  dependencies = with python3Packages; [
+  dependencies = with python3Packages'; [
     yt-dlp
     curl-cffi
     pycryptodome
