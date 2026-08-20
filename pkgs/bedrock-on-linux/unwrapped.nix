@@ -20,11 +20,11 @@ let
 in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "bedrock-on-linux-unwrapped";
-  version = "2.1.4";
+  version = "2.2.0";
 
   src = fetchurl {
     url = "https://github.com/Wyze3306/BedrockOnLinux/releases/download/v${finalAttrs.version}/bedrock-on-linux_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-9/GBtJL9IUgy64mIrvsJvT3nibD/CmWt4POUjSsvYVw=";
+    hash = "sha256-9engRr+5QGANka6bVEyzEuUmxFp+iFVdlu5+c74o99c=";
   };
 
   nativeBuildInputs = [
