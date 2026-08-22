@@ -30,7 +30,9 @@ buildLua {
     substituteInPlace $out/share/mpv/scripts/subtitle-translate-mpv/options.lua \
       --replace-fail "'Console-Translate'" "'crow'"
     substituteInPlace $out/share/mpv/scripts/subtitle-translate-mpv/modules/translators/crow.lua \
-      --replace-fail "'crow'," "'${crow-translate}/bin/crow',"
+      --replace-fail "'crow'," "'${crow-translate}/bin/crow'," \
+      --replace-fail "'-l', from," "'-s', from," \
+      --replace-fail "'-b'," "'-e', 'bing', '-b',"
     runHook postInstall
   '';
 
