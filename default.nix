@@ -55,9 +55,7 @@ in
     {
       interSubs = callMpvScript ./pkgs/mpvScripts/interSubs;
       mpv-translate = callMpvScript ./pkgs/mpvScripts/mpv-translate;
-      sub-select = callMpvScript ./pkgs/mpvScripts/sub-select;
       subtitle-sync = callMpvScript ./pkgs/mpvScripts/subtitle-sync;
-      subtitle-translate-mpv = callMpvScript ./pkgs/mpvScripts/subtitle-translate-mpv;
       whisper-subs = callMpvScript ./pkgs/mpvScripts/whisper-subs;
       cheatsheet = callMpvScript ./pkgs/mpvScripts/cheatsheet;
       file-browser = callMpvScript ./pkgs/mpvScripts/file-browser;
