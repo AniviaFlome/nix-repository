@@ -24,7 +24,8 @@ buildLua (finalAttrs: {
 
     substituteInPlace $out/share/mpv/scripts/mpv-translate.js \
       --replace-fail '"ffmpeg"' '"${ffmpeg}/bin/ffmpeg"' \
-      --replace-fail '"curl"' '"${curl}/bin/curl"'
+      --replace-fail '"curl"' '"${curl}/bin/curl"' \
+      --replace-fail '"where "' '"which "'
     runHook postInstall
   '';
 
