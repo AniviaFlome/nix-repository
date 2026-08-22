@@ -32,7 +32,7 @@ nix shell nixpkgs#nix-update -c nix-update --flake <attr-path>
 
 Special cases (pass as extra args):
 - **Subpackages** — `waha-tui` needs `--subpackage=bunDeps`
-- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`
+- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`, `sub-select`, `subtitle-translate-mpv`
 - **`makeReleaseUpdater` packages** — `proton-cachyos`, `gdk-proton`. Updater in `lib/default.nix` fetches latest GitHub/Gitea release tag. CI runs these via `--use-update-script`.
 
 `adore` and `fallin` use `version = "latest"` and `--version=branch` — no real version pinned.
