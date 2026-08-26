@@ -49,7 +49,6 @@ My nix packages repository.
 | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | [mpvScripts.cheatsheet](https://github.com/AniviaFlome/mpv-scripts/tree/main/cheatsheet)  | MPV cheatsheet script showing keybindings in an interactive overlay                        |
 | [mpvScripts.file-browser](https://github.com/CogentRedTester/mpv-file-browser)            | A simple no-dependency file browser for mpv player                                         |
-| [mpvScripts.interSubs](https://github.com/oltodosel/interSubs)                            | Interactive subtitles for MPV                                                              |
 | [mpvScripts.keybind-visualizer](https://github.com/v-amorim/mpv)                          | Interactive on-screen keyboard for mpv that shows the bindings of the hovered key          |
 | [mpvScripts.mpv-translate](https://github.com/mpv-easy/mpv-easy)                          | Real-time subtitle translation for mpv                                                     |
 | [mpvScripts.sub-seek](https://github.com/v-amorim/mpv)                                    | Fullscreen, clickable list of every subtitle line for mpv, with seeking on selection       |
@@ -88,7 +87,7 @@ This repository uses [Cachix](https://cachix.org) to provide pre-built binaries.
 nixpkgs.overlays = [ inputs.nix-repository.overlays.default ];
 ```
 
-Then packages are available as `pkgs.proton-cachyos`, `pkgs.mpvScripts.interSubs`, etc.
+Then packages are available as `pkgs.proton-cachyos`, etc.
 
 ### Install packages directly (without overlay)
 

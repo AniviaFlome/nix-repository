@@ -53,7 +53,6 @@ in
         };
     in
     {
-      interSubs = callMpvScript ./pkgs/mpvScripts/interSubs;
       mpv-translate = callMpvScript ./pkgs/mpvScripts/mpv-translate;
       subtitle-sync = callMpvScript ./pkgs/mpvScripts/subtitle-sync;
       subtitle-translate = callMpvScript ./pkgs/mpvScripts/subtitle-translate;
