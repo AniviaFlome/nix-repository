@@ -1,6 +1,6 @@
 {
   lib,
-  stdenvNoCC,
+  stdenv,
   fetchurl,
   python3,
   makeWrapper,
@@ -9,6 +9,20 @@
   zstd,
   xdg-utils,
   curl,
+  autoPatchelfHook,
+  libglvnd,
+  libxkbcommon,
+  libdrm,
+  mesa,
+  fontconfig,
+  freetype,
+  glib,
+  dbus,
+  expat,
+  zlib,
+  openssl,
+  wayland,
+  xorg,
   nix-update-script,
 }:
 
@@ -18,7 +32,7 @@ let
     ps.cryptography
   ]);
 in
-stdenvNoCC.mkDerivation (finalAttrs: {
+stdenv.mkDerivation (finalAttrs: {
   pname = "bedrock-on-linux-unwrapped";
   version = "2.2.4";
 
@@ -32,9 +46,33 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     gnutar
     zstd
     makeWrapper
+    autoPatchelfHook
   ];
 
-  buildInputs = [ ];
+  buildInputs = [
+    stdenv.cc.cc.lib
+    libglvnd
+    libxkbcommon
+    libdrm
+    mesa
+    fontconfig
+    freetype
+    glib
+    dbus
+    expat
+    zlib
+    openssl
+    wayland
+    xorg.libX11
+    xorg.libXext
+    xorg.libXrender
+    xorg.libxcb
+    xorg.xcbutilcursor
+    xorg.xcbutilimage
+    xorg.xcbutilkeysyms
+    xorg.xcbutilrenderutil
+    xorg.xcbutilwm
+  ];
 
   unpackPhase = ''
     ar x $src
@@ -45,12 +83,23 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     libdir=$out/lib/bedrock-on-linux
     mkdir -p $libdir $out/bin $out/share/applications $out/share/icons/hicolor/256x256/apps
 
-    cp -r usr/lib/bedrock-on-linux/bol $libdir/
-    cp -r usr/lib/bedrock-on-linux/customtkinter $libdir/
-    cp -r usr/lib/bedrock-on-linux/darkdetect $libdir/
-    cp -r usr/lib/bedrock-on-linux/packaging $libdir/
-    cp usr/lib/bedrock-on-linux/bedrock-on-linux $libdir/
-    cp -r usr/lib/bedrock-on-linux/data $libdir/
+    cp -r usr/lib/bedrock-on-linux/. $libdir/
+
+    # Drop optional Qt plugins whose extra libraries aren't worth pulling in
+    # (sql backends, gtk3 theming, cups printing, headless eglfs/kms, ...).
+    # The app is pure QtWidgets, so QML modules and bundled dev tools go too.
+    qt=$libdir/PySide6/Qt
+    rm -rf $qt/plugins/sqldrivers \
+      $qt/plugins/qmltooling \
+      $qt/plugins/wayland-graphics-integration-server \
+      $qt/plugins/egldeviceintegrations \
+      $qt/plugins/platforminputcontexts \
+      $qt/plugins/platformthemes \
+      $qt/plugins/printsupport \
+      $qt/plugins/designer \
+      $qt/plugins/imageformats/libqpdf.so \
+      $qt/qml \
+      $qt/bin
 
     makeWrapper ${pythonEnv}/bin/python3 $out/bin/bedrock-on-linux \
       --set PYTHONPATH "$libdir" \

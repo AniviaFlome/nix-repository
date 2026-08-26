@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  pull-requests: write
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -16,9 +17,10 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
       - name: Update packages
-        run: python3 ./scripts/update.py --build
+        run: python3 ./scripts/update.py --build --open-prs
         env:
           NIXPKGS_ALLOW_UNFREE: '1'
+          GH_TOKEN: ${{ github.token }}
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "pkgs: auto-update"

@@ -20,7 +20,7 @@ in
   anitr-cli = pkgs.callPackage ./pkgs/anitr-cli { };
   turkanime-gui = pkgs.callPackage ./pkgs/turkanime-gui { };
   nativecookie = pkgs.callPackage ./pkgs/nativecookie { };
-  osu-beatmap-manager-git = pkgs.callPackage ./pkgs/osu-beatmap-manager-git { };
+  osu-beatmap-manager = pkgs.callPackage ./pkgs/osu-beatmap-manager { };
   boson = pkgs.callPackage ./pkgs/boson { };
   cake-wallet = pkgs.callPackage ./pkgs/cake-wallet { };
   gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { inherit (lib) makeReleaseUpdater; };
@@ -56,8 +56,11 @@ in
       interSubs = callMpvScript ./pkgs/mpvScripts/interSubs;
       mpv-translate = callMpvScript ./pkgs/mpvScripts/mpv-translate;
       subtitle-sync = callMpvScript ./pkgs/mpvScripts/subtitle-sync;
+      subtitle-translate = callMpvScript ./pkgs/mpvScripts/subtitle-translate;
       whisper-subs = callMpvScript ./pkgs/mpvScripts/whisper-subs;
       cheatsheet = callMpvScript ./pkgs/mpvScripts/cheatsheet;
       file-browser = callMpvScript ./pkgs/mpvScripts/file-browser;
+      keybind-visualizer = callMpvScript ./pkgs/mpvScripts/keybind-visualizer;
+      sub-seek = callMpvScript ./pkgs/mpvScripts/sub-seek;
     };
 }

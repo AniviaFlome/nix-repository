@@ -32,7 +32,8 @@ nix shell nixpkgs#nix-update -c nix-update --flake <attr-path>
 
 Special cases (pass as extra args):
 - **Subpackages** — `waha-tui` needs `--subpackage=bunDeps`
-- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`
+- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`, `sub-seek`, `keybind-visualizer`
+- **Review-gated (`passthru.updatePr = true`)** — `sub-seek`, `keybind-visualizer`. Never updated directly: `update.py` skips them unless run with `--open-prs`, which bumps each on a dedicated branch (`auto-update/<attr-path>`) and opens/refreshes a GitHub PR for manual review (malware guard against upstream code changes). Requires `GH_TOKEN` + `gh`; CI does this daily.
 - **`makeReleaseUpdater` packages** — `proton-cachyos`, `gdk-proton`. Updater in `lib/default.nix` fetches latest GitHub/Gitea release tag. CI runs these via `--use-update-script`.
 
 `adore` and `fallin` use `version = "latest"` and `--version=branch` — no real version pinned.
@@ -43,14 +44,27 @@ Special cases (pass as extra args):
 - **Steam compat tools** (`proton-cachyos`, `gdk-proton`, `boson`, `nativecookie`) — provide a `steamcompattool` output; not for profile install. Use `programs.steam.extraCompatPackages`. All have `preferLocalBuild = true`.
 - **`nativecookie`** — uses plain `[ nix-update ]` as `updateScript` (list form), not `nix-update-script` helper.
 
+## Package documentation rule
+
+When adding a package, you **must** add or update its row in the appropriate `README.md` package table in the same change.
+
 ## Adding a package
 
 1. Create `pkgs/<name>/default.nix`
 2. Add `pkgs.callPackage ./pkgs/<name> { … }` entry in `default.nix`
 3. Pass `inherit (lib) makeReleaseUpdater;` if using the release updater
 4. For mpv scripts: add under `mpvScripts` via `callMpvScript`
-5. Add `passthru.tests` only where it catches real bugs (see "Tests" below) — not every package needs tests
-6. Run `nix fmt` and `nix flake check`
+5. Add a row to the matching table in `README.md` (Applications / Steam Compatibility Tools / MPV Shaders / MPV Scripts), using the real attr name as the label and upstream repo URL + `meta.description`
+6. Add `passthru.tests` only where it catches real bugs (see "Tests" below) — not every package needs tests
+7. Run `nix fmt` and `nix flake check`
+
+## Removing a package
+
+1. Delete `pkgs/<name>/` and drop its entry from `default.nix`
+2. Remove its row from the matching table in `README.md`
+3. Clean up any special-case notes above (update flags, unfree list in CI section, etc.) that referenced it
+
+Keep `README.md` in sync whenever packages are added or removed — it is the user-facing package list.
 
 ## Tests
 
@@ -75,7 +89,7 @@ passthru = {
 ## CI
 
 - `.github/workflows/build.yml` — builds on `nixpkgs-unstable` + `nixos-unstable`, pushes to Cachix (`aniviaflome-nix-repository`), triggers NUR update for repo `aniviaflome`. Runs `nix-build-uncached ci.nix -A cacheOutputs`.
-- `.github/workflows/update.yml` — daily `scripts/update.py --build`, auto-commits with "pkgs: auto-update". The `--build` flag makes `nix-update` verify each package builds before committing the version bump, so broken updates are skipped (reported as failed) instead of pushed to `main`. Unfree packages (`adore`, `turkanime-cli`, `turkanime-gui`, `getcomics-downloader`) use `--file default.nix` instead of `--flake` (pure flake eval ignores `NIXPKGS_ALLOW_UNFREE`; impure `--file` mode honors it) so they're build-verified too. Sets `NIXPKGS_ALLOW_UNFREE=1` for the unfree builds. For local runs without `--build`, updates are fast but unverified.
+- `.github/workflows/update.yml` — daily `scripts/update.py --build --open-prs`, auto-commits direct updates with "pkgs: auto-update" and opens/refreshes PRs for review-gated packages (`passthru.updatePr`, see above). The `--build` flag makes `nix-update` verify each package builds before committing the version bump, so broken updates are skipped (reported as failed) instead of pushed to `main`. Unfree packages (`adore`, `turkanime-cli`, `turkanime-gui`, `getcomics-downloader`, `sub-seek`, `keybind-visualizer`) use `--file default.nix` instead of `--flake` (pure flake eval ignores `NIXPKGS_ALLOW_UNFREE`; impure `--file` mode honors it) so they're build-verified too. Sets `NIXPKGS_ALLOW_UNFREE=1` for the unfree builds. For local runs without `--build`, updates are fast but unverified.
 
 ## Dev shell
 

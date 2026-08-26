@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   src = fetchzip {
     url = "https://github.com/FyraLabs/boson/releases/download/v${finalAttrs.version}/boson-${finalAttrs.version}-x86_64-musl.tar.zst";
-    hash = "";
+    hash = "sha256-1muEpuwVm0tRJirWTc2zIo2mE0lrhXUf74XLhUmkdnk=";
     nativeBuildInputs = [ zstd ];
   };
 
@@ -31,7 +31,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     mkdir -p $out
 
-    # Link all files except compatibilitytool.vdf (which we need to modify)
     for f in $src/*; do
       name=$(basename "$f")
       if [[ "$name" != "compatibilitytool.vdf" ]]; then
@@ -39,10 +38,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       fi
     done
 
-    # Copy compatibilitytool.vdf so we can modify it
     cp $src/compatibilitytool.vdf $out/compatibilitytool.vdf
 
-    # Symlink electron so boson can find it locally (fallback 3)
     mkdir -p $out/electron
     ln -s ${electron}/bin/electron $out/electron/electron
 
@@ -59,10 +56,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    # Provide the electron path for use in Steam launch options
-    # Usage: ELECTRON_PATH=${boson.electronPath} %command%
     electronPath = "${electron}/bin/electron";
-
     updateScript = [ nix-update ];
   };
 

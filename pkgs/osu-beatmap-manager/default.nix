@@ -6,8 +6,8 @@
   writeScript,
 }:
 
-buildDotnetModule rec {
-  pname = "osu-beatmap-manager-git";
+buildDotnetModule {
+  pname = "osu-beatmap-manager";
   version = "0-unstable-2026-04-18";
 
   src = fetchFromGitHub {
@@ -23,21 +23,21 @@ buildDotnetModule rec {
   dotnet-sdk = dotnetCorePackages.sdk_8_0;
   dotnet-runtime = dotnetCorePackages.runtime_8_0;
 
-  passthru.updateScript = writeScript "update-osu-beatmap-manager-git" ''
+  passthru.updateScript = writeScript "update-osu-beatmap-manager" ''
     #!/usr/bin/env nix-shell
     #!nix-shell -i bash -p nix-update
 
     set -euo pipefail
 
-    nix-update osu-beatmap-manager-git --version branch
-    $(nix-build -A osu-beatmap-manager-git.fetch-deps --no-out-link) ./pkgs/osu-beatmap-manager-git/deps.json
+    nix-update osu-beatmap-manager --version branch
+    $(nix-build -A osu-beatmap-manager.fetch-deps --no-out-link) ./pkgs/osu-beatmap-manager/deps.json
   '';
 
   meta = with lib; {
     description = "osu! Beatmap Manager";
     homepage = "https://github.com/AniviaFlome/osu-beatmap-manager";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
     mainProgram = "obm";
   };
 }
