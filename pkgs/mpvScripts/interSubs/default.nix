@@ -11,6 +11,7 @@ let
     ps: with ps; [
       pyqt5
       numpy
+      six
       beautifulsoup4
       requests
       lxml
