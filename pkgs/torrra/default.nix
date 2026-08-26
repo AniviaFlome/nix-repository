@@ -8,11 +8,11 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "torrra";
-  version = "2.3.0";
+  version = "2.3.1";
 
   src = fetchurl {
     url = "https://github.com/stabldev/torrra/releases/download/v${finalAttrs.version}/torrra_v${finalAttrs.version}_linux_x86_64";
-    hash = "sha256-sf6tG0SwrSE832ogSz0VygSVwRuroPiJnrBkhzWoEy0=";
+    hash = "sha256-t/QSf0QszcudE8wuP6C3L8+/gaX4cKqP3ciOrUNkiXA=";
   };
 
   nativeBuildInputs = [ autoPatchelfHook ];
