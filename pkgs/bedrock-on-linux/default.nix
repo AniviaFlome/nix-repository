@@ -10,6 +10,7 @@
   curl,
   xdg-utils,
   bubblewrap,
+  webkitgtk_4_1,
 }:
 
 let
@@ -22,7 +23,7 @@ buildFHSEnv {
   pname = "bedrock-on-linux";
   inherit (bedrock-on-linux-unwrapped) version meta;
 
-  targetPkgs = _: [
+  targetPkgs = pkgs: [
     bedrock-on-linux-unwrapped
     pythonEnv
     coreutils
@@ -33,6 +34,8 @@ buildFHSEnv {
     curl
     xdg-utils
     bubblewrap
+    webkitgtk_4_1
+    pkgs.glib-networking
   ];
 
   runScript = "${bedrock-on-linux-unwrapped}/bin/bedrock-on-linux";

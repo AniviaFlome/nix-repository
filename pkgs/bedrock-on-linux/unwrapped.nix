@@ -3,7 +3,6 @@
   stdenv,
   fetchurl,
   python3,
-  makeWrapper,
   binutils-unwrapped,
   gnutar,
   zstd,
@@ -45,7 +44,6 @@ stdenv.mkDerivation (finalAttrs: {
     binutils-unwrapped
     gnutar
     zstd
-    makeWrapper
     autoPatchelfHook
   ];
 
@@ -80,41 +78,49 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   installPhase = ''
-    libdir=$out/lib/bedrock-on-linux
-    mkdir -p $libdir $out/bin $out/share/applications $out/share/icons/hicolor/256x256/apps
+        libdir=$out/lib/bedrock-on-linux
+        mkdir -p $libdir $out/bin $out/share/applications $out/share/icons/hicolor/256x256/apps
 
-    cp -r usr/lib/bedrock-on-linux/. $libdir/
+        cp -r usr/lib/bedrock-on-linux/. $libdir/
 
-    # Drop optional Qt plugins whose extra libraries aren't worth pulling in
-    # (sql backends, gtk3 theming, cups printing, headless eglfs/kms, ...).
-    # The app is pure QtWidgets, so QML modules and bundled dev tools go too.
-    qt=$libdir/PySide6/Qt
-    rm -rf $qt/plugins/sqldrivers \
-      $qt/plugins/qmltooling \
-      $qt/plugins/wayland-graphics-integration-server \
-      $qt/plugins/egldeviceintegrations \
-      $qt/plugins/platforminputcontexts \
-      $qt/plugins/platformthemes \
-      $qt/plugins/printsupport \
-      $qt/plugins/designer \
-      $qt/plugins/imageformats/libqpdf.so \
-      $qt/qml \
-      $qt/bin
+        # Drop optional Qt plugins whose extra libraries aren't worth pulling in
+        # (sql backends, gtk3 theming, cups printing, headless eglfs/kms, ...).
+        # The app is pure QtWidgets, so QML modules and bundled dev tools go too.
+        qt=$libdir/PySide6/Qt
+        rm -rf $qt/plugins/sqldrivers \
+          $qt/plugins/qmltooling \
+          $qt/plugins/wayland-graphics-integration-server \
+          $qt/plugins/egldeviceintegrations \
+          $qt/plugins/platforminputcontexts \
+          $qt/plugins/platformthemes \
+          $qt/plugins/printsupport \
+          $qt/plugins/designer \
+          $qt/plugins/imageformats/libqpdf.so \
+          $qt/qml \
+          $qt/bin
 
-    makeWrapper ${pythonEnv}/bin/python3 $out/bin/bedrock-on-linux \
-      --set PYTHONPATH "$libdir" \
-      --prefix PATH : "${
-        lib.makeBinPath [
-          curl
-          gnutar
-          zstd
-          xdg-utils
-        ]
-      }" \
-      --add-flags "$libdir/bedrock-on-linux"
+        # Python entry point instead of a bash wrapper (makeWrapper).
+        # The app re-execs /usr/bin/bedrock-on-linux via Python internally,
+        # so the script must be valid Python; a bash wrapper causes SyntaxError.
+        cat > $out/bin/bedrock-on-linux <<PYENTRY
+    #!${pythonEnv}/bin/python3
+    import os, sys, runpy
+    os.environ["PYTHONPATH"] = "$libdir"
+    sys.path.insert(0, "$libdir")
+    os.environ["PATH"] = "${
+      lib.makeBinPath [
+        curl
+        gnutar
+        zstd
+        xdg-utils
+      ]
+    }:" + os.environ.get("PATH", "")
+    runpy.run_path("$libdir/bedrock-on-linux", run_name="__main__")
+    PYENTRY
+        chmod +x $out/bin/bedrock-on-linux
 
-    install -Dm644 usr/share/applications/bedrock-on-linux.desktop $out/share/applications/bedrock-on-linux.desktop
-    install -Dm644 usr/share/icons/hicolor/256x256/apps/bedrock-on-linux.png $out/share/icons/hicolor/256x256/apps/bedrock-on-linux.png
+        install -Dm644 usr/share/applications/bedrock-on-linux.desktop $out/share/applications/bedrock-on-linux.desktop
+        install -Dm644 usr/share/icons/hicolor/256x256/apps/bedrock-on-linux.png $out/share/icons/hicolor/256x256/apps/bedrock-on-linux.png
   '';
 
   passthru.updateScript = nix-update-script {
