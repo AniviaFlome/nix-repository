@@ -39,11 +39,6 @@ in
   amplitude-soundboard = pkgs.callPackage ./pkgs/amplitude-soundboard { };
   cmdui = pkgs.callPackage ./pkgs/cmdui { };
 
-  bedrock-on-linux-unwrapped = pkgs.callPackage ./pkgs/bedrock-on-linux/unwrapped.nix { };
-  bedrock-on-linux = pkgs.callPackage ./pkgs/bedrock-on-linux {
-    bedrock-on-linux-unwrapped = pkgs.callPackage ./pkgs/bedrock-on-linux/unwrapped.nix { };
-  };
-
   mpvScripts =
     let
       callMpvScript =

@@ -10,7 +10,6 @@ My nix packages repository.
 | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | [amplitude-soundboard](https://github.com/dan0v/AmplitudeSoundboard)       | A sleek, cross-platform soundboard                                                              |
 | [anitr-cli](https://github.com/axrona/anitr-cli)                           | Terminalde Türkçe altyazılı anime arama ve izleme aracı                                         |
-| [bedrock-on-linux](https://github.com/Wyze3306/BedrockOnLinux)             | Run Minecraft Bedrock (Windows GDK) on Linux, multiplayer included                              |
 | [bloomeetunes](https://github.com/HemantKArya/BloomeeTunes)                | Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources. |
 | [cake-wallet](https://github.com/cake-tech/cake_wallet)                    | A non-custodial multi-currency wallet                                                           |
 | [cmdui](https://github.com/AniviaFlome/cmdui)                              | Data-driven TUI command-line builder                                                            |
