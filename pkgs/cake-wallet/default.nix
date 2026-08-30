@@ -28,7 +28,7 @@
 
 stdenv.mkDerivation rec {
   pname = "cake-wallet";
-  version = "6.4.2";
+  version = "6.4.3";
 
   src = fetchurl {
     url = "https://github.com/cake-tech/cake_wallet/releases/download/v${version}/Cake_Wallet_v${version}_Linux.tar.xz";
