@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -85,8 +86,13 @@ def git_has_identity() -> bool:
 
 
 def git_commit(message: str) -> None:
+    # In CI we always force the bot identity so Author doesn't leak
+    # to the workflow actor (AniviaFlome) and pollute the personal
+    # contribution graph. Locally we preserve the developer's identity
+    # when git config is already set.
+    force_bot = os.environ.get("GITHUB_ACTIONS") == "true"
     cmd = ["git"]
-    if not git_has_identity():
+    if force_bot or not git_has_identity():
         cmd += ["-c", f"user.name={BOT_NAME}", "-c", f"user.email={BOT_EMAIL}"]
     cmd += ["commit", "-am", message]
     subprocess.run(cmd, check=True, capture_output=True, text=True)
