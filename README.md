@@ -22,6 +22,7 @@ My nix packages repository.
 | [torrra](https://github.com/stabldev/torrra)                               | A Python CLI tool to search and download torrents                                               |
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici)           | Türk Anime python kütüphanesi ve tarayıcısı                                                     |
 | [turkanime-gui](https://github.com/barkeser2002/turkanime-gui)             | Türkanime video oynatıcı ve indirici (GUI)                                                      |
+| [vice-clipper](https://github.com/eklonofficial/Vice)                     | Medal.tv-style game clip recorder for Linux: instant replay, session recording, and one-click sharing |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui)                      | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API)                                     |
 | [waytator](https://github.com/faetalize/waytator)                          | Screenshot annotator and lightweight image editor                                               |
 

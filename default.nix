@@ -38,6 +38,7 @@ in
   bloomeetunes = pkgs.callPackage ./pkgs/bloomeetunes { };
   amplitude-soundboard = pkgs.callPackage ./pkgs/amplitude-soundboard { };
   cmdui = pkgs.callPackage ./pkgs/cmdui { };
+  vice-clipper = pkgs.callPackage ./pkgs/vice-clipper { };
 
   mpvScripts =
     let
