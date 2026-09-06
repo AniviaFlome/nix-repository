@@ -53,7 +53,21 @@
       );
 
       packages = forAllSystems (
-        system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system}
+        system:
+        let
+          lp = self.legacyPackages.${system};
+          topLevel = nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) lp;
+          nested = nixpkgs.lib.concatMapAttrs (
+            outerName: outerVal:
+            if builtins.isAttrs outerVal && !(nixpkgs.lib.isDerivation outerVal) then
+              nixpkgs.lib.mapAttrs' (
+                innerName: innerVal: nixpkgs.lib.nameValuePair "${outerName}-${innerName}" innerVal
+              ) (nixpkgs.lib.filterAttrs (_: nixpkgs.lib.isDerivation) outerVal)
+            else
+              { }
+          ) lp;
+        in
+        topLevel // nested
       );
 
       overlays.default = import ./overlay.nix;

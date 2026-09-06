@@ -59,7 +59,7 @@ def nix_update_cmd(target: UpdateTarget, build: bool) -> list[str]:
     (impure channel eval honors it). Free packages use `--flake`.
     """
     cmd: list[str] = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update"]
-    if not target.get("unfree", False):
+    if not target.get("unfree", False) and not target.get("nested", False):
         cmd.append("--flake")
     cmd.append(target["name"])
 

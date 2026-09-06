@@ -60,8 +60,7 @@ let
             name = prefix;
             inherit (info) useUpdateScript extraArgs;
             unfree = !(isFree attrs);
-            # Packages with passthru.updatePr must land via reviewed GitHub
-            # PRs instead of direct auto-commits to main (malware guard).
+            nested = builtins.match ".*\\..*" prefix != null;
             prReview = attrs.passthru.updatePr or false;
           }
         ]
