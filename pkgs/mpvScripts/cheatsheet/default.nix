@@ -6,13 +6,13 @@
 }:
 buildLua {
   pname = "mpv-cheatsheet";
-  version = "0-unstable-2025-02-08";
+  version = "0-unstable-2026-09-06";
 
   src = fetchFromGitHub {
     owner = "AniviaFlome";
     repo = "mpv-scripts";
-    rev = "be59f8b4be46ed931e72ccf65cc3a2ea1852fcf4";
-    hash = "sha256-AtIaCuxEE18rKlcm6/NqxHu+XSLOysWm+eSuYi11/p8=";
+    rev = "2ddd496ae4052477bf468c7309ead8af8d7b40e6";
+    hash = "sha256-qDz5rrgu6wMW88V/L1K68lHd6ICclt1VABdBzDbE1ts=";
   };
 
   installPhase = ''

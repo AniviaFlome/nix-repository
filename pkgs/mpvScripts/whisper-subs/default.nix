@@ -9,7 +9,7 @@
 
 buildLua {
   pname = "whisper-subs";
-  version = "unstable-2025-02-09";
+  version = "0-unstable-2025-02-09";
 
   src = fetchFromGitHub {
     owner = "GhostNaN";

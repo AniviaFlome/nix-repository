@@ -9,13 +9,13 @@
 
 buildLua {
   pname = "subtitle-translate";
-  version = "0-unstable-2026-08-26";
+  version = "0-unstable-2026-09-06";
 
   src = fetchFromGitHub {
     owner = "AniviaFlome";
     repo = "mpv-scripts";
-    rev = "59d04014ba3a163100d82a40a4ec659746d8b644";
-    hash = "sha256-R9QYGjP0R1vmGeiBLTUygIXtg41ehrNb4K8Qp0YlIs8=";
+    rev = "2ddd496ae4052477bf468c7309ead8af8d7b40e6";
+    hash = "sha256-qDz5rrgu6wMW88V/L1K68lHd6ICclt1VABdBzDbE1ts=";
   };
 
   installPhase = ''

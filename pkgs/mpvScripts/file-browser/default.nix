@@ -6,13 +6,13 @@
 }:
 buildLua {
   pname = "mpv-file-browser";
-  version = "0-unstable-2026-01-10";
+  version = "0-unstable-2026-03-27";
 
   src = fetchFromGitHub {
     owner = "CogentRedTester";
     repo = "mpv-file-browser";
-    rev = "c9f06f90f95444585ef02aa7a82ca10ff9e50db1";
-    hash = "sha256-Rm34CT41wFZqaZ3I012/6HnjCGqyPWkcZyf/aQ8rb+A=";
+    rev = "e07ab168fbba24063cd81c9b6f3fb8b85d5fe24d";
+    hash = "sha256-zCDBxsGC7THQ2k0qDkjOq4TZm4thI2yk57a3i9PRCAs=";
   };
 
   installPhase = ''
