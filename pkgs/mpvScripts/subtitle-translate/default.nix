@@ -4,9 +4,25 @@
   fetchFromGitHub,
   curl,
   ffmpeg,
+  tesseract,
+  python3,
   nix-update-script,
+  withTesseract ? true,
+  withRapidocr ? false,
+  withEasyocr ? false,
+  withPaddleocr ? false,
 }:
 
+let
+  pythonOCR = python3.withPackages (
+    ps:
+    with ps;
+    lib.optional withRapidocr rapidocr-onnxruntime
+    ++ lib.optional withEasyocr easyocr
+    ++ lib.optional withPaddleocr paddleocr
+  );
+  withPythonOCR = withRapidocr || withEasyocr || withPaddleocr;
+in
 buildLua {
   pname = "subtitle-translate";
   version = "0-unstable-2026-09-06";
@@ -17,6 +33,8 @@ buildLua {
     rev = "2ddd496ae4052477bf468c7309ead8af8d7b40e6";
     hash = "sha256-qDz5rrgu6wMW88V/L1K68lHd6ICclt1VABdBzDbE1ts=";
   };
+
+  runtime-dependencies = lib.optional withTesseract tesseract ++ lib.optional withPythonOCR pythonOCR;
 
   installPhase = ''
     runHook preInstall
