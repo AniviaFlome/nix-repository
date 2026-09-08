@@ -25,13 +25,13 @@ let
 in
 buildLua {
   pname = "subtitle-translate";
-  version = "0-unstable-2026-09-07";
+  version = "0-unstable-2026-09-08";
 
   src = fetchFromGitHub {
     owner = "AniviaFlome";
     repo = "mpv-scripts";
-    rev = "3a565368580f2998d4f04fe7420c2c8f8701f8d0";
-    hash = "sha256-Vo+QkBIt2mDk8S1zd5WFPMi3rrwYSwRg+hiqcTN+BS8=";
+    rev = "0ae50e16e1e7c336c7a277f8630d7732dfb7d4d9";
+    hash = "sha256-Xpy+SHoOOoOfox70Zo5iCWUxmBsbg1OBnHXQdTWmDxU=";
   };
 
   runtime-dependencies = lib.optional withTesseract tesseract ++ lib.optional withPythonOCR pythonOCR;
