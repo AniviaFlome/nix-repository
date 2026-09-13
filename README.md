@@ -6,25 +6,27 @@ My nix packages repository.
 
 ### Applications
 
-| Package                                                                    | Description                                                                                     |
-| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| [amplitude-soundboard](https://github.com/dan0v/AmplitudeSoundboard)       | A sleek, cross-platform soundboard                                                              |
-| [anitr-cli](https://github.com/axrona/anitr-cli)                           | Terminalde Türkçe altyazılı anime arama ve izleme aracı                                         |
-| [bloomeetunes](https://github.com/HemantKArya/BloomeeTunes)                | Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources. |
-| [cake-wallet](https://github.com/cake-tech/cake_wallet)                    | A non-custodial multi-currency wallet                                                           |
-| [cmdui](https://github.com/AniviaFlome/cmdui)                              | Data-driven TUI command-line builder                                                            |
-| [crankshaft](https://github.com/KraXen72/crankshaft)                       | A fast, feature-rich krunker client written in typescript                                       |
-| [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info                      |
-| [handy](https://github.com/cjpais/Handy)                                   | A free, open source, and extensible speech-to-text application that works completely offline.   |
-| [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                  |
-| [motrix-next](https://github.com/AnInsomniacy/motrix-next)                 | A full-featured open-source download manager                                                    |
-| [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager)     | osu! Beatmap Manager                                                                         |
-| [torrra](https://github.com/stabldev/torrra)                               | A Python CLI tool to search and download torrents                                               |
-| [turkanime-cli](https://github.com/KebabLord/turkanime-indirici)           | Türk Anime python kütüphanesi ve tarayıcısı                                                     |
-| [turkanime-gui](https://github.com/barkeser2002/turkanime-gui)             | Türkanime video oynatıcı ve indirici (GUI)                                                      |
-| [vice-clipper](https://github.com/eklonofficial/Vice)                     | Medal.tv-style game clip recorder for Linux: instant replay, session recording, and one-click sharing |
-| [waha-tui](https://github.com/muhammedaksam/waha-tui)                      | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API)                                     |
-| [waytator](https://github.com/faetalize/waytator)                          | Screenshot annotator and lightweight image editor                                               |
+| Package                                                                    | Description                                                                                           |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [agent-workspace-linux](https://github.com/agent-sh/agent-workspace-linux) | Isolated Linux desktop workspaces for AI agents                                                       |
+| [amplitude-soundboard](https://github.com/dan0v/AmplitudeSoundboard)       | A sleek, cross-platform soundboard                                                                    |
+| [anitr-cli](https://github.com/axrona/anitr-cli)                           | Terminalde Türkçe altyazılı anime arama ve izleme aracı                                               |
+| [bloomeetunes](https://github.com/HemantKArya/BloomeeTunes)                | Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources.       |
+| [cake-wallet](https://github.com/cake-tech/cake_wallet)                    | A non-custodial multi-currency wallet                                                                 |
+| [cmdui](https://github.com/AniviaFlome/cmdui)                              | Data-driven TUI command-line builder                                                                  |
+| [computer-use-linux](https://github.com/agent-sh/computer-use-linux)       | Linux desktop control over MCP — accessibility tree, window targeting, screenshots, input             |
+| [crankshaft](https://github.com/KraXen72/crankshaft)                       | A fast, feature-rich krunker client written in typescript                                             |
+| [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info                            |
+| [handy](https://github.com/cjpais/Handy)                                   | A free, open source, and extensible speech-to-text application that works completely offline.         |
+| [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                        |
+| [motrix-next](https://github.com/AnInsomniacy/motrix-next)                 | A full-featured open-source download manager                                                          |
+| [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager)  | osu! Beatmap Manager                                                                                  |
+| [torrra](https://github.com/stabldev/torrra)                               | A Python CLI tool to search and download torrents                                                     |
+| [turkanime-cli](https://github.com/KebabLord/turkanime-indirici)           | Türk Anime python kütüphanesi ve tarayıcısı                                                           |
+| [turkanime-gui](https://github.com/barkeser2002/turkanime-gui)             | Türkanime video oynatıcı ve indirici (GUI)                                                            |
+| [vice-clipper](https://github.com/eklonofficial/Vice)                      | Medal.tv-style game clip recorder for Linux: instant replay, session recording, and one-click sharing |
+| [waha-tui](https://github.com/muhammedaksam/waha-tui)                      | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API)                                           |
+| [waytator](https://github.com/faetalize/waytator)                          | Screenshot annotator and lightweight image editor                                                     |
 
 ### Steam Compatibility Tools
 

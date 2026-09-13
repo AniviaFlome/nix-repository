@@ -39,6 +39,8 @@ in
   amplitude-soundboard = pkgs.callPackage ./pkgs/amplitude-soundboard { };
   cmdui = pkgs.callPackage ./pkgs/cmdui { };
   vice-clipper = pkgs.callPackage ./pkgs/vice-clipper { };
+  agent-workspace-linux = pkgs.callPackage ./pkgs/agent-workspace-linux { };
+  computer-use-linux = pkgs.callPackage ./pkgs/computer-use-linux { };
 
   mpvScripts =
     let
