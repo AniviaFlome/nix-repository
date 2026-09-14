@@ -5,7 +5,10 @@
   autoPatchelfHook,
   makeWrapper,
   libxkbcommon,
-  xorg,
+  wayland,
+  libglvnd,
+  vulkan-loader,
+  libxcb,
   xvfb,
   xorg-server,
   xauth,
@@ -49,7 +52,7 @@ stdenv.mkDerivation (finalAttrs: {
   buildInputs = [
     libxkbcommon
     stdenv.cc.cc.lib
-    xorg.libxcb
+    libxcb
   ];
 
   installPhase = ''
@@ -72,6 +75,14 @@ stdenv.mkDerivation (finalAttrs: {
           imagemagick
           xclip
           bubblewrap
+        ]
+      }" \
+      --prefix LD_LIBRARY_PATH : "${
+        lib.makeLibraryPath [
+          wayland
+          libxkbcommon
+          libglvnd
+          vulkan-loader
         ]
       }"
 
