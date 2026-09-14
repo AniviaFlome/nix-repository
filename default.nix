@@ -24,6 +24,12 @@ in
   boson = pkgs.callPackage ./pkgs/boson { };
   cake-wallet = pkgs.callPackage ./pkgs/cake-wallet { };
   gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { inherit (lib) makeReleaseUpdater; };
+  soda = pkgs.callPackage ./pkgs/soda {
+    inherit (lib) makeReleaseUpdater;
+  };
+  protosoda = pkgs.callPackage ./pkgs/protosoda {
+    inherit (lib) makeReleaseUpdater;
+  };
   getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
   handy = pkgs.callPackage ./pkgs/handy { };
   hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };

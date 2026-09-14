@@ -34,7 +34,7 @@ Special cases (pass as extra args):
 - **Subpackages** — `waha-tui` needs `--subpackage=bunDeps`
 - **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`, `sub-seek`, `keybind-visualizer`
 - **Review-gated (`passthru.updatePr = true`)** — `sub-seek`, `keybind-visualizer`. Never updated directly: `update.py` skips them unless run with `--open-prs`, which bumps each on a dedicated branch (`auto-update/<attr-path>`) and opens/refreshes a GitHub PR for manual review (malware guard against upstream code changes). Requires `GH_TOKEN` + `gh`; CI does this daily.
-- **`makeReleaseUpdater` packages** — `proton-cachyos`, `gdk-proton`. Updater in `lib/default.nix` fetches latest GitHub/Gitea release tag. CI runs these via `--use-update-script`.
+- **`makeReleaseUpdater` packages** — `proton-cachyos`, `gdk-proton`, `soda`, `protosoda`. Updater in `lib/default.nix` fetches latest GitHub/Gitea release tag (pass `tagPrefix` when several product lines share one releases feed, e.g. `bottlesdevs/wine`). CI runs these via `--use-update-script`.
 
 `adore` and `fallin` use `version = "latest"` and `--version=branch` — no real version pinned.
 

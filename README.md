@@ -21,6 +21,7 @@ My nix packages repository.
 | [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                        |
 | [motrix-next](https://github.com/AnInsomniacy/motrix-next)                 | A full-featured open-source download manager                                                          |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager)  | osu! Beatmap Manager                                                                                  |
+| [soda](https://github.com/bottlesdevs/wine)                                | Prebuilt Soda Wine runner for Bottles (Valve Wine with Proton, TKG and GE patches)                    |
 | [torrra](https://github.com/stabldev/torrra)                               | A Python CLI tool to search and download torrents                                                     |
 | [turkanime-cli](https://github.com/KebabLord/turkanime-indirici)           | Türk Anime python kütüphanesi ve tarayıcısı                                                           |
 | [turkanime-gui](https://github.com/barkeser2002/turkanime-gui)             | Türkanime video oynatıcı ve indirici (GUI)                                                            |
@@ -36,6 +37,7 @@ My nix packages repository.
 | [gdk-proton](https://github.com/Weather-OS/GDK-Proton)         | WineGDK Protonified                                                       |
 | [nativecookie](https://github.com/Kesefon/NativeCookie)        | Run Cookie Clicker Steam edition with native Electron on Linux            |
 | [proton-cachyos](https://github.com/CachyOS/proton-cachyos)    | Compatibility tool for Steam Play based on Wine and additional components |
+| [protosoda](https://github.com/bottlesdevs/wine)               | Soda Wine runner in a Proton/UMU layout for Steam Play and umu-launcher   |
 
 ### MPV Shaders
 
@@ -90,6 +92,43 @@ nixpkgs.overlays = [ inputs.nix-repository.overlays.default ];
 ```
 
 Then packages are available as `pkgs.proton-cachyos`, etc.
+
+### Steam Compatibility Tools
+
+Packages in the Steam Compatibility Tools table must not be added to
+`environment.systemPackages`. Expose them to Steam instead:
+
+```nix
+programs.steam = {
+  enable = true;
+  extraCompatPackages = with pkgs; [
+    protosoda
+    proton-cachyos
+  ];
+};
+```
+
+For non-Steam games via `umu-launcher`, point it at the compat tool directly
+(`^steamcompattool` selects the Steam layout output, not the guard file):
+
+```sh
+PROTONPATH="$(nix build --print-out-paths github:AniviaFlome/nix-repository#protosoda^steamcompattool)" umu-run ./game.exe
+```
+
+### Wine runner (soda) with Bottles
+
+`soda` is a prebuilt Bottles runner. Link it into Bottles' runners directory,
+named like the upstream archive (`soda-<version>-x86_64`), so Bottles picks it
+up:
+
+```sh
+mkdir -p ~/.local/share/bottles/runners
+nix build github:AniviaFlome/nix-repository#soda \
+  --out-link ~/.local/share/bottles/runners/soda-11.0-10-x86_64
+```
+
+These are prebuilt Ubuntu binaries, so on NixOS they need an FHS-compatible
+runtime (e.g. `programs.nix-ld.enable = true`, or run Bottles via `steam-run`).
 
 ### Install packages directly (without overlay)
 
