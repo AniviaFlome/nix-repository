@@ -28,6 +28,7 @@ My nix packages repository.
 | [vice-clipper](https://github.com/eklonofficial/Vice)                      | Medal.tv-style game clip recorder for Linux: instant replay, session recording, and one-click sharing |
 | [waha-tui](https://github.com/muhammedaksam/waha-tui)                      | A beautiful TUI for WhatsApp using WAHA (WhatsApp HTTP API)                                           |
 | [waytator](https://github.com/faetalize/waytator)                          | Screenshot annotator and lightweight image editor                                                     |
+| [zapfast](https://github.com/crmne/zapfast)                                | A native WhatsApp client built with Rust and egui                                                     |
 
 ### Steam Compatibility Tools
 

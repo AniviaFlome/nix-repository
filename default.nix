@@ -47,6 +47,7 @@ in
   vice-clipper = pkgs.callPackage ./pkgs/vice-clipper { };
   agent-workspace-linux = pkgs.callPackage ./pkgs/agent-workspace-linux { };
   computer-use-linux = pkgs.callPackage ./pkgs/computer-use-linux { };
+  zapfast = pkgs.callPackage ./pkgs/zapfast { };
 
   mpvScripts =
     let
