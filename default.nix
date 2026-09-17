@@ -48,6 +48,7 @@ in
   agent-workspace-linux = pkgs.callPackage ./pkgs/agent-workspace-linux { };
   computer-use-linux = pkgs.callPackage ./pkgs/computer-use-linux { };
   zapfast = pkgs.callPackage ./pkgs/zapfast { };
+  appium-mcp = pkgs.callPackage ./pkgs/appium-mcp { };
 
   mpvScripts =
     let

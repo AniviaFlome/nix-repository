@@ -11,6 +11,7 @@ My nix packages repository.
 | [agent-workspace-linux](https://github.com/agent-sh/agent-workspace-linux) | Isolated Linux desktop workspaces for AI agents                                                       |
 | [amplitude-soundboard](https://github.com/dan0v/AmplitudeSoundboard)       | A sleek, cross-platform soundboard                                                                    |
 | [anitr-cli](https://github.com/axrona/anitr-cli)                           | Terminalde Türkçe altyazılı anime arama ve izleme aracı                                               |
+| [appium-mcp](https://github.com/appium/appium-mcp)                         | Intelligent MCP server providing AI assistants with tools for Appium mobile automation                |
 | [bloomeetunes](https://github.com/HemantKArya/BloomeeTunes)                | Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources.       |
 | [cake-wallet](https://github.com/cake-tech/cake_wallet)                    | A non-custodial multi-currency wallet                                                                 |
 | [cmdui](https://github.com/AniviaFlome/cmdui)                              | Data-driven TUI command-line builder                                                                  |
