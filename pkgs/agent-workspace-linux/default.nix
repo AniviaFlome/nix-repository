@@ -26,14 +26,14 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "agent-workspace-linux";
-  version = "0.3.2";
+  version = "0.3.3";
 
   src =
     let
       arch =
         if stdenv.hostPlatform.isAarch64 then "aarch64-unknown-linux-gnu" else "x86_64-unknown-linux-gnu";
       hashes = {
-        x86_64-unknown-linux-gnu = "sha256-EwQ094E3BGLDD8eTcQUoy9cjWNLpuZdtVmBqHY1kn10=";
+        x86_64-unknown-linux-gnu = "sha256-0oNDqZnTGl2G5SMdh6VwFz4IWTNbgKYJOeul+ODlC4g=";
         aarch64-unknown-linux-gnu = "sha256-zgFrJSUTuWdCTcH1QUW00PgwbNAHOySpk6Y767ubRFg=";
       };
     in
