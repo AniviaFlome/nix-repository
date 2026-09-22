@@ -9,16 +9,16 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "appium-mcp";
-  version = "1.94.2";
+  version = "1.94.3";
 
   src = fetchFromGitHub {
     owner = "appium";
     repo = "appium-mcp";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-J7Dt7MexkEaT0/tx8tUMPYQKwodLDbu0LYIN/HWuWL8=";
+    hash = "sha256-1cYm248XUDjwU1CqFrXl5znjbJ5xMZIYU+3WDCMeiG8=";
   };
 
-  npmDepsHash = "sha256-i59rhKN35iZu3uwsgoRRMrHYNcgtMufAEvZ1plvDc98=";
+  npmDepsHash = "sha256-R64pEJEkG/gWW2Iuf4jzx7KriJ20Hx1qygQ5YcfYLAk=";
 
   nodejs = nodejs_24;
 
