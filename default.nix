@@ -49,6 +49,7 @@ in
   computer-use-linux = pkgs.callPackage ./pkgs/computer-use-linux { };
   zapfast = pkgs.callPackage ./pkgs/zapfast { };
   appium-mcp = pkgs.callPackage ./pkgs/appium-mcp { };
+  chronicle = pkgs.callPackage ./pkgs/chronicle { };
 
   mpvScripts =
     let
