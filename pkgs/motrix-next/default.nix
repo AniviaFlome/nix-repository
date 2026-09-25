@@ -8,7 +8,7 @@
 
 let
   pname = "motrix-next";
-  version = "3.9.9";
+  version = "4.0.0";
 
   arch = if stdenv.hostPlatform.isAarch64 then "aarch64" else "amd64";
 
