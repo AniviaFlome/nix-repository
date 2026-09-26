@@ -8,13 +8,13 @@
 
 buildLua {
   pname = "sub-seek";
-  version = "0-unstable-2026-06-29";
+  version = "0-unstable-2026-09-21";
 
   src = fetchFromGitHub {
     owner = "v-amorim";
     repo = "mpv";
-    rev = "d0188f3d1298744f4f9cda15a00f97b8513b8702";
-    hash = "sha256-cnv1wWYx5ZcYcKinwa4FWcReRjvnMJshSsMZwIsL/E0=";
+    rev = "f5fbb67aac64b8367250c358a00444c7197fa38b";
+    hash = "sha256-edPmI9SzAwKLQk4LjihZVZ9qx9V3FVq6F906Z7OvJE4=";
   };
 
   installPhase = ''
