@@ -18,13 +18,13 @@ let
 in
 python3Packages'.buildPythonApplication rec {
   pname = "turkanime-gui";
-  version = "10.1.0";
+  version = "10.2.0";
   pyproject = true;
 
   src = fetchPypi {
     pname = "turkanime_gui";
     inherit version;
-    hash = "sha256-aROUR1/aVA4v2MvjJ9vLWqdZea7ENtDWn49YEx7oYzo=";
+    hash = "sha256-fGMJjk+oceCVP2g5VnMvlI3pJX1/t5L+N8cYnO/V2RM=";
   };
 
   build-system = [ python3Packages.poetry-core ];
