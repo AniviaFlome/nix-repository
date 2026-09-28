@@ -40,7 +40,7 @@ in
   fallin = pkgs.callPackage ./pkgs/fallin { };
   adore = pkgs.callPackage ./pkgs/adore { };
   crankshaft = pkgs.callPackage ./pkgs/crankshaft { };
-  motrix-next = pkgs.callPackage ./pkgs/motrix-next { };
+  motrix-beta = pkgs.callPackage ./pkgs/motrix-beta { };
   bloomeetunes = pkgs.callPackage ./pkgs/bloomeetunes { };
   amplitude-soundboard = pkgs.callPackage ./pkgs/amplitude-soundboard { };
   cmdui = pkgs.callPackage ./pkgs/cmdui { };

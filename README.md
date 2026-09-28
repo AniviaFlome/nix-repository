@@ -21,7 +21,7 @@ My nix packages repository.
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info                            |
 | [handy](https://github.com/cjpais/Handy)                                   | A free, open source, and extensible speech-to-text application that works completely offline.         |
 | [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                        |
-| [motrix-next](https://github.com/AnInsomniacy/motrix-next)                 | A full-featured open-source download manager                                                          |
+| [motrix-beta](https://github.com/agalwood/Motrix)                       | A full-featured open-source download manager                                                          |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager)  | osu! Beatmap Manager                                                                                  |
 | [soda](https://github.com/bottlesdevs/wine)                                | Prebuilt Soda Wine runner for Bottles (Valve Wine with Proton, TKG and GE patches)                    |
 | [torrra](https://github.com/stabldev/torrra)                               | A Python CLI tool to search and download torrents                                                     |
