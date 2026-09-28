@@ -1,7 +1,8 @@
 import json
+import os
 import sys
 from unittest.mock import patch, MagicMock
-from update import main
+from update import main, prs_allowed
 
 def create_mock_run(input_data):
     """Helper to mock subprocess.run for nix eval and shell commands."""
@@ -136,3 +137,65 @@ def test_update_build_skipped_for_unfree():
         for call in mock_run.call_args_list:
             if 'pkg-unfree' in call.args[0]:
                 assert '--flake' not in call.args[0], "unfree package should not use --flake with --build"
+
+def run_main_with_env(argv, env):
+    """Run main() with a given sys.argv and os.environ patch, restoring both."""
+    old_argv = sys.argv
+    old_env = os.environ.get("GITHUB_ACTIONS")
+    if env is None:
+        os.environ.pop("GITHUB_ACTIONS", None)
+    else:
+        os.environ["GITHUB_ACTIONS"] = env
+    sys.argv = argv
+    try:
+        main()
+    finally:
+        sys.argv = old_argv
+        if old_env is None:
+            os.environ.pop("GITHUB_ACTIONS", None)
+        else:
+            os.environ["GITHUB_ACTIONS"] = old_env
+
+def test_open_prs_refused_outside_ci():
+    """--open-prs outside CI must not touch git/gh: PRs would be user-authored."""
+    input_data = [{"name": "pkg-pr", "prReview": True}]
+    with patch("subprocess.run") as mock_run:
+        mock_run.side_effect = create_mock_run(input_data)
+        run_main_with_env(["update.py", "--open-prs"], None)
+        # Only the 2 nix-eval calls for get_targets; no checkout/nix-update/gh.
+        assert mock_run.call_count == 2
+        for call in mock_run.call_args_list:
+            assert "checkout" not in call.args[0]
+            assert "nix-update" not in str(call.args[0])
+
+def test_open_prs_allowed_with_override():
+    """--open-prs --allow-local-prs reaches the per-target PR updater."""
+    input_data = [{"name": "pkg-pr", "prReview": True}]
+    with (
+        patch("subprocess.run") as mock_run,
+        patch("update.update_pr_review_target") as mock_pr,
+    ):
+        mock_run.side_effect = create_mock_run(input_data)
+        run_main_with_env(["update.py", "--open-prs", "--allow-local-prs"], None)
+        mock_pr.assert_called_once()
+
+def test_prs_allowed_helper():
+    """prs_allowed: CI or explicit override, and only with --open-prs."""
+    import argparse
+
+    def ns(open_prs, allow=False):
+        return argparse.Namespace(open_prs=open_prs, allow_local_prs=allow)
+
+    old = os.environ.get("GITHUB_ACTIONS")
+    try:
+        os.environ.pop("GITHUB_ACTIONS", None)
+        assert prs_allowed(ns(True)) is False
+        assert prs_allowed(ns(True, allow=True)) is True
+        assert prs_allowed(ns(False, allow=True)) is False
+        os.environ["GITHUB_ACTIONS"] = "true"
+        assert prs_allowed(ns(True)) is True
+    finally:
+        if old is None:
+            os.environ.pop("GITHUB_ACTIONS", None)
+        else:
+            os.environ["GITHUB_ACTIONS"] = old

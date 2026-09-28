@@ -140,6 +140,19 @@ def pr_body(target: UpdateTarget, diff: str) -> str:
     return "\n".join(parts)
 
 
+def prs_allowed(args: argparse.Namespace) -> bool:
+    """Whether review-gated PRs may be opened/edited in this environment.
+
+    PR authorship comes from the token `gh` authenticates with: in CI
+    (GITHUB_ACTIONS=true + github.token) that's github-actions[bot], but a
+    local `gh` uses the developer's own token, so a local `--open-prs` run
+    would create user-authored PRs. Refuse that unless explicitly overridden.
+    """
+    return bool(args.open_prs) and (
+        os.environ.get("GITHUB_ACTIONS") == "true" or bool(getattr(args, "allow_local_prs", False))
+    )
+
+
 def update_pr_review_target(target: UpdateTarget, args: argparse.Namespace, base_branch: str) -> None:
     """Updates a review-gated package on its own branch and opens/refreshes a PR."""
     name = target["name"]
@@ -198,6 +211,11 @@ def main() -> None:
         action="store_true",
         help="Propose review-gated (passthru.updatePr) package updates via GitHub PRs instead of skipping them",
     )
+    parser.add_argument(
+        "--allow-local-prs",
+        action="store_true",
+        help="Allow --open-prs outside CI (creates PRs authored by you instead of github-actions[bot]; for testing only)",
+    )
     args = parser.parse_args()
 
     targets = get_targets()
@@ -208,7 +226,7 @@ def main() -> None:
     normal_targets = [t for t in targets if not t.get("prReview")]
 
     if pr_targets:
-        if args.open_prs:
+        if prs_allowed(args):
             base_branch = git("rev-parse", "--abbrev-ref", "HEAD")
             for target in pr_targets:
                 branch = "auto-update/" + target["name"].replace(".", "-")
@@ -223,6 +241,12 @@ def main() -> None:
                     # can't leak into the next target's branch or into main.
                     subprocess.run(["git", "checkout", "-f", base_branch], check=True)
         else:
+            if args.open_prs:
+                print(
+                    "Refusing --open-prs outside CI: PRs would be authored by you "
+                    "instead of github-actions[bot] (pass --allow-local-prs to override)",
+                    file=sys.stderr,
+                )
             skipped = ", ".join(t["name"] for t in pr_targets)
             print(f"Skipping review-gated packages (use --open-prs to propose via PRs): {skipped}")
 
