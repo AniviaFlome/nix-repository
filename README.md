@@ -52,16 +52,18 @@ My nix packages repository.
 
 ### MPV Scripts
 
-| Package                                                                                   | Description                                                                                |
-| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [mpvScripts.cheatsheet](https://github.com/AniviaFlome/mpv-scripts/tree/main/cheatsheet)  | MPV cheatsheet script showing keybindings in an interactive overlay                        |
-| [mpvScripts.file-browser](https://github.com/CogentRedTester/mpv-file-browser)            | A simple no-dependency file browser for mpv player                                         |
-| [mpvScripts.keybind-visualizer](https://github.com/v-amorim/mpv)                          | Interactive on-screen keyboard for mpv that shows the bindings of the hovered key          |
-| [mpvScripts.mpv-translate](https://github.com/mpv-easy/mpv-easy)                          | Real-time subtitle translation for mpv                                                     |
-| [mpvScripts.sub-seek](https://github.com/v-amorim/mpv)                                    | Fullscreen, clickable list of every subtitle line for mpv, with seeking on selection       |
-| [mpvScripts.subtitle-sync](https://github.com/AniviaFlome/mpv-scripts)                    | MPV script to mark subtitle start times and calculate the difference between them          |
-| [mpvScripts.subtitle-translate](https://github.com/AniviaFlome/mpv-scripts/tree/main/subtitle-translate) | MPV script that translates subtitles on screen with dictionary popups             |
-| [mpvScripts.whisper-subs](https://github.com/GhostNaN/whisper-subs)                       | WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux |
+| Package                                                                                                  | Description                                                                                |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [mpvScripts.anilist-updater](https://github.com/AzuredBlue/mpv-anilist-updater)                          | Automatically updates your AniList based on the file you just watched                      |
+| [mpvScripts.cheatsheet](https://github.com/AniviaFlome/mpv-scripts/tree/main/cheatsheet)                 | MPV cheatsheet script showing keybindings in an interactive overlay                        |
+| [mpvScripts.file-browser](https://github.com/CogentRedTester/mpv-file-browser)                           | A simple no-dependency file browser for mpv player                                         |
+| [mpvScripts.keybind-visualizer](https://github.com/v-amorim/mpv)                                         | Interactive on-screen keyboard for mpv that shows the bindings of the hovered key          |
+| [mpvScripts.mpv-translate](https://github.com/mpv-easy/mpv-easy)                                         | Real-time subtitle translation for mpv                                                     |
+| [mpvScripts.reset-all](https://github.com/v-amorim/moonlight-mpv)                                        | Puts mpv playback back to a fresh-start state without reloading the file                   |
+| [mpvScripts.sub-seek](https://github.com/v-amorim/mpv)                                                   | Fullscreen, clickable list of every subtitle line for mpv, with seeking on selection       |
+| [mpvScripts.subtitle-sync](https://github.com/AniviaFlome/mpv-scripts)                                   | MPV script to mark subtitle start times and calculate the difference between them          |
+| [mpvScripts.subtitle-translate](https://github.com/AniviaFlome/mpv-scripts/tree/main/subtitle-translate) | MPV script that translates subtitles on screen with dictionary popups                      |
+| [mpvScripts.whisper-subs](https://github.com/GhostNaN/whisper-subs)                                      | WhisperSubs is a mpv lua script to generate subtitles at runtime with whisper.cpp on Linux |
 
 ## Usage
 

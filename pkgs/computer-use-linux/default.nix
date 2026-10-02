@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchurl,
+  fetchFromGitHub,
   autoPatchelfHook,
   makeWrapper,
   ydotool,
@@ -46,6 +47,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   dontUnpack = true;
 
+  skillSrc = fetchFromGitHub {
+    owner = "agent-sh";
+    repo = "computer-use-linux";
+    rev = "v${finalAttrs.version}";
+    hash = "sha256-D4UF1gdPcfBmgVdVquQXo8i5WGutquXgXa41Du8Pq0Q=";
+  };
+
   nativeBuildInputs = [
     autoPatchelfHook
     makeWrapper
@@ -71,6 +79,9 @@ stdenv.mkDerivation (finalAttrs: {
           xwininfo
         ]
       }"
+
+    mkdir -p $out/share/skills/${finalAttrs.pname}
+    cp -R "$skillSrc/skills/computer-use-linux" $out/share/skills/${finalAttrs.pname}/
 
     runHook postInstall
   '';

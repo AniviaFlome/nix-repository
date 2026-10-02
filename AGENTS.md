@@ -32,9 +32,8 @@ nix shell nixpkgs#nix-update -c nix-update --flake <attr-path>
 
 Special cases (pass as extra args):
 - **Subpackages** — `waha-tui` needs `--subpackage=bunDeps`
-- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`, `sub-seek`, `keybind-visualizer`
+- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`, `sub-seek`, `keybind-visualizer`, `anilist-updater`, `reset-all`
 - **Prerelease-only upstream (`--version=unstable`)** — `motrix-beta` (v2 line ships betas only; stable is still the years-old 1.x). Plain `nix-update` ignores prereleases, so the update script passes `--version=unstable`.
-- **Review-gated (`passthru.updatePr = true`)** — `sub-seek`, `keybind-visualizer`. Never updated directly: `update.py` skips them unless run with `--open-prs`, which bumps each on a dedicated branch (`auto-update/<attr-path>`) and opens/refreshes a GitHub PR for manual review (malware guard against upstream code changes). Requires `GH_TOKEN` + `gh`; CI does this daily. `--open-prs` is CI-only (refused locally unless `--allow-local-prs`): a local `gh` uses your token, so local PRs would be authored by you instead of `github-actions[bot]`.
 - **`makeReleaseUpdater` packages** — `proton-cachyos`, `gdk-proton`, `soda`, `protosoda`. Updater in `lib/default.nix` fetches latest GitHub/Gitea release tag (pass `tagPrefix` when several product lines share one releases feed, e.g. `bottlesdevs/wine`). CI runs these via `--use-update-script`.
 
 `adore` and `fallin` use `version = "latest"` and `--version=branch` — no real version pinned.
@@ -90,7 +89,7 @@ passthru = {
 ## CI
 
 - `.github/workflows/build.yml` — builds on `nixpkgs-unstable` + `nixos-unstable`, pushes to Cachix (`aniviaflome-nix-repository`), triggers NUR update for repo `aniviaflome`. Runs `nix-build-uncached ci.nix -A cacheOutputs`.
-- `.github/workflows/update.yml` — daily `scripts/update.py --build --open-prs`, auto-commits direct updates with "pkgs: auto-update" and opens/refreshes PRs for review-gated packages (`passthru.updatePr`, see above). The `--build` flag makes `nix-update` verify each package builds before committing the version bump, so broken updates are skipped (reported as failed) instead of pushed to `main`. Unfree packages (`adore`, `turkanime-cli`, `turkanime-gui`, `getcomics-downloader`, `sub-seek`, `keybind-visualizer`) use `--file default.nix` instead of `--flake` (pure flake eval ignores `NIXPKGS_ALLOW_UNFREE`; impure `--file` mode honors it) so they're build-verified too. Sets `NIXPKGS_ALLOW_UNFREE=1` for the unfree builds. For local runs without `--build`, updates are fast but unverified.
+- `.github/workflows/update.yml` — daily `scripts/update.py --build --open-prs`, auto-commits direct updates with "pkgs: auto-update". The `--open-prs` flag proposes review-gated packages (`passthru.updatePr`) via GitHub PR instead of committing directly; no packages are currently review-gated, so it is a no-op. The `--build` flag makes `nix-update` verify each package builds before committing the version bump, so broken updates are skipped (reported as failed) instead of pushed to `main`. Unfree packages (`adore`, `turkanime-cli`, `turkanime-gui`, `getcomics-downloader`, `sub-seek`, `keybind-visualizer`, `reset-all`) use `--file default.nix` instead of `--flake` (pure flake eval ignores `NIXPKGS_ALLOW_UNFREE`; impure `--file` mode honors it) so they're build-verified too. Sets `NIXPKGS_ALLOW_UNFREE=1` for the unfree builds. For local runs without `--build`, updates are fast but unverified.
 
 ## Dev shell
 

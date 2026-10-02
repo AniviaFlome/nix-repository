@@ -26,7 +26,6 @@ buildLua {
   '';
 
   passthru = {
-    updatePr = true;
     updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
   };
 

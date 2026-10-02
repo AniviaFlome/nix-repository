@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchurl,
+  fetchFromGitHub,
   autoPatchelfHook,
   makeWrapper,
   libxkbcommon,
@@ -44,6 +45,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   dontUnpack = true;
 
+  skillSrc = fetchFromGitHub {
+    owner = "agent-sh";
+    repo = "agent-workspace-linux";
+    rev = "v${finalAttrs.version}";
+    hash = "sha256-vhvMmrxOEpjZOdVN83tng1aBwmfotuiuw6OWH9jPcNE=";
+  };
+
   nativeBuildInputs = [
     autoPatchelfHook
     makeWrapper
@@ -85,6 +93,9 @@ stdenv.mkDerivation (finalAttrs: {
           vulkan-loader
         ]
       }"
+
+    mkdir -p $out/share/skills/${finalAttrs.pname}
+    cp -R "$skillSrc/skills/agent-workspace-linux" $out/share/skills/${finalAttrs.pname}/
 
     runHook postInstall
   '';

@@ -61,6 +61,8 @@ in
     in
     {
       mpv-translate = callMpvScript ./pkgs/mpvScripts/mpv-translate;
+      anilist-updater = callMpvScript ./pkgs/mpvScripts/anilist-updater;
+      reset-all = callMpvScript ./pkgs/mpvScripts/reset-all;
       subtitle-sync = callMpvScript ./pkgs/mpvScripts/subtitle-sync;
       subtitle-translate = callMpvScript ./pkgs/mpvScripts/subtitle-translate;
       whisper-subs = callMpvScript ./pkgs/mpvScripts/whisper-subs;
