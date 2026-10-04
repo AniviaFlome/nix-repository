@@ -17,14 +17,14 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "zapfast";
-  version = "0.18.2";
+  version = "0.19.0";
 
   src =
     let
       arch =
         if stdenv.hostPlatform.isAarch64 then "aarch64-unknown-linux-gnu" else "x86_64-unknown-linux-gnu";
       hashes = {
-        x86_64-unknown-linux-gnu = "sha256-7DuniQ7oxd1TVK/Wal11J18Jmtb1IXJZRz81iTvwCRo=";
+        x86_64-unknown-linux-gnu = "sha256-DKx8fdoTJiZcmhbcxWK6bQe9C4rl1TTzUpt4Z2ADZmM=";
         aarch64-unknown-linux-gnu = "sha256-JoOYcmi/Xnv4BfBDHaqIV2qM+IRQjA6YNcxgTycUijQ=";
       };
     in

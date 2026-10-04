@@ -7,11 +7,11 @@
 
 let
   pname = "crankshaft";
-  version = "2.0.1";
+  version = "2.0.2";
 
   src = fetchurl {
     url = "https://github.com/KraXen72/crankshaft/releases/download/${version}/crankshaft-x64.AppImage";
-    hash = "sha256-BoqicNpINhWecnP6eIOZE3j6p2xdy+J8CTEHG2CfptE=";
+    hash = "sha256-j/6R4+e+lH7m/MBmBZI+286fG+c9s/19cr/E0B5Ekuk=";
   };
 
   appimageContents = appimageTools.extractType2 {
