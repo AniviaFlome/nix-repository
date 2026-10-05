@@ -50,6 +50,7 @@ in
   zapfast = pkgs.callPackage ./pkgs/zapfast { };
   appium-mcp = pkgs.callPackage ./pkgs/appium-mcp { };
   chronicle = pkgs.callPackage ./pkgs/chronicle { };
+  reddit-mcp-buddy = pkgs.callPackage ./pkgs/reddit-mcp-buddy { };
 
   mpvScripts =
     let
