@@ -25,11 +25,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "chronicle";
-  version = "1.8.0";
+  version = "1.9.0";
 
   src = fetchurl {
     url = "https://github.com/AniviaFlome/chronicle/releases/download/v${finalAttrs.version}/chronicle-linux-v${finalAttrs.version}.tar.gz";
-    hash = "sha256-qqZFzAMwL2dmuY5FvtiJ3O8zOnSd0YsmP4oelxXR//s=";
+    hash = "sha256-tJDUxrQmGpEucEz1BqTUTqf+vfemHMpUilWMFOv8/hE=";
   };
 
   icon = fetchurl {
