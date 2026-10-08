@@ -7,13 +7,13 @@
 
 buildLua {
   pname = "reset-all";
-  version = "0-unstable-2026-09-21";
+  version = "0-unstable-2026-10-07";
 
   src = fetchFromGitHub {
     owner = "v-amorim";
     repo = "moonlight-mpv";
-    rev = "f5fbb67aac64b8367250c358a00444c7197fa38b";
-    hash = "sha256-edPmI9SzAwKLQk4LjihZVZ9qx9V3FVq6F906Z7OvJE4=";
+    rev = "1d78c2f42ae0a4db021ce27f843d0e2dc1f92dd9";
+    hash = "sha256-dRhL2BeNOeihgmpgN5kTtEr9JPDU66JH/mrQauYzV/0=";
   };
 
   installPhase = ''
