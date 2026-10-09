@@ -49,6 +49,7 @@ in
   computer-use-linux = pkgs.callPackage ./pkgs/computer-use-linux { };
   zapfast = pkgs.callPackage ./pkgs/zapfast { };
   appium-mcp = pkgs.callPackage ./pkgs/appium-mcp { };
+  mobile-mcp = pkgs.callPackage ./pkgs/mobile-mcp { };
   chronicle = pkgs.callPackage ./pkgs/chronicle { };
   reddit-mcp-buddy = pkgs.callPackage ./pkgs/reddit-mcp-buddy { };
 

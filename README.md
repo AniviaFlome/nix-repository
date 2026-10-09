@@ -21,6 +21,7 @@ My nix packages repository.
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info                            |
 | [handy](https://github.com/cjpais/Handy)                                   | A free, open source, and extensible speech-to-text application that works completely offline.         |
 | [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                        |
+| [mobile-mcp](https://github.com/mobile-next/mobile-mcp)                    | MCP server for mobile automation and scraping (iOS, Android, emulators, simulators and real devices)  |
 | [motrix-beta](https://github.com/agalwood/Motrix)                       | A full-featured open-source download manager                                                          |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager)  | osu! Beatmap Manager                                                                                  |
 | [reddit-mcp-buddy](https://github.com/karanb192/reddit-mcp-buddy)          | Clean, LLM-optimized Reddit MCP server. Browse posts, search content, analyze users                    |
