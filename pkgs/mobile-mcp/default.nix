@@ -24,6 +24,11 @@ buildNpmPackage (finalAttrs: {
 
   npmBuildScript = "build";
 
+  postInstall = ''
+    mkdir -p $out/share/skills
+    cp -R $src/skills/mobile-automation $out/share/skills/
+  '';
+
   passthru = {
     updateScript = nix-update-script { };
     # Upstream --version prints stale 0.0.1, so assert --help output instead.
