@@ -35,6 +35,7 @@ Special cases (pass as extra args):
 - **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`, `sub-seek`, `keybind-visualizer`, `anilist-updater`, `reset-all`
 - **Prerelease-only upstream (`--version=unstable`)** — `motrix-beta` (v2 line ships betas only; stable is still the years-old 1.x). Plain `nix-update` ignores prereleases, so the update script passes `--version=unstable`.
 - **`makeReleaseUpdater` packages** — `proton-cachyos`, `gdk-proton`, `soda`, `protosoda`. Updater in `lib/default.nix` fetches latest GitHub/Gitea release tag (pass `tagPrefix` when several product lines share one releases feed, e.g. `bottlesdevs/wine`). CI runs these via `--use-update-script`.
+- **Prefixed skill tags** — `impeccable` tags releases as `skill-v<version>`, so the update script passes `--version-regex 'skill-v(.*)'`.
 
 `adore` and `fallin` use `version = "latest"` and `--version=branch` — no real version pinned.
 
@@ -43,6 +44,7 @@ Special cases (pass as extra args):
 - **`mpvScripts.*`** — nested attrset in `default.nix` via `callMpvScript` helper, which passes `pkgs.mpvScripts.buildLua`.
 - **Steam compat tools** (`proton-cachyos`, `gdk-proton`, `boson`, `nativecookie`) — provide a `steamcompattool` output; not for profile install. Use `programs.steam.extraCompatPackages`. All have `preferLocalBuild = true`.
 - **`nativecookie`** — uses plain `[ nix-update ]` as `updateScript` (list form), not `nix-update-script` helper.
+- **Agent skill packages** (`impeccable`, `caveman-skills`, `matt-pocock-skills`) — data-only derivations installing each skill to `$out/share/skills/<skill-name>` (`impeccable` also ships `$out/share/opencode-commands/impeccable.md`). No tests, no `mainProgram`.
 
 ## Package documentation rule
 

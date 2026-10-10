@@ -34,6 +34,14 @@ My nix packages repository.
 | [waytator](https://github.com/faetalize/waytator)                          | Screenshot annotator and lightweight image editor                                                     |
 | [zapfast](https://github.com/crmne/zapfast)                                | A native WhatsApp client built with Rust and egui                                                     |
 
+### Agent Skills
+
+| Package                                                      | Description                                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| [caveman-skills](https://github.com/JuliusBrussee/caveman)    | Token-efficient AI agent skills (caveman-commit, caveman-help and friends) |
+| [impeccable](https://github.com/pbakaus/impeccable)           | Design skills, commands, and anti-pattern detection for AI coding agents |
+| [matt-pocock-skills](https://github.com/mattpocock/skills)    | Matt Pocock's agent skills for real engineering                          |
+
 ### Steam Compatibility Tools
 
 | Package                                                        | Description                                                               |

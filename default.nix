@@ -52,6 +52,9 @@ in
   mobile-mcp = pkgs.callPackage ./pkgs/mobile-mcp { };
   chronicle = pkgs.callPackage ./pkgs/chronicle { };
   reddit-mcp-buddy = pkgs.callPackage ./pkgs/reddit-mcp-buddy { };
+  impeccable = pkgs.callPackage ./pkgs/impeccable { };
+  caveman-skills = pkgs.callPackage ./pkgs/caveman-skills { };
+  matt-pocock-skills = pkgs.callPackage ./pkgs/matt-pocock-skills { };
 
   mpvScripts =
     let
