@@ -7,13 +7,13 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "caveman-skills";
-  version = "3.2.0";
+  version = "4.0.1";
 
   src = fetchFromGitHub {
     owner = "JuliusBrussee";
     repo = "caveman";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-GfC8e+EGL7kotZQfZ9kD7ZEWJfhmXujHOHpMxeU3bEo=";
+    hash = "sha256-2xZHdWkWJrPAJ8++qW0Xmb3eORZ41e+GsZjIphqTtlI=";
   };
 
   dontConfigure = true;
