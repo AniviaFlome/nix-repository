@@ -5,10 +5,14 @@
   ninja,
   pkg-config,
   wrapGAppsHook4,
+  wayland-scanner,
   glib,
   gtk4,
+  gtk4-layer-shell,
   libadwaita,
   tesseract4,
+  wayland,
+  wayland-protocols,
   wl-clipboard,
   fetchFromGitHub,
   nix-update-script,
@@ -30,13 +34,17 @@ stdenv.mkDerivation (finalAttrs: {
     ninja
     pkg-config
     wrapGAppsHook4
+    wayland-scanner
     glib
   ];
 
   buildInputs = [
     gtk4
+    gtk4-layer-shell
     libadwaita
     tesseract4
+    wayland
+    wayland-protocols
     wl-clipboard
   ];
 
