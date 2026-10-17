@@ -20,13 +20,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "waytator";
-  version = "1.3.2";
+  version = "1.4.0";
 
   src = fetchFromGitHub {
     owner = "faetalize";
     repo = "waytator";
     rev = "refs/tags/v${finalAttrs.version}";
-    hash = "sha256-ppRgV0Asvo9ndKRibDu/nBAXa0g1OPyVEbrzrPncW7A=";
+    hash = "sha256-OnEUDSxKJCZsN0v2BV/QQ8ceI4BSaY9LH+QucziY1EA=";
   };
 
   nativeBuildInputs = [
