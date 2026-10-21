@@ -7,11 +7,11 @@
 
 let
   pname = "amplitude-soundboard";
-  version = "2.15.0";
+  version = "2.15.1";
 
   src = fetchurl {
     url = "https://github.com/dan0v/AmplitudeSoundboard/releases/download/${version}/Amplitude_Soundboard-x86_64.AppImage";
-    hash = "sha256-ZXlhaDsDKPd5+X9MtKOfAluyiaRnc/flD7zo1lF270s=";
+    hash = "sha256-e09RC0FExzMJSKRgqsf6yY2+/Eud8uashbmhohsCq6U=";
   };
 
   appimageContents = appimageTools.extract {
