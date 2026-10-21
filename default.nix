@@ -46,7 +46,6 @@
   caveman-skills = pkgs.callPackage ./pkgs/caveman-skills { };
   matt-pocock-skills = pkgs.callPackage ./pkgs/matt-pocock-skills { };
   nuvio = pkgs.callPackage ./pkgs/nuvio { };
-  niri-spicy = pkgs.callPackage ./pkgs/niri-spicy { };
 
   mpvScripts =
     let
