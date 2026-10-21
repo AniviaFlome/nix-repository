@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  makeReleaseUpdater,
+  nix-update-script,
   steamDisplayName ? "ProtoSoda",
 }:
 
@@ -44,11 +44,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --replace-fail "ProtoSoda-${finalAttrs.version}" "${steamDisplayName}"
   '';
 
-  passthru.updateScript = makeReleaseUpdater {
-    name = "protosoda";
-    repo = "https://api.github.com/repos/bottlesdevs/wine/releases";
-    versionFilter = "sed 's/^protosoda-//'";
-    tagPrefix = "protosoda-";
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--version-regex=protosoda-(.*)"
+      "--use-github-releases"
+    ];
   };
 
   meta = {

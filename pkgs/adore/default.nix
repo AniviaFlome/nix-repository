@@ -57,7 +57,7 @@ stdenvNoCC.mkDerivation {
   '';
 
   meta = {
-    description = "A collection of custom Super-Resolution models and restoration experiments.";
+    description = "A collection of custom Adore Super-Resolution models and restoration experiments.";
     homepage = "https://github.com/renarchi/Re-SISR";
     license = lib.licenses.cc-by-nc-sa-40;
     maintainers = [ ];

@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  makeReleaseUpdater,
+  nix-update-script,
   steamDisplayName ? "GDK-Proton",
 }:
 
@@ -43,10 +43,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    updateScript = makeReleaseUpdater {
-      name = "gdk-proton";
-      repo = "https://api.github.com/repos/Weather-OS/GDK-Proton/releases";
-      versionFilter = "sed 's/^release//'";
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--version-regex=release(.*)"
+        "--use-github-releases"
+      ];
     };
   };
 

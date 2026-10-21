@@ -32,10 +32,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru.updateScript = nix-update-script {
-    extraArgs = [
-      "--version-regex"
-      "skill-v(.*)"
-    ];
+    extraArgs = [ "--version-regex=skill-v(.*)" ];
   };
 
   meta = with lib; {

@@ -11,7 +11,7 @@ let
 
   src = fetchurl {
     url = "https://github.com/cjpais/Handy/releases/download/v${version}/Handy_${version}_amd64.AppImage";
-    sha256 = "sha256-1oPclnYvmkeXUEWrSAOS0zpbSRlo+zNtysR+L2XnGE8=";
+    hash = "sha256-1oPclnYvmkeXUEWrSAOS0zpbSRlo+zNtysR+L2XnGE8=";
   };
 
   appimageContents = appimageTools.extract {
@@ -35,6 +35,7 @@ appimageTools.wrapType2 {
     homepage = "https://github.com/cjpais/Handy";
     license = licenses.gpl3Only;
     maintainers = [ ];
+    mainProgram = "handy";
     platforms = [
       "x86_64-linux"
       "aarch64-linux"

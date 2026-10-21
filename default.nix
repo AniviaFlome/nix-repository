@@ -2,17 +2,11 @@
   pkgs ? import <nixpkgs> { },
 }:
 
-let
-  lib = import ./lib { inherit pkgs; };
-in
 {
-  inherit lib;
   modules = import ./modules;
   overlays = import ./overlays;
 
-  proton-cachyos = pkgs.callPackage ./pkgs/proton-cachyos {
-    inherit (lib) makeReleaseUpdater;
-  };
+  proton-cachyos = pkgs.callPackage ./pkgs/proton-cachyos { };
   waha-tui = pkgs.callPackage ./pkgs/waha-tui { };
   waytator = pkgs.callPackage ./pkgs/waytator { };
   torrra = pkgs.callPackage ./pkgs/torrra { };
@@ -23,13 +17,9 @@ in
   osu-beatmap-manager = pkgs.callPackage ./pkgs/osu-beatmap-manager { };
   boson = pkgs.callPackage ./pkgs/boson { };
   cake-wallet = pkgs.callPackage ./pkgs/cake-wallet { };
-  gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { inherit (lib) makeReleaseUpdater; };
-  soda = pkgs.callPackage ./pkgs/soda {
-    inherit (lib) makeReleaseUpdater;
-  };
-  protosoda = pkgs.callPackage ./pkgs/protosoda {
-    inherit (lib) makeReleaseUpdater;
-  };
+  gdk-proton = pkgs.callPackage ./pkgs/gdk-proton { };
+  soda = pkgs.callPackage ./pkgs/soda { };
+  protosoda = pkgs.callPackage ./pkgs/protosoda { };
   getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
   handy = pkgs.callPackage ./pkgs/handy { };
   hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };

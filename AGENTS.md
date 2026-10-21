@@ -8,12 +8,12 @@ NUR-style nix package repository (not an official NUR repo). Packages in `pkgs/`
 - `pkgs/<name>/default.nix` — one dir per package
 - `pkgs/mpvScripts/` — nested attrset of mpv scripts (see below)
 - `pkgs/hyprism/` — split: `unwrapped.nix` (binary) + `default.nix` (FHS wrapper); keep in sync
-- `lib/default.nix` — `makeReleaseUpdater` helper
 - `overlay.nix` — merges package set into nixpkgs; auto-merges attrsets (e.g. `mpvScripts`)
 - `modules/`, `overlays/` — placeholders (just `default.nix` stubs)
 - `ci.nix` — what CI builds/caches; filters by `meta.broken`, `meta.license.free`, `preferLocalBuild`
 - `flake.nix` — exposes `packages`, `legacyPackages`, `formatter`, `checks`, `overlays.default`
 - `scripts/update.py` + `scripts/get-update-targets.nix` — CI auto-update logic
+- `maintainers/scripts/update.nix` — minimal shim implementing the nixpkgs file-mode update contract (`nix-shell ... --argstr package <attrpath>`), used by `nix-update --use-update-script` for non-flake targets
 
 ## Commands
 
@@ -32,12 +32,12 @@ nix shell nixpkgs#nix-update -c nix-update --flake <attr-path>
 
 Special cases (pass as extra args):
 - **Subpackages** — `waha-tui` needs `--subpackage=bunDeps`
-- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `fallin`, `cmdui`, `sub-seek`, `keybind-visualizer`, `anilist-updater`, `reset-all`
+- **`0-unstable-*` / dated-branch versions** — `--version=branch`. Packages: `interSubs`, `subtitle-sync`, `whisper-subs`, `cheatsheet`, `file-browser`, `artcnn`, `cmdui`, `sub-seek`, `keybind-visualizer`, `anilist-updater`, `reset-all`
 - **Prerelease-only upstream (`--version=unstable`)** — `motrix-beta` (v2 line ships betas only; stable is still the years-old 1.x). Plain `nix-update` ignores prereleases, so the update script passes `--version=unstable`.
-- **`makeReleaseUpdater` packages** — `proton-cachyos`, `gdk-proton`, `soda`, `protosoda`. Updater in `lib/default.nix` fetches latest GitHub/Gitea release tag (pass `tagPrefix` when several product lines share one releases feed, e.g. `bottlesdevs/wine`). CI runs these via `--use-update-script`.
-- **Prefixed skill tags** — `impeccable` tags releases as `skill-v<version>`, so the update script passes `--version-regex 'skill-v(.*)'`.
+- **Prefixed/suffixed release tags (`--version-regex` + `--use-github-releases`)** — `proton-cachyos` (`cachyos-(.*)-slr`), `gdk-proton` (`release(.*)`), `soda` (`soda-(.*)`), `protosoda` (`protosoda-(.*)`). Always pass `--use-github-releases`: the default ATOM feed includes prereleases (e.g. `soda-*-experimental`) without a prerelease flag, and nix-update's unstable-keyword filter doesn't catch "experimental". Flags live inside the package's own `nix-update-script`; the update runner executes them verbatim.
+- **Prefixed skill tags** — `impeccable` tags releases as `skill-v<version>`, so the update script passes `--version-regex=skill-v(.*)`.
 
-`adore` and `fallin` use `version = "latest"` and `--version=branch` — no real version pinned.
+`adore` and `fallin` use `version = "latest"` with hardcoded model URLs — unversioned data blobs, no updater.
 
 ## Package patterns
 
@@ -54,7 +54,7 @@ When adding a package, you **must** add or update its row in the appropriate `RE
 
 1. Create `pkgs/<name>/default.nix`
 2. Add `pkgs.callPackage ./pkgs/<name> { … }` entry in `default.nix`
-3. Pass `inherit (lib) makeReleaseUpdater;` if using the release updater
+3. For prefixed/suffixed upstream tags: pass `extraArgs = [ "--version-regex=..." "--use-github-releases" ]` to `nix-update-script` (see special cases above)
 4. For mpv scripts: add under `mpvScripts` via `callMpvScript`
 5. Add a row to the matching table in `README.md` (Applications / Steam Compatibility Tools / MPV Shaders / MPV Scripts), using the real attr name as the label and upstream repo URL + `meta.description`
 6. Add `passthru.tests` only where it catches real bugs (see "Tests" below) — not every package needs tests
@@ -76,7 +76,6 @@ Tests are attached via `passthru.tests = { <name> = <derivation>; }` and run in 
 
 Guidance — add tests where they add signal, not reflexively:
 - **CLI binaries with a `--version` flag** — `testers.testVersion { package = finalAttrs.finalPackage; }` catches version-string regressions. Relies on `meta.mainProgram`; pass `command = "foo --version"` when the binary name differs from pname. Add `testers` to the derivation's arguments (callPackage injects it).
-- **Library code** (`lib/default.nix`) — pure-eval tests via `lib.debug.runTests` in `lib/tests.nix`, plus a `runCommand` script-existence check. Wired into `checks.lib-makeReleaseUpdater`.
 - **AppImages / prebuilt binaries / FHS wrappers / data packages / steam-compat tools** — no tests by default. A `test -x ${pkg}/bin/foo` smoke test is tautological (the build's installPhase already proved the file exists). Add a test only if there's a runtime behavior worth exercising.
 
 When a derivation uses `rec { … }`, convert to `finalAttrs:` so tests can reference `finalAttrs.finalPackage`. Example:

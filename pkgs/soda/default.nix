@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   fetchzip,
-  makeReleaseUpdater,
+  nix-update-script,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -30,11 +30,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = makeReleaseUpdater {
-    name = "soda";
-    repo = "https://api.github.com/repos/bottlesdevs/wine/releases";
-    versionFilter = "sed 's/^soda-//'";
-    tagPrefix = "soda-";
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--version-regex=soda-(.*)"
+      "--use-github-releases"
+    ];
   };
 
   meta = {

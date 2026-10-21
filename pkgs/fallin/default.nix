@@ -2,7 +2,6 @@
   lib,
   stdenvNoCC,
   fetchurl,
-  nix-update-script,
 }:
 
 stdenvNoCC.mkDerivation {
@@ -36,10 +35,8 @@ stdenvNoCC.mkDerivation {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
-
   meta = {
-    description = "A collection of custom Super-Resolution models and restoration experiments.";
+    description = "A collection of custom Fallin Super-Resolution models and restoration experiments.";
     homepage = "https://github.com/renarchi/Re-SISR";
     license = lib.licenses.cc-by-sa-40;
     maintainers = [ ];

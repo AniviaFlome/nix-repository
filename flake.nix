@@ -27,17 +27,14 @@
         let
           pkgs = import nixpkgs { inherit system; };
           nurAttrs = import ./default.nix { inherit pkgs; };
-          inherit (import ./lib/tests.nix { inherit pkgs; }) collectTests scriptExists pureEvalCheck;
+          inherit (import ./scripts/collect-tests.nix { inherit pkgs; }) collectTests;
         in
         {
           formatting = (treefmtEval system).config.build.check self;
-          lib-makeReleaseUpdater = scriptExists;
-          lib-makeReleaseUpdater-pureEval = pureEvalCheck;
         }
         // collectTests (nurAttrs.mpvScripts or { })
         // collectTests (
           removeAttrs nurAttrs [
-            "lib"
             "modules"
             "overlays"
             "mpvScripts"

@@ -11,7 +11,7 @@ buildLua {
 
   src = fetchFromGitHub {
     owner = "v-amorim";
-    repo = "mpv";
+    repo = "moonlight-mpv";
     rev = "1d78c2f42ae0a4db021ce27f843d0e2dc1f92dd9";
     hash = "sha256-dRhL2BeNOeihgmpgN5kTtEr9JPDU66JH/mrQauYzV/0=";
   };

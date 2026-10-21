@@ -21,6 +21,7 @@ jobs:
         env:
           NIXPKGS_ALLOW_UNFREE: '1'
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "pkgs: auto-update"

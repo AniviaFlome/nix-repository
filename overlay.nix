@@ -8,7 +8,6 @@ let
 in
 builtins.mapAttrs (n: v: if shouldMerge n then prev.${n} // v else v) (
   removeAttrs nurAttrs [
-    "lib"
     "overlays"
     "modules"
   ]

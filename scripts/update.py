@@ -11,8 +11,11 @@ from typing import TypedDict, cast
 
 class UpdateTarget(TypedDict):
     name: str
-    useUpdateScript: bool
-    extraArgs: list[str]
+    # Whether the package carries its own updateScript (list-style or
+    # custom). The script is the single source of truth for update flags;
+    # the runner executes it via `--use-update-script` and never
+    # reassembles its arguments.
+    hasUpdateScript: bool
     # Whether the package has an unfree license. Unfree packages can't be
     # built via `nix-update --flake --build` (pure flake eval ignores
     # NIXPKGS_ALLOW_UNFREE), so for them we fall back to `--file default.nix`
@@ -57,19 +60,20 @@ def nix_update_cmd(target: UpdateTarget, build: bool) -> list[str]:
     Unfree packages can't be updated via `--flake` (pure eval ignores
     NIXPKGS_ALLOW_UNFREE), so use the default `--file default.nix` path
     (impure channel eval honors it). Free packages use `--flake`.
+    Packages carrying their own updateScript run it via
+    `--use-update-script`; its flags travel inside the script itself.
     """
     cmd: list[str] = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update"]
     if not target.get("unfree", False) and not target.get("nested", False):
         cmd.append("--flake")
     cmd.append(target["name"])
 
-    if target.get("useUpdateScript", False):
+    if target.get("hasUpdateScript", False):
         cmd.append("--use-update-script")
 
     if build:
         cmd.append("--build")
 
-    cmd.extend(target.get("extraArgs", []))
     return cmd
 
 
@@ -83,6 +87,22 @@ def git_has_identity() -> bool:
         return bool(git("config", "user.email"))
     except subprocess.CalledProcessError:
         return False
+
+
+def dirty_files() -> set[str]:
+    """Tracked files with uncommitted changes, for per-target cleanup."""
+    # NOTE: plain `git status --porcelain` output, not the `git()` helper:
+    # its `.strip()` would eat the leading status column of the first line.
+    result = subprocess.run(
+        ["git", "status", "--porcelain"], check=True, capture_output=True, text=True
+    )
+    files = set()
+    for line in result.stdout.splitlines():
+        # Format is `XY PATH` (or `XY ORIG -> NEW` for renames).
+        path = line[3:].split(" -> ")[-1].strip().strip('"')
+        if path:
+            files.add(path)
+    return files
 
 
 def git_commit(message: str) -> None:
@@ -255,11 +275,21 @@ def main() -> None:
 
         print(f"Updating {name}...")
 
+        before = dirty_files()
         try:
             _ = subprocess.run(nix_update_cmd(target, args.build), check=True)
         except subprocess.CalledProcessError as e:
             print(f"Warning: Failed to update {name} (exit code {e.returncode})", file=sys.stderr)
             failed.append(name)
+            # nix-update writes version/hash changes before it builds, so a
+            # failed update can leave a half-bumped file behind. The workflow
+            # auto-commits everything dirty at the end, so restore files this
+            # target dirtied — but keep earlier targets' successful updates.
+            for path in sorted(dirty_files() - before):
+                try:
+                    subprocess.run(["git", "checkout", "--", path], check=True)
+                except subprocess.CalledProcessError as ce:
+                    print(f"Warning: Failed to restore {path} ({ce})", file=sys.stderr)
 
     if failed:
         print(f"\nFailed to update: {', '.join(failed)}", file=sys.stderr)
