@@ -18,6 +18,7 @@ My nix packages repository.
 | [cmdui](https://github.com/AniviaFlome/cmdui)                              | Data-driven TUI command-line builder                                                                  |
 | [computer-use-linux](https://github.com/agent-sh/computer-use-linux)       | Linux desktop control over MCP — accessibility tree, window targeting, screenshots, input             |
 | [crankshaft](https://github.com/KraXen72/crankshaft)                       | A fast, feature-rich krunker client written in typescript                                             |
+| [dota2-rpc-client](https://github.com/andsfonseca/dota2-rpc-client)       | Show your Dota 2 match status on Discord via Rich Presence                                            |
 | [getcomics-downloader](https://github.com/UlucKaymak/getcomics-downloader) | A TUI-based CLI tool to search for and download comics from getcomics.info                            |
 | [handy](https://github.com/cjpais/Handy)                                   | A free, open source, and extensible speech-to-text application that works completely offline.         |
 | [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                        |
