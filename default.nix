@@ -45,6 +45,7 @@
   impeccable = pkgs.callPackage ./pkgs/impeccable { };
   caveman-skills = pkgs.callPackage ./pkgs/caveman-skills { };
   matt-pocock-skills = pkgs.callPackage ./pkgs/matt-pocock-skills { };
+  i-have-adhd = pkgs.callPackage ./pkgs/i-have-adhd { };
   nuvio = pkgs.callPackage ./pkgs/nuvio { };
 
   mpvScripts =

@@ -40,6 +40,7 @@ My nix packages repository.
 | Package                                                      | Description                                                              |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------ |
 | [caveman-skills](https://github.com/JuliusBrussee/caveman)    | Token-efficient AI agent skills (caveman-commit, caveman-help and friends) |
+| [i-have-adhd](https://github.com/ayghri/i-have-adhd)             | ADHD-friendly output style for AI coding agents (opencode plugin + skill) |
 | [impeccable](https://github.com/pbakaus/impeccable)           | Design skills, commands, and anti-pattern detection for AI coding agents |
 | [matt-pocock-skills](https://github.com/mattpocock/skills)    | Matt Pocock's agent skills for real engineering                          |
 
