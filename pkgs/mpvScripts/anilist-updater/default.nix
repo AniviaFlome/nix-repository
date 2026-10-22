@@ -6,14 +6,6 @@
   nix-update-script,
 }:
 
-let
-  python = python3.withPackages (
-    ps: with ps; [
-      guessit
-      requests
-    ]
-  );
-in
 buildLua {
   pname = "anilist-updater";
   version = "0-unstable-2026-10-19";
@@ -28,13 +20,14 @@ buildLua {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/share/mpv/scripts/anilist-updater
-    install -D -m644 main.lua $out/share/mpv/scripts/anilist-updater/main.lua
-    install -D -m644 correction_overlay.lua $out/share/mpv/scripts/anilist-updater/correction_overlay.lua
-    install -D -m644 anilistUpdater.py $out/share/mpv/scripts/anilist-updater/anilistUpdater.py
+    mkdir -p $out/share/mpv/scripts/anilist-updater/lua
+    mkdir -p $out/share/mpv/scripts/anilist-updater/anilist_updater
+    install -m644 main.lua anilistUpdater.py -t $out/share/mpv/scripts/anilist-updater/
+    install -m644 lua/*.lua -t $out/share/mpv/scripts/anilist-updater/lua/
+    install -m644 anilist_updater/*.py -t $out/share/mpv/scripts/anilist-updater/anilist_updater/
 
-    substituteInPlace $out/share/mpv/scripts/anilist-updater/main.lua \
-      --replace-fail 'return "python3"' 'return "${lib.getExe python}"'
+    substituteInPlace $out/share/mpv/scripts/anilist-updater/lua/backend.lua \
+      --replace-fail '"python3"' '"${lib.getExe python3}"'
 
     runHook postInstall
   '';
