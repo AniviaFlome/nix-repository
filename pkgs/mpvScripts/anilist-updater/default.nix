@@ -8,13 +8,13 @@
 
 buildLua {
   pname = "anilist-updater";
-  version = "0-unstable-2026-10-19";
+  version = "0-unstable-2026-10-22";
 
   src = fetchFromGitHub {
     owner = "AzuredBlue";
     repo = "mpv-anilist-updater";
-    rev = "900982d1c4a8850b8d8554233a220f4d488af4e6";
-    hash = "sha256-fGi6OiQZg53lkkDJnk2nwZxt1vwUHhPLEZRTKAXbpTk=";
+    rev = "478be4b7c52eb6631148a23cff4b492fa1ca852e";
+    hash = "sha256-6Nz2j3hOadqFxDOhhAnO5ZhtXG2qHXvqDksU/M3NhGI=";
   };
 
   installPhase = ''
