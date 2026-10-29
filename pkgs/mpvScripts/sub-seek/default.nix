@@ -8,13 +8,13 @@
 
 buildLua {
   pname = "sub-seek";
-  version = "0-unstable-2026-10-07";
+  version = "0-unstable-2026-10-28";
 
   src = fetchFromGitHub {
     owner = "v-amorim";
     repo = "moonlight-mpv";
-    rev = "1d78c2f42ae0a4db021ce27f843d0e2dc1f92dd9";
-    hash = "sha256-dRhL2BeNOeihgmpgN5kTtEr9JPDU66JH/mrQauYzV/0=";
+    rev = "abb438ae85d2620e3556f7cbc1ef677cdee86aaf";
+    hash = "sha256-WcR+29DBSrrBs1tRUeBEcHWz02VJrdb2mRYp7MjNcqE=";
   };
 
   installPhase = ''
