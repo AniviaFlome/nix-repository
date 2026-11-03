@@ -30,6 +30,10 @@ appimageTools.wrapType2 {
     pkgs.mesa
   ];
 
+  profile = ''
+    export _JAVA_AWT_WM_NONREPARENTING=1
+  '';
+
   extraInstallCommands = ''
     install -m 444 -D ${appimageContents}/Nuvio.desktop $out/share/applications/nuvio.desktop
     substituteInPlace $out/share/applications/nuvio.desktop \
