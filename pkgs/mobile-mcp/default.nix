@@ -9,16 +9,16 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "mobile-mcp";
-  version = "1.0.15";
+  version = "1.0.16";
 
   src = fetchFromGitHub {
     owner = "mobile-next";
     repo = "mobile-mcp";
     rev = "${finalAttrs.version}";
-    hash = "sha256-Xp3Wwo7N8OJxSCAYj0wo27lPW/76Xp5hVGpiVbBoTJ0=";
+    hash = "sha256-rVchbo7Bu9LrjNDMrk+yEEsoUU+Ekt1TmQHHxlFghM8=";
   };
 
-  npmDepsHash = "sha256-qLWzLSf3ZXPghDUv7bhlmZ9u8KTiUzyjGZIOlZH8F/Y=";
+  npmDepsHash = "sha256-Mwzqa94eo70FPTnlzGP/TpEHDnYP6h66HRDhNh5ibHI=";
 
   nodejs = nodejs_24;
 

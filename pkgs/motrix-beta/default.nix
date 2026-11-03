@@ -8,12 +8,12 @@
 
 let
   pname = "motrix";
-  version = "2.2.0";
+  version = "2.2.1";
 
   # Upstream names x86_64 AppImages `x86_64` but arm64 ones `arm64`.
   arch = if stdenv.hostPlatform.isAarch64 then "arm64" else "x86_64";
   hashes = {
-    x86_64 = "sha256-YwhCOtmKAUahDRBadK+eCDXpnZitgtPC7jkvB1QruEg=";
+    x86_64 = "sha256-D3lkfWTdBbSNSB7kSNwf+gUMPlurV1yPd6zqMj6N4VE=";
     arm64 = "sha256-61jFyis781ajuC3FctQUCzNTa9DPbz7Q7kUPPEj9w30=";
   };
 
