@@ -48,6 +48,7 @@
   i-have-adhd = pkgs.callPackage ./pkgs/i-have-adhd { };
   nuvio = pkgs.callPackage ./pkgs/nuvio { };
   dota2-rpc-client = pkgs.callPackage ./pkgs/dota2-rpc-client { };
+  agent-device = pkgs.callPackage ./pkgs/agent-device { };
 
   mpvScripts =
     let

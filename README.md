@@ -8,6 +8,7 @@ My nix packages repository.
 
 | Package                                                                    | Description                                                                                           |
 | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [agent-device](https://github.com/callstack/agent-device)                                       | Open source device layer for AI coding agents: CLI, MCP server, and typed Node.js API to control mobile, web, TV, and desktop apps |
 | [agent-workspace-linux](https://github.com/agent-sh/agent-workspace-linux) | Isolated Linux desktop workspaces for AI agents                                                       |
 | [amplitude-soundboard](https://github.com/dan0v/AmplitudeSoundboard)       | A sleek, cross-platform soundboard                                                                    |
 | [anitr-cli](https://github.com/axrona/anitr-cli)                           | Terminalde Türkçe altyazılı anime arama ve izleme aracı                                               |
