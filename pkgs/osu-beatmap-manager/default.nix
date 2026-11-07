@@ -1,43 +1,75 @@
 {
   lib,
-  buildDotnetModule,
-  fetchFromGitHub,
-  dotnetCorePackages,
-  writeScript,
+  stdenvNoCC,
+  fetchzip,
+  autoPatchelfHook,
+  makeWrapper,
+  openssl,
+  krb5,
+  icu,
+  zlib,
+  nix-update-script,
 }:
 
-buildDotnetModule {
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "osu-beatmap-manager";
-  version = "0-unstable-2026-04-18";
+  version = "0.1.0";
 
-  src = fetchFromGitHub {
-    owner = "AniviaFlome";
-    repo = "osu-beatmap-manager";
-    rev = "aaea48ecb3c6875e074389a8b0c059f6e9b7e0ae";
-    hash = "sha256-AUftnZ0/p9INaiKAlO8QBLZVjuI+haBOEJCpqOap9Ko=";
+  src = fetchzip {
+    url = "https://github.com/AniviaFlome/osu-beatmap-manager/releases/download/v${finalAttrs.version}/obm-v${finalAttrs.version}-linux-x64.tar.gz";
+    hash = "sha256-SnwBAr9oirjAIMnzmLiGinNFLBjlcEzGlKnW3fQBxJE=";
+    stripRoot = false;
   };
 
-  projectFile = "src/obm/obm.csproj";
-  nugetDeps = ./deps.json;
+  nativeBuildInputs = [
+    autoPatchelfHook
+    makeWrapper
+  ];
 
-  dotnet-sdk = dotnetCorePackages.sdk_8_0;
-  dotnet-runtime = dotnetCorePackages.runtime_8_0;
+  buildInputs = [
+    openssl
+    krb5
+    icu
+    zlib
+  ];
 
-  passthru.updateScript = writeScript "update-osu-beatmap-manager" ''
-    #!/usr/bin/env nix-shell
-    #!nix-shell -i bash -p nix-update
+  installPhase = ''
+    runHook preInstall
 
-    set -euo pipefail
+    appDir=$out/share/osu-beatmap-manager
+    mkdir -p $appDir $out/bin
+    cp $src/obm $src/librealm-wrappers.so $appDir/
+    chmod +x $appDir/obm
 
-    nix-update osu-beatmap-manager --version branch
-    $(nix-build -A osu-beatmap-manager.fetch-deps --no-out-link) ./pkgs/osu-beatmap-manager/deps.json
+    # The self-contained apphost links ICU/OpenSSL/Kerberos by unversioned
+    # linker names that only exist in dev outputs, so autoPatchelf drops
+    # them; the .NET host dlopens the versioned libs at runtime instead.
+    # Expose them via LD_LIBRARY_PATH. $appDir stays the app directory
+    # (wrapper execs the real binary), so librealm-wrappers.so next to
+    # it is still found.
+    makeWrapper $appDir/obm $out/bin/obm \
+      --prefix LD_LIBRARY_PATH : "${
+        lib.makeLibraryPath [
+          openssl
+          krb5
+          icu
+          zlib
+        ]
+      }"
+
+    runHook postInstall
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "osu! Beatmap Manager";
     homepage = "https://github.com/AniviaFlome/osu-beatmap-manager";
+    changelog = "https://github.com/AniviaFlome/osu-beatmap-manager/releases/tag/v${finalAttrs.version}";
     license = licenses.mit;
     maintainers = [ ];
     mainProgram = "obm";
+    platforms = [ "x86_64-linux" ];
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
-}
+})
