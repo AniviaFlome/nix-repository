@@ -36,6 +36,7 @@ Special cases (pass as extra args):
 - **Prerelease-only upstream (`--version=unstable`)** — `motrix-beta` (v2 line ships betas only; stable is still the years-old 1.x). Plain `nix-update` ignores prereleases, so the update script passes `--version=unstable`.
 - **Prefixed/suffixed release tags (`--version-regex` + `--use-github-releases`)** — `proton-cachyos` (`cachyos-(.*)-slr`), `gdk-proton` (`release(.*)`), `soda` (`soda-(.*)`), `protosoda` (`protosoda-(.*)`). Always pass `--use-github-releases`: the default ATOM feed includes prereleases (e.g. `soda-*-experimental`) without a prerelease flag, and nix-update's unstable-keyword filter doesn't catch "experimental". Flags live inside the package's own `nix-update-script`; the update runner executes them verbatim.
 - **Prefixed skill tags** — `impeccable` tags releases as `skill-v<version>`, so the update script passes `--version-regex=skill-v(.*)`.
+- **Vendored npm lockfile** — `browse` vendors `pkgs/browse/package-lock.json` (the npm tarball ships none); its custom `updateScript` regenerates the lock for the incoming version before delegating to `nix-update`, so `npmDepsHash` is computed from the fresh lock.
 
 `adore` and `fallin` use `version = "latest"` with hardcoded model URLs — unversioned data blobs, no updater.
 
