@@ -16,14 +16,14 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "browse";
-  version = "0.0.14";
+  version = "0.0.15";
 
   src = fetchzip {
     url = "https://registry.npmjs.org/@opencode/browse/-/browse-${finalAttrs.version}.tgz";
-    hash = "sha256-OTmI2W8U5W2rfIgizX8f+usDHd0I47LgLRxWWlBqBe8=";
+    hash = "sha256-PQ5ZOVMCIXfHRdL0X8MhXxPlFJnepzFU99nWov+AA8g=";
   };
 
-  npmDepsHash = "sha256-LRp5mp18mdb3kR7GWoEv7Vyt5ejfkMqUz6WQIWkAvyM=";
+  npmDepsHash = "sha256-l0j9TzFaMVjDCtlVNVqzoQ3j2sZeYPdH8Z7iGwn3aSU=";
 
   nodejs = nodejs_24;
 
