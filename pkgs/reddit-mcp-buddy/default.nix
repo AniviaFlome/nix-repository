@@ -9,16 +9,16 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "reddit-mcp-buddy";
-  version = "1.2.1";
+  version = "1.3.0";
 
   src = fetchFromGitHub {
     owner = "karanb192";
     repo = "reddit-mcp-buddy";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-1BaCs4J2W9hoaGWdMf85J3f0Ulv62+Bet33E5pFHOTg=";
+    hash = "sha256-LZX/s9SIhynIi1msLHDibNWT3jR+E57mU7DrM5uM6Uo=";
   };
 
-  npmDepsHash = "sha256-QFiA81YUXkXNCWzqDmmHosJiDNHZdwrUIjXVOf7rYC8=";
+  npmDepsHash = "sha256-oxZfJy4WZurptdpOqQAKj03LWytR824cIT4tsdwohXM=";
 
   nodejs = nodejs_24;
 
