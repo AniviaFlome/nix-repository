@@ -1,70 +1,61 @@
 {
   lib,
-  buildNpmPackage,
-  fetchzip,
-  nodejs_24,
-  writeShellApplication,
-  nix-update,
-  curl,
-  jq,
-  git,
-  gnutar,
-  gzip,
-  coreutils,
+  stdenv,
+  fetchurl,
+  autoPatchelfHook,
+  nix-update-script,
   testers,
 }:
 
-buildNpmPackage (finalAttrs: {
+stdenv.mkDerivation (finalAttrs: {
   pname = "browse";
-  version = "0.0.16";
+  version = "0.1.0";
 
-  src = fetchzip {
-    url = "https://registry.npmjs.org/@opencode/browse/-/browse-${finalAttrs.version}.tgz";
-    hash = "sha256-IlPHGubwX3OZi8zkEun4KTE2Z9IEGmo2FUX89z4G2cA=";
-  };
+  # Upstream ships the Rust binary as per-platform npm packages
+  # (@opencode/browse-<target> holding bin/browse); the main
+  # @opencode/browse tarball is only a Node launcher, so fetch the
+  # platform tarball directly instead.
+  src =
+    let
+      target =
+        if stdenv.hostPlatform.isDarwin then
+          if stdenv.hostPlatform.isAarch64 then "darwin-arm64" else "darwin-x64"
+        else if stdenv.hostPlatform.isAarch64 then
+          "linux-arm64"
+        else
+          "linux-x64";
+      hashes = {
+        linux-x64 = "sha256-bjzhOxwLmPnLLPOscNvkBXQ02sRzgxM9vcTn8fCDKHk=";
+        linux-arm64 = "sha256-J0BaPHpgftH0uPOoOQ4LsPcqI3mGZNqfV+jE5xf0ltM=";
+        darwin-x64 = "sha256-2uMY6LVLuzNKSyIte4WUgEPb5bq1X0ScQ13/tolRPJ8=";
+        darwin-arm64 = "sha256-bzmc+q/RHWHnImBAf/8AcUkkm4f1zxKH7B3fMDUSD54=";
+      };
+    in
+    fetchurl {
+      url = "https://registry.npmjs.org/@opencode/browse-${target}/-/browse-${target}-${finalAttrs.version}.tgz";
+      hash = hashes.${target};
+    };
 
-  npmDepsHash = "sha256-kT9umRNAgGmK8z95lrhdvzH+G//4QR3RE/3VBeDqQGE=";
+  sourceRoot = "package";
 
-  nodejs = nodejs_24;
+  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [
+    autoPatchelfHook
+  ];
 
-  postPatch = ''
-    ${lib.getExe' nodejs_24 "node"} --eval '
-      const pkg = require("./package.json");
-      delete pkg.devDependencies;
-      require("fs").writeFileSync("package.json", JSON.stringify(pkg, null, 2));
-    '
+  buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
+    stdenv.cc.cc.lib
+  ];
 
-    cp ${./package-lock.json} package-lock.json
-  '';
+  installPhase = ''
+    runHook preInstall
 
-  dontNpmBuild = true;
+    install -Dm755 bin/browse $out/bin/browse
 
-  npmFlags = [ "--ignore-scripts" ];
-
-  postInstall = ''
-    mkdir -p $out/share/skills
-    cp -R skills/browse $out/share/skills/
+    runHook postInstall
   '';
 
   passthru = {
-    updateScript =
-      let
-        updater = writeShellApplication {
-          name = "browse-update";
-          runtimeInputs = [
-            nix-update
-            nodejs_24
-            curl
-            jq
-            git
-            gnutar
-            gzip
-            coreutils
-          ];
-          text = builtins.readFile ./update.sh;
-        };
-      in
-      [ "${lib.getExe updater}" ];
+    updateScript = nix-update-script { };
     tests.version = testers.testVersion {
       package = finalAttrs.finalPackage;
     };
@@ -77,6 +68,12 @@ buildNpmPackage (finalAttrs: {
     license = licenses.mit;
     maintainers = [ ];
     mainProgram = "browse";
-    platforms = platforms.all;
+    platforms = [
+      "x86_64-linux"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 })
