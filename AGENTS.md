@@ -45,6 +45,7 @@ Special cases (pass as extra args):
 - **Steam compat tools** (`proton-cachyos`, `gdk-proton`, `boson`, `nativecookie`) — provide a `steamcompattool` output; not for profile install. Use `programs.steam.extraCompatPackages`. All have `preferLocalBuild = true`.
 - **`nativecookie`** — uses plain `[ nix-update ]` as `updateScript` (list form), not `nix-update-script` helper.
 - **Agent skill packages** (`impeccable`, `caveman-skills`, `matt-pocock-skills`) — data-only derivations installing each skill to `$out/share/skills/<skill-name>` (`impeccable` also ships `$out/share/opencode-commands/impeccable.md`). No tests, no `mainProgram`.
+- **`browse`** — a native Rust binary fetched from the per-platform npm tarballs (`@opencode/browse-<target>`, holding `bin/browse`); the `@opencode/browse` tarball is only a Node launcher. Upstream dropped the bundled `skills/browse` in 0.1.0 (guidance is served as MCP instructions instead), so it installs no `$out/share/skills` entry.
 
 ## Package documentation rule
 

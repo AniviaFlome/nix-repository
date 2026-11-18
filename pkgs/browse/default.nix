@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "browse";
-  version = "0.1.0";
+  version = "0.1.5";
 
   # Upstream ships the Rust binary as per-platform npm packages
   # (@opencode/browse-<target> holding bin/browse); the main
@@ -25,10 +25,10 @@ stdenv.mkDerivation (finalAttrs: {
         else
           "linux-x64";
       hashes = {
-        linux-x64 = "sha256-bjzhOxwLmPnLLPOscNvkBXQ02sRzgxM9vcTn8fCDKHk=";
-        linux-arm64 = "sha256-J0BaPHpgftH0uPOoOQ4LsPcqI3mGZNqfV+jE5xf0ltM=";
-        darwin-x64 = "sha256-2uMY6LVLuzNKSyIte4WUgEPb5bq1X0ScQ13/tolRPJ8=";
-        darwin-arm64 = "sha256-bzmc+q/RHWHnImBAf/8AcUkkm4f1zxKH7B3fMDUSD54=";
+        linux-x64 = "sha256-i6c/FjIqQlRMrTqXSQv9FJV7l7EItY9DkT5soIijzdc=";
+        linux-arm64 = "sha256-C1UOi2YjmUqUe8mYcEtLxeeW4wcyPeX5R81KvXx9fas=";
+        darwin-x64 = "sha256-/PiaQKnbNIYY7cqRT+hLooS0jH7PWCmeF0gFYHJjtYk=";
+        darwin-arm64 = "sha256-1jsw2bidBQcKMxDS2AQ14Gq5zDUha4AazGj5aeFCAr8=";
       };
     in
     fetchurl {
