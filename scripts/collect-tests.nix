@@ -13,7 +13,14 @@ in
       testsFromPkg =
         name: pkg:
         let
-          probe = builtins.tryEval (lib.isAttrs pkg && pkg ? passthru && pkg.passthru ? tests && isFree pkg);
+          probe = builtins.tryEval (
+            lib.isAttrs pkg
+            && pkg ? passthru
+            && pkg.passthru ? tests
+            && isFree pkg
+            && !(pkg.meta.broken or false)
+            && lib.meta.availableOn pkgs.stdenv.hostPlatform pkg
+          );
         in
         if probe.success && probe.value then
           lib.mapAttrs' (testName: drv: lib.nameValuePair "${name}-${testName}" drv) (

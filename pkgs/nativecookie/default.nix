@@ -5,7 +5,7 @@
   electron,
   xdg-utils,
   makeWrapper,
-  nix-update,
+  nix-update-script,
   steamDisplayName ? "NativeCookie",
 }:
 
@@ -59,7 +59,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       --prefix PATH : ${lib.makeBinPath [ xdg-utils ]}
   '';
 
-  passthru.updateScript = [ nix-update ];
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = ''

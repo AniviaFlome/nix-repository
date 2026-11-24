@@ -8,10 +8,10 @@
   libglvnd,
   wayland,
   libxkbcommon,
-  libX11,
-  libXcursor,
-  libXi,
-  libXrandr,
+  libx11,
+  libxcursor,
+  libxi,
+  libxrandr,
   nix-update-script,
 }:
 
@@ -65,10 +65,10 @@ stdenv.mkDerivation (finalAttrs: {
           libglvnd
           wayland
           libxkbcommon
-          libX11
-          libXcursor
-          libXi
-          libXrandr
+          libx11
+          libxcursor
+          libxi
+          libxrandr
         ]
       }"
 

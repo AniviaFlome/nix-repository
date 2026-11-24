@@ -2,6 +2,9 @@
   pkgs ? import <nixpkgs> { },
 }:
 
+let
+  hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
+in
 {
   modules = import ./modules;
   overlays = import ./overlays;
@@ -22,9 +25,9 @@
   protosoda = pkgs.callPackage ./pkgs/protosoda { };
   getcomics-downloader = pkgs.callPackage ./pkgs/getcomics-downloader { };
   handy = pkgs.callPackage ./pkgs/handy { };
-  hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
+  inherit hyprism-unwrapped;
   hyprism = pkgs.callPackage ./pkgs/hyprism {
-    hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
+    inherit hyprism-unwrapped;
   };
   artcnn = pkgs.callPackage ./pkgs/artcnn { };
   fallin = pkgs.callPackage ./pkgs/fallin { };
@@ -50,6 +53,7 @@
   dota2-rpc-client = pkgs.callPackage ./pkgs/dota2-rpc-client { };
   agent-device = pkgs.callPackage ./pkgs/agent-device { };
   browse = pkgs.callPackage ./pkgs/browse { };
+  nectarlink = pkgs.callPackage ./pkgs/nectarlink { };
 
   mpvScripts =
     let

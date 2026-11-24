@@ -7,23 +7,20 @@ let
   # `nix-update --use-update-script` and never reassembles its flags.
   hasUpdateScript = pkg: pkg ? passthru && pkg.passthru ? updateScript;
 
-  # Whether a package has a free license (shared helper: unfree or
-  # throw-on-access licenses report false instead of failing evaluation).
-  isFree = pkg: import ./is-free.nix { inherit pkg; };
-
   find =
     prefix: attrs:
     if builtins.isAttrs attrs then
       if (attrs ? type && attrs.type == "derivation") then
-        [
-          {
-            name = prefix;
-            hasUpdateScript = hasUpdateScript attrs;
-            unfree = !(isFree attrs);
-            nested = builtins.match ".*\\..*" prefix != null;
-            prReview = attrs.passthru.updatePr or false;
-          }
-        ]
+        if hasUpdateScript attrs then
+          [
+            {
+              name = prefix;
+              hasUpdateScript = true;
+              prReview = attrs.passthru.updatePr or false;
+            }
+          ]
+        else
+          [ ]
       else
         builtins.concatLists (
           builtins.attrValues (

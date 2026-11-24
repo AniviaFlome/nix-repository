@@ -42,7 +42,9 @@ appimageTools.wrapType2 {
     install -m 444 -D ${appimageContents}/Nuvio.png $out/share/icons/hicolor/512x512/apps/nuvio.png
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--version=unstable" ];
+  };
 
   meta = with lib; {
     description = "Free, open-source media streaming app";

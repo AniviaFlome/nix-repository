@@ -31,14 +31,12 @@ appimageTools.wrapType2 {
   passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
-    description = "Handy: A handy desktop overlay for your hands";
+    description = "A free, open source, and extensible speech-to-text application that works completely offline";
     homepage = "https://github.com/cjpais/Handy";
     license = licenses.gpl3Only;
     maintainers = [ ];
     mainProgram = "handy";
-    platforms = [
-      "x86_64-linux"
-      "aarch64-linux"
-    ];
+    platforms = [ "x86_64-linux" ];
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 }

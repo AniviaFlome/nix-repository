@@ -31,9 +31,10 @@ appimageTools.wrapType2 {
   meta = with lib; {
     description = "A fast, feature-rich krunker client written in typescript";
     homepage = "https://github.com/KraXen72/crankshaft";
-    license = licenses.gpl3;
+    license = licenses.gpl3Only;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "crankshaft";
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 }

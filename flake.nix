@@ -52,14 +52,22 @@
       packages = forAllSystems (
         system:
         let
+          pkgs = import nixpkgs { inherit system; };
+          isFree = pkg: import ./scripts/is-free.nix { inherit pkg; };
+          isExposed =
+            v:
+            nixpkgs.lib.isDerivation v
+            && isFree v
+            && !(v.meta.broken or false)
+            && nixpkgs.lib.meta.availableOn pkgs.stdenv.hostPlatform v;
           lp = self.legacyPackages.${system};
-          topLevel = nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) lp;
+          topLevel = nixpkgs.lib.filterAttrs (_: isExposed) lp;
           nested = nixpkgs.lib.concatMapAttrs (
             outerName: outerVal:
             if builtins.isAttrs outerVal && !(nixpkgs.lib.isDerivation outerVal) then
               nixpkgs.lib.mapAttrs' (
                 innerName: innerVal: nixpkgs.lib.nameValuePair "${outerName}-${innerName}" innerVal
-              ) (nixpkgs.lib.filterAttrs (_: nixpkgs.lib.isDerivation) outerVal)
+              ) (nixpkgs.lib.filterAttrs (_: isExposed) outerVal)
             else
               { }
           ) lp;

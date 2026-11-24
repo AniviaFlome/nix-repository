@@ -6,7 +6,7 @@
   zstd,
   steamDisplayName ? "Boson",
   makeWrapper,
-  nix-update,
+  nix-update-script,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -57,7 +57,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   passthru = {
     electronPath = "${electron}/bin/electron";
-    updateScript = [ nix-update ];
+    updateScript = nix-update-script { };
   };
 
   meta = {
@@ -69,7 +69,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       Note: Set ELECTRON_PATH in Steam launch options: ELECTRON_PATH=${electron}/bin/electron %command%
     '';
     homepage = "https://github.com/FyraLabs/boson";
-    license = lib.licenses.gpl3;
+    license = lib.licenses.mit;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];

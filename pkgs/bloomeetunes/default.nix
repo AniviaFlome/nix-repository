@@ -12,13 +12,13 @@
   copyDesktopItems,
   makeDesktopItem,
   makeWrapper,
-  libX11,
-  libXrandr,
-  libXrender,
-  libXinerama,
-  libXcursor,
-  libXext,
-  libXfixes,
+  libx11,
+  libxrandr,
+  libxrender,
+  libxinerama,
+  libxcursor,
+  libxext,
+  libxfixes,
 }:
 
 let
@@ -46,13 +46,13 @@ stdenv.mkDerivation {
     libxkbcommon
     libepoxy
     mpv-unwrapped
-    libX11
-    libXext
-    libXcursor
-    libXfixes
-    libXrender
-    libXinerama
-    libXrandr
+    libx11
+    libxext
+    libxcursor
+    libxfixes
+    libxrender
+    libxinerama
+    libxrandr
   ];
 
   desktopItems = [
@@ -94,7 +94,7 @@ stdenv.mkDerivation {
   meta = with lib; {
     description = "Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources.";
     homepage = "https://github.com/HemantKArya/BloomeeTunes";
-    license = licenses.gpl2;
+    license = licenses.gpl2Only;
     maintainers = [ ];
     mainProgram = "bloomeetunes";
     platforms = [ "x86_64-linux" ];

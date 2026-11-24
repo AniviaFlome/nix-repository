@@ -68,3 +68,23 @@ jobs:
         # Don't replace <YOUR_REPO_NAME> here!
         if: ${{ matrix.nurRepo != '<YOUR_REPO_NAME>' }}
         run: curl -XPOST "https://nur-update.nix-community.org/update?repo=${{ matrix.nurRepo }}"
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Flake check (eval)
+        run: nix flake check --no-build --show-trace
+      - name: Check formatting
+        run: nix build --no-link .#checks.x86_64-linux.formatting
+      - name: Run updater unit tests
+        run: nix shell -f '<nixpkgs>' python3Packages.pytest -c pytest scripts/test_update.py -v
+      - name: Build free mpvScripts
+        run: nix-build --no-out-link ci.nix -A mpvScriptOutputs

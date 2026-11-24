@@ -54,7 +54,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   meta = {
     description = "GDK-Proton is a fork of Proton that includes the GDK (Game Development Kit) for Linux.";
     homepage = "https://github.com/Weather-OS/GDK-Proton";
-    license = lib.licenses.gpl3;
+    license = lib.licenses.gpl3Only;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];

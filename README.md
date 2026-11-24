@@ -26,6 +26,7 @@ My nix packages repository.
 | [hyprism](https://github.com/HyPrismTeam/HyPrism)                          | Hytale launcher with mod management, and more!                                                        |
 | [mobile-mcp](https://github.com/mobile-next/mobile-mcp)                    | MCP server for mobile automation and scraping (iOS, Android, emulators, simulators and real devices)  |
 | [motrix-beta](https://github.com/agalwood/Motrix)                       | A full-featured open-source download manager                                                          |
+| [nectarlink](https://github.com/thtbee/nectarlink)                         | Your Android phone and your PC, working as one (local-first, end-to-end encrypted)                    |
 | [nuvio](https://github.com/NuvioMedia/NuvioDesktop)                      | Free, open-source media streaming app                                                                 |
 | [osu-beatmap-manager](https://github.com/AniviaFlome/osu-beatmap-manager)  | osu! Beatmap Manager                                                                                  |
 | [reddit-mcp-buddy](https://github.com/karanb192/reddit-mcp-buddy)          | Clean, LLM-optimized Reddit MCP server. Browse posts, search content, analyze users                    |

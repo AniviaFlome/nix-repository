@@ -36,7 +36,7 @@ let
         if shouldRecurseForDerivations p then
           flattenPkgs p
         else if isDerivation p then
-          [ p ] ++ flattenPkgs (p.passthru.tests or { })
+          if isBuildable p then [ p ] ++ flattenPkgs (p.passthru.tests or { }) else [ ]
         else
           [ ];
     in
@@ -51,16 +51,19 @@ let
       listToAttrs (
         map (n: nameValuePair n nurAttrs.${n}) (filter (n: !isReserved n) (attrNames nurAttrs))
       )
-      # `flattenPkgs` skips plain nested attrsets, so recurse into mpvScripts
-      # explicitly — otherwise the scripts are never built or cached.
     )
+    # `flattenPkgs` skips plain nested attrsets, so include mpvScripts
+    # explicitly (`buildLua` sets `preferLocalBuild = true`, so they live in
+    # `buildOutputs` / `mpvScriptOutputs` rather than `cacheOutputs`).
     ++ flattenPkgs nurAttrs.mpvScripts;
 
 in
 rec {
   buildPkgs = filter isBuildable nurPkgs;
   cachePkgs = filter isCacheable buildPkgs;
+  mpvScriptPkgs = filter isBuildable (flattenPkgs nurAttrs.mpvScripts);
 
   buildOutputs = concatMap outputsOf buildPkgs;
   cacheOutputs = concatMap outputsOf cachePkgs;
+  mpvScriptOutputs = concatMap outputsOf mpvScriptPkgs;
 }

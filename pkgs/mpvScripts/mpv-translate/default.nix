@@ -31,7 +31,9 @@ buildLua (finalAttrs: {
 
   passthru = {
     scriptName = "mpv-translate.js";
-    updateScript = nix-update-script { };
+    updateScript = nix-update-script {
+      extraArgs = [ "--version=unstable" ];
+    };
   };
 
   meta = {

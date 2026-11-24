@@ -103,5 +103,6 @@ stdenv.mkDerivation rec {
     platforms = [ "x86_64-linux" ];
     maintainers = [ ];
     mainProgram = "cake-wallet";
+    sourceProvenance = [ sourceTypes.binaryNativeCode ];
   };
 }

@@ -3,27 +3,21 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
-from typing import TypedDict, cast
+from typing import NotRequired, TypedDict, cast
 
 
 class UpdateTarget(TypedDict):
     name: str
-    # Whether the package carries its own updateScript (list-style or
-    # custom). The script is the single source of truth for update flags;
-    # the runner executes it via `--use-update-script` and never
-    # reassembles its arguments.
-    hasUpdateScript: bool
-    # Whether the package has an unfree license. Unfree packages can't be
-    # built via `nix-update --flake --build` (pure flake eval ignores
-    # NIXPKGS_ALLOW_UNFREE), so for them we fall back to `--file default.nix`
-    # which uses impure channel eval that honors the env var.
-    unfree: bool
+    # Whether the package carries its own updateScript (the single source of
+    # truth for update flags, executed via `--use-update-script`).
+    hasUpdateScript: NotRequired[bool]
     # Whether updates must land via a reviewed GitHub PR instead of direct
     # commits to main (malware guard for vendored third-party code).
-    prReview: bool
+    prReview: NotRequired[bool]
 
 
 BOT_NAME = "github-actions[bot]"
@@ -31,20 +25,14 @@ BOT_EMAIL = "github-actions[bot]@users.noreply.github.com"
 
 
 def get_targets() -> list[UpdateTarget]:
-    """Gets update targets using Nix evaluation."""
-    system_cmd = ["nix", "eval", "--impure", "--raw", "--expr", "builtins.currentSystem"]
-    try:
-        system = subprocess.run(system_cmd, check=True, capture_output=True, text=True).stdout.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"Error getting system: {e}", file=sys.stderr)
-        sys.exit(1)
-
-    # Use legacyPackages (raw package set): the flake's packages output filters
-    # out nested attrsets like mpvScripts, so their entries would be missed.
+    """Gets update targets using Nix evaluation against <nixpkgs>."""
     targets_cmd = [
-        "nix", "eval", "--json", "--impure",
-        "--apply", "pkgs: import ./scripts/get-update-targets.nix { packages = pkgs; }",
-        f".#legacyPackages.{system}",
+        "nix",
+        "eval",
+        "--json",
+        "--impure",
+        "--expr",
+        "import ./scripts/get-update-targets.nix { packages = import ./default.nix { }; }",
     ]
     try:
         targets_json = subprocess.run(targets_cmd, check=True, capture_output=True, text=True).stdout
@@ -57,15 +45,16 @@ def get_targets() -> list[UpdateTarget]:
 def nix_update_cmd(target: UpdateTarget, build: bool) -> list[str]:
     """Builds the nix-update command for a target.
 
-    Unfree packages can't be updated via `--flake` (pure eval ignores
-    NIXPKGS_ALLOW_UNFREE), so use the default `--file default.nix` path
-    (impure channel eval honors it). Free packages use `--flake`.
-    Packages carrying their own updateScript run it via
-    `--use-update-script`; its flags travel inside the script itself.
+    Runs all targets in file mode (`default.nix` + `maintainers/scripts/update.nix`):
+    avoids Nix 2.35 lazy-trees `flakeImportPath` evaluation failures, uses
+    the active `<nixpkgs>` channel instead of a potentially stale `flake.lock`,
+    and honors `NIXPKGS_ALLOW_UNFREE`.
     """
-    cmd: list[str] = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update"]
-    if not target.get("unfree", False) and not target.get("nested", False):
-        cmd.append("--flake")
+    if shutil.which("nix-update"):
+        cmd: list[str] = ["nix-update"]
+    else:
+        cmd = ["nix", "shell", "nixpkgs#nix-update", "-c", "nix-update"]
+
     cmd.append(target["name"])
 
     if target.get("hasUpdateScript", False):
@@ -155,7 +144,7 @@ def pr_body(target: UpdateTarget, diff: str) -> str:
     if owner and repo and old_rev and new_rev:
         parts += [
             "",
-            f"[Upstream compare]({ 'https://github.com/%s/%s/compare/%s...%s' % (owner, repo, old_rev, new_rev) })",
+            f"[Upstream compare](https://github.com/{owner}/{repo}/compare/{old_rev}...{new_rev})",
         ]
     return "\n".join(parts)
 
@@ -173,7 +162,7 @@ def prs_allowed(args: argparse.Namespace) -> bool:
     )
 
 
-def update_pr_review_target(target: UpdateTarget, args: argparse.Namespace, base_branch: str) -> None:
+def update_pr_review_target(target: UpdateTarget, args: argparse.Namespace, base_branch: str) -> bool:
     """Updates a review-gated package on its own branch and opens/refreshes a PR."""
     name = target["name"]
     branch = "auto-update/" + name.replace(".", "-")
@@ -181,12 +170,16 @@ def update_pr_review_target(target: UpdateTarget, args: argparse.Namespace, base
     print(f"Updating {name} (review-gated, branch {branch})...")
     subprocess.run(nix_update_cmd(target, args.build), check=True)
 
-    diff = ""
-    if git("status", "--porcelain"):
-        diff = git("diff", "HEAD")
-        git_commit(f"pkgs: auto-update {name} (review required)")
-        subprocess.run(["git", "push", "--force", "origin", branch], check=True)
+    if not git("status", "--porcelain"):
+        print(f"No changes for {name}")
+        return False
 
+    diff = git("diff", "HEAD")
+    git_commit(f"pkgs: auto-update {name} (review required)")
+    subprocess.run(["git", "push", "--force", "origin", branch], check=True)
+
+    body_file: str | None = None
+    try:
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as f:
             f.write(pr_body(target, diff))
             body_file = f.name
@@ -215,8 +208,30 @@ def update_pr_review_target(target: UpdateTarget, args: argparse.Namespace, base
                 check=True,
             )
             print(f"Opened review PR for {name}")
+    finally:
+        if body_file and os.path.exists(body_file):
+            os.unlink(body_file)
+    return True
+
+
+def write_step_summary(updated: list[str], failed: list[str]) -> None:
+    """Appends update results to GitHub Actions step summary when available."""
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if not summary_path:
+        return
+    lines = ["## Package Auto-Update Summary", ""]
+    if updated:
+        lines.append(f"**Updated ({len(updated)}):** " + ", ".join(f"`{n}`" for n in updated))
     else:
-        print(f"No changes for {name}")
+        lines.append("**Updated:** none")
+    lines.append("")
+    if failed:
+        lines.append(f"**Failed ({len(failed)}):** " + ", ".join(f"`{n}`" for n in failed))
+    else:
+        lines.append("**Failed:** none")
+    lines.append("")
+    with open(summary_path, "a", encoding="utf-8") as f:
+        f.write("\n".join(lines))
 
 
 def main() -> None:
@@ -238,8 +253,9 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    targets = get_targets()
+    targets = [t for t in get_targets() if t.get("hasUpdateScript") is not False]
 
+    updated: list[str] = []
     failed: list[str] = []
 
     pr_targets = [t for t in targets if t.get("prReview")]
@@ -252,9 +268,12 @@ def main() -> None:
                 branch = "auto-update/" + target["name"].replace(".", "-")
                 try:
                     git("checkout", "-B", branch)
-                    update_pr_review_target(target, args, base_branch)
+                    if update_pr_review_target(target, args, base_branch):
+                        updated.append(target["name"])
                 except (subprocess.CalledProcessError, OSError, KeyError, json.JSONDecodeError) as e:
                     print(f"Warning: Failed PR-review update for {target['name']} ({e})", file=sys.stderr)
+                    if os.environ.get("GITHUB_ACTIONS") == "true":
+                        print(f"::warning::Failed PR-review update for {target['name']} ({e})")
                     failed.append(target["name"])
                 finally:
                     # -f discards partial changes from failed updates so they
@@ -280,6 +299,8 @@ def main() -> None:
             _ = subprocess.run(nix_update_cmd(target, args.build), check=True)
         except subprocess.CalledProcessError as e:
             print(f"Warning: Failed to update {name} (exit code {e.returncode})", file=sys.stderr)
+            if os.environ.get("GITHUB_ACTIONS") == "true":
+                print(f"::warning::Failed to update {name} (exit code {e.returncode})")
             failed.append(name)
             # nix-update writes version/hash changes before it builds, so a
             # failed update can leave a half-bumped file behind. The workflow
@@ -290,9 +311,15 @@ def main() -> None:
                     subprocess.run(["git", "checkout", "--", path], check=True)
                 except subprocess.CalledProcessError as ce:
                     print(f"Warning: Failed to restore {path} ({ce})", file=sys.stderr)
+        else:
+            if dirty_files() - before:
+                updated.append(name)
+
+    write_step_summary(updated, failed)
 
     if failed:
         print(f"\nFailed to update: {', '.join(failed)}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -17,7 +17,9 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
       - name: Update packages
-        run: python3 ./scripts/update.py --build --open-prs
+        id: update
+        continue-on-error: true
+        run: nix shell -f '<nixpkgs>' nix-update -c python3 ./scripts/update.py --build --open-prs
         env:
           NIXPKGS_ALLOW_UNFREE: '1'
           GH_TOKEN: ${{ github.token }}
@@ -28,3 +30,6 @@ jobs:
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
           commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+      - name: Fail if any package updates failed
+        if: steps.update.outcome == 'failure'
+        run: exit 1

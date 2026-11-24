@@ -1,142 +1,180 @@
+import argparse
 import json
 import os
+import subprocess
 import sys
-from unittest.mock import patch, MagicMock
-from update import main, prs_allowed
+from unittest.mock import MagicMock, patch
 
-def create_mock_run(input_data):
-    """Helper to mock subprocess.run for nix eval and shell commands."""
+import pytest
+
+from update import main, nix_update_cmd, prs_allowed
+
+
+def create_mock_run(input_data, fail_on_cmds=None, status_seq=None):
+    """Helper to mock subprocess.run for nix eval, git status, and nix-update commands."""
+    fail_on_cmds = fail_on_cmds or set()
+    status_iter = iter(status_seq) if status_seq is not None else None
+
     def mock_run(cmd, *args, **kwargs):
         mock_result = MagicMock()
-        if 'builtins.currentSystem' in cmd:
-            mock_result.stdout = "x86_64-linux\n"
-        elif '--json' in cmd:
+        if "--json" in cmd:
             mock_result.stdout = json.dumps(input_data)
+            return mock_result
+        if cmd[:2] == ["git", "status"]:
+            if status_iter is not None:
+                mock_result.stdout = next(status_iter, "")
+            else:
+                mock_result.stdout = ""
+            return mock_result
+        for target_name in fail_on_cmds:
+            if target_name in cmd and "nix-update" in " ".join(cmd):
+                raise subprocess.CalledProcessError(1, cmd)
+        mock_result.stdout = ""
         return mock_result
+
     return mock_run
 
-def run_main_with_argv(argv):
-    """Run main() with a given sys.argv, restoring it afterwards."""
+
+def run_main_with_argv(argv, nix_update_bin="/usr/bin/nix-update"):
+    """Run main() with a given sys.argv and mocked shutil.which, restoring argv."""
     old_argv = sys.argv
     sys.argv = argv
     try:
-        main()
+        with patch("shutil.which", return_value=nix_update_bin):
+            main()
     finally:
         sys.argv = old_argv
 
-def test_update_basic():
+
+def test_nix_update_cmd_uses_direct_binary_when_on_path():
+    with patch("shutil.which", return_value="/nix/store/xxx/bin/nix-update"):
+        cmd = nix_update_cmd({"name": "pkg1", "hasUpdateScript": True}, build=False)
+    assert cmd == ["nix-update", "pkg1", "--use-update-script"]
+
+
+def test_nix_update_cmd_falls_back_to_nix_shell():
+    with patch("shutil.which", return_value=None):
+        cmd = nix_update_cmd({"name": "pkg1", "hasUpdateScript": True}, build=True)
+    assert cmd == [
+        "nix",
+        "shell",
+        "nixpkgs#nix-update",
+        "-c",
+        "nix-update",
+        "pkg1",
+        "--use-update-script",
+        "--build",
+    ]
+
+
+def test_update_basic_file_mode():
     input_data = [{"name": "pkg1"}]
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_argv(["update.py"])
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg1'],
-            check=True
-        )
+        mock_run.assert_any_call(["nix-update", "pkg1"], check=True)
+        for call in mock_run.call_args_list:
+            assert "--flake" not in call.args[0]
 
-def test_update_with_extra_args():
-    input_data = [{"name": "pkg2", "extraArgs": ["--version=1.0.0"]}]
-    with patch("subprocess.run") as mock_run:
-        mock_run.side_effect = create_mock_run(input_data)
-        run_main_with_argv(["update.py"])
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg2', '--version=1.0.0'],
-            check=True
-        )
 
 def test_update_with_update_script():
-    input_data = [{"name": "pkg3", "useUpdateScript": True}]
+    input_data = [{"name": "pkg3", "hasUpdateScript": True}]
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_argv(["update.py"])
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg3', '--use-update-script'],
-            check=True
-        )
+        mock_run.assert_any_call(["nix-update", "pkg3", "--use-update-script"], check=True)
 
-def test_update_with_both():
-    input_data = [{"name": "pkg4", "extraArgs": ["--build"], "useUpdateScript": True}]
-    with patch("subprocess.run") as mock_run:
-        mock_run.side_effect = create_mock_run(input_data)
-        run_main_with_argv(["update.py"])
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg4', '--use-update-script', '--build'],
-            check=True
-        )
 
-def test_update_multiple_packages():
+def test_update_skips_targets_without_update_script():
     input_data = [
-        {"name": "pkg5"},
-        {"name": "pkg6", "useUpdateScript": True}
+        {"name": "adore", "hasUpdateScript": False},
+        {"name": "pkg-ok", "hasUpdateScript": True},
     ]
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_argv(["update.py"])
-        assert mock_run.call_count == 4 # 2 eval calls + 2 shell calls
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg5'],
-            check=True
-        )
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg6', '--use-update-script'],
-            check=True
-        )
+        for call in mock_run.call_args_list:
+            assert "adore" not in call.args[0]
+        mock_run.assert_any_call(["nix-update", "pkg-ok", "--use-update-script"], check=True)
 
-def test_update_with_build_flag():
-    """When --build is passed to update.py, nix-update gets --build appended."""
+
+def test_update_multiple_packages_and_build_flag():
     input_data = [
-        {"name": "pkg7"},
-        {"name": "pkg8", "useUpdateScript": True, "extraArgs": ["--version=branch"]}
+        {"name": "pkg5", "hasUpdateScript": True},
+        {"name": "pkg6", "hasUpdateScript": False},
+        {"name": "mpvScripts.pkg7", "hasUpdateScript": True},
     ]
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_argv(["update.py", "--build"])
+        # 1 eval + 2 targets * (before status + nix-update + after status) = 7
+        assert mock_run.call_count == 7
         mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg7', '--build'],
-            check=True
+            ["nix-update", "pkg5", "--use-update-script", "--build"],
+            check=True,
         )
         mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg8', '--use-update-script', '--build', '--version=branch'],
-            check=True
+            ["nix-update", "mpvScripts.pkg7", "--use-update-script", "--build"],
+            check=True,
         )
+
 
 def test_update_without_build_flag():
-    """Without --build, nix-update does NOT get --build (backward compat)."""
-    input_data = [{"name": "pkg9"}]
+    input_data = [{"name": "pkg9", "hasUpdateScript": True}]
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_argv(["update.py"])
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg9'],
-            check=True
-        )
-        # Ensure --build was NOT added
+        mock_run.assert_any_call(["nix-update", "pkg9", "--use-update-script"], check=True)
         for call in mock_run.call_args_list:
-            assert '--build' not in call.args[0], "nix-update should not get --build without the flag"
+            assert "--build" not in call.args[0]
 
-def test_update_build_skipped_for_unfree():
-    """With --build, unfree packages use --file mode (impure, honors NIXPKGS_ALLOW_UNFREE) instead of --flake (pure, disallows it). Both get --build."""
+
+def test_failed_update_rolls_back_only_new_dirty_files_and_exits_nonzero(tmp_path):
+    summary = tmp_path / "summary.md"
     input_data = [
-        {"name": "pkg-free", "unfree": False},
-        {"name": "pkg-unfree", "unfree": True}
+        {"name": "pkg-ok", "hasUpdateScript": True},
+        {"name": "pkg-fail", "hasUpdateScript": True},
     ]
-    with patch("subprocess.run") as mock_run:
-        mock_run.side_effect = create_mock_run(input_data)
-        run_main_with_argv(["update.py", "--build"])
-        # Free package uses --flake with --build
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', '--flake', 'pkg-free', '--build'],
-            check=True
-        )
-        # Unfree package omits --flake (uses default.nix via --file) with --build
-        mock_run.assert_any_call(
-            ['nix', 'shell', 'nixpkgs#nix-update', '-c', 'nix-update', 'pkg-unfree', '--build'],
-            check=True
-        )
-        # Unfree package must NOT use --flake
-        for call in mock_run.call_args_list:
-            if 'pkg-unfree' in call.args[0]:
-                assert '--flake' not in call.args[0], "unfree package should not use --flake with --build"
+    # Sequence of `git status --porcelain` calls:
+    # 1. before pkg-ok: clean
+    # 2. after pkg-ok: pkg-ok dirty
+    # 3. before pkg-fail: pkg-ok dirty
+    # 4. after pkg-fail failed: pkg-ok + pkg-fail dirty
+    status_seq = [
+        "",
+        " M pkgs/pkg-ok/default.nix\n",
+        " M pkgs/pkg-ok/default.nix\n",
+        " M pkgs/pkg-ok/default.nix\n M pkgs/pkg-fail/default.nix\n",
+    ]
+    old_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    os.environ["GITHUB_STEP_SUMMARY"] = str(summary)
+    try:
+        with patch("subprocess.run") as mock_run:
+            mock_run.side_effect = create_mock_run(
+                input_data,
+                fail_on_cmds={"pkg-fail"},
+                status_seq=status_seq,
+            )
+            with pytest.raises(SystemExit) as exc:
+                run_main_with_argv(["update.py", "--build"])
+            assert exc.value.code == 1
+
+            mock_run.assert_any_call(
+                ["git", "checkout", "--", "pkgs/pkg-fail/default.nix"],
+                check=True,
+            )
+            for call in mock_run.call_args_list:
+                assert call.args[0] != ["git", "checkout", "--", "pkgs/pkg-ok/default.nix"]
+    finally:
+        if old_summary is None:
+            os.environ.pop("GITHUB_STEP_SUMMARY", None)
+        else:
+            os.environ["GITHUB_STEP_SUMMARY"] = old_summary
+
+    text = summary.read_text(encoding="utf-8")
+    assert "`pkg-ok`" in text
+    assert "`pkg-fail`" in text
+
 
 def run_main_with_env(argv, env):
     """Run main() with a given sys.argv and os.environ patch, restoring both."""
@@ -148,7 +186,8 @@ def run_main_with_env(argv, env):
         os.environ["GITHUB_ACTIONS"] = env
     sys.argv = argv
     try:
-        main()
+        with patch("shutil.which", return_value="/usr/bin/nix-update"):
+            main()
     finally:
         sys.argv = old_argv
         if old_env is None:
@@ -156,32 +195,34 @@ def run_main_with_env(argv, env):
         else:
             os.environ["GITHUB_ACTIONS"] = old_env
 
+
 def test_open_prs_refused_outside_ci():
     """--open-prs outside CI must not touch git/gh: PRs would be user-authored."""
-    input_data = [{"name": "pkg-pr", "prReview": True}]
+    input_data = [{"name": "pkg-pr", "hasUpdateScript": True, "prReview": True}]
     with patch("subprocess.run") as mock_run:
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_env(["update.py", "--open-prs"], None)
-        # Only the 2 nix-eval calls for get_targets; no checkout/nix-update/gh.
-        assert mock_run.call_count == 2
+        # Only the 1 nix-eval call for get_targets; no checkout/nix-update/gh.
+        assert mock_run.call_count == 1
         for call in mock_run.call_args_list:
             assert "checkout" not in call.args[0]
             assert "nix-update" not in str(call.args[0])
 
+
 def test_open_prs_allowed_with_override():
     """--open-prs --allow-local-prs reaches the per-target PR updater."""
-    input_data = [{"name": "pkg-pr", "prReview": True}]
+    input_data = [{"name": "pkg-pr", "hasUpdateScript": True, "prReview": True}]
     with (
         patch("subprocess.run") as mock_run,
-        patch("update.update_pr_review_target") as mock_pr,
+        patch("update.update_pr_review_target", return_value=False) as mock_pr,
     ):
         mock_run.side_effect = create_mock_run(input_data)
         run_main_with_env(["update.py", "--open-prs", "--allow-local-prs"], None)
         mock_pr.assert_called_once()
 
+
 def test_prs_allowed_helper():
     """prs_allowed: CI or explicit override, and only with --open-prs."""
-    import argparse
 
     def ns(open_prs, allow=False):
         return argparse.Namespace(open_prs=open_prs, allow_local_prs=allow)
