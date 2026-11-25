@@ -33,24 +33,24 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "agent-device";
-  version = "0.21.36";
+  version = "0.21.42";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/agent-device/-/agent-device-${finalAttrs.version}.tgz";
-    hash = "sha256-Cq2Ia0fQal7KjlTTKpdmmF8jKD9JrcHFBFUJoZG8pco=";
+    hash = "sha256-9sRM9fDB1Ja/UQmE0WCXpF/FKmr6eUuQ1uA3tB+kZhs=";
   };
 
   sourceRoot = "package";
 
   skill-agent-device =
     mkSkill finalAttrs.version "agent-device"
-      "sha256-HxfEyE3Xc3v5DlGSWa6mDeGgNKVYbkRMdRJFU8wuUk0=";
+      "sha256-/JMUcPRCtkd0rLmTfGdFzHQxsN1gDp2tFEVQrbEVQOU=";
   skill-android-emulator =
     mkSkill finalAttrs.version "android-emulator"
       "sha256-qqqt/Dukpl6lYb/5gm8ii4Wa0rUck8JEPcXljAwcjJs=";
   skill-dogfood =
     mkSkill finalAttrs.version "dogfood"
-      "sha256-GaeoZxqRKcTYobu34xCAkEn8C5/TM0K0Nheavcnf0y0=";
+      "sha256-6dmgI+AhWg0wNWTk9dWAJTSmyk6YhnQdGfBZ4laZnrc=";
   skill-ios-simulator =
     mkSkill finalAttrs.version "ios-simulator"
       "sha256-AFHpzqvEMOEzyGAM3zwx9Jhezc/Y2f6Kj+3gjL65psA=";

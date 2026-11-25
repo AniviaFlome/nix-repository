@@ -22,14 +22,14 @@
 
 python3Packages.buildPythonApplication (finalAttrs: {
   pname = "vice-clipper";
-  version = "2.18.0";
+  version = "2.19.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "eklonofficial";
     repo = "Vice";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-9t/pJyJCp7m6jHJZGT37y9dtWIwgtHUoGGtlNoRvyZI=";
+    hash = "sha256-4ORg2vApKKBYe0q2wdcxXky6ylSpS8iEHZ2Si7TIXS0=";
   };
 
   build-system = with python3Packages; [ setuptools ];
