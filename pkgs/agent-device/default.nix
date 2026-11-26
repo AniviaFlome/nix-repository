@@ -33,11 +33,11 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "agent-device";
-  version = "0.21.42";
+  version = "0.21.43";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/agent-device/-/agent-device-${finalAttrs.version}.tgz";
-    hash = "sha256-9sRM9fDB1Ja/UQmE0WCXpF/FKmr6eUuQ1uA3tB+kZhs=";
+    hash = "sha256-dGz69T+hRTc6SwsUvncStPvbgnuLw5vW4/qdiyzS+SM=";
   };
 
   sourceRoot = "package";
