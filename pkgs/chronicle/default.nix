@@ -25,11 +25,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "chronicle";
-  version = "1.16.0";
+  version = "1.17.0";
 
   src = fetchurl {
     url = "https://github.com/AniviaFlome/chronicle/releases/download/v${finalAttrs.version}/chronicle-linux-v${finalAttrs.version}.tar.gz";
-    hash = "sha256-GS9gA7Z6PAksKuTq/0e04reiMfC7JE5kV1OyB/YXScc=";
+    hash = "sha256-jH0/rF/k/q+AbacZ2jjWHFVqN7B2Gw+DsXBw+C1m/0U=";
   };
 
   icon = fetchurl {
@@ -103,7 +103,15 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    inherit (finalAttrs) icon;
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--override-filename=pkgs/chronicle/default.nix"
+        "--subpackage=icon"
+      ];
+    };
+  };
 
   meta = with lib; {
     description = "Cross-platform student planner with class schedules, absences, tasks and exams";

@@ -13,7 +13,7 @@
   libxcursor,
   libxi,
   libxrandr,
-  nix-update-script,
+  mkMultiArchUpdateScript,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -77,7 +77,10 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = mkMultiArchUpdateScript {
+    file = "pkgs/zapfast/default.nix";
+    extraSystems = [ "aarch64-linux" ];
+  };
 
   meta = with lib; {
     description = "A native WhatsApp client built with Rust and egui";

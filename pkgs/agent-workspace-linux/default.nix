@@ -22,7 +22,7 @@
   imagemagick,
   xclip,
   bubblewrap,
-  nix-update-script,
+  mkMultiArchUpdateScript,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -102,7 +102,9 @@ stdenv.mkDerivation (finalAttrs: {
 
   passthru = {
     inherit (finalAttrs) skillSrc;
-    updateScript = nix-update-script {
+    updateScript = mkMultiArchUpdateScript {
+      file = "pkgs/agent-workspace-linux/default.nix";
+      extraSystems = [ "aarch64-linux" ];
       extraArgs = [ "--subpackage=skillSrc" ];
     };
   };

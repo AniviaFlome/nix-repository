@@ -4,6 +4,7 @@
 
 let
   hyprism-unwrapped = pkgs.callPackage ./pkgs/hyprism/unwrapped.nix { };
+  mkMultiArchUpdateScript = pkgs.callPackage ./scripts/multi-arch-update-script.nix { };
 in
 {
   modules = import ./modules;
@@ -33,14 +34,18 @@ in
   fallin = pkgs.callPackage ./pkgs/fallin { };
   adore = pkgs.callPackage ./pkgs/adore { };
   crankshaft = pkgs.callPackage ./pkgs/crankshaft { };
-  motrix-beta = pkgs.callPackage ./pkgs/motrix-beta { };
+  motrix-beta = pkgs.callPackage ./pkgs/motrix-beta { inherit mkMultiArchUpdateScript; };
   bloomeetunes = pkgs.callPackage ./pkgs/bloomeetunes { };
   amplitude-soundboard = pkgs.callPackage ./pkgs/amplitude-soundboard { };
   cmdui = pkgs.callPackage ./pkgs/cmdui { };
   vice-clipper = pkgs.callPackage ./pkgs/vice-clipper { };
-  agent-workspace-linux = pkgs.callPackage ./pkgs/agent-workspace-linux { };
-  computer-use-linux = pkgs.callPackage ./pkgs/computer-use-linux { };
-  zapfast = pkgs.callPackage ./pkgs/zapfast { };
+  agent-workspace-linux = pkgs.callPackage ./pkgs/agent-workspace-linux {
+    inherit mkMultiArchUpdateScript;
+  };
+  computer-use-linux = pkgs.callPackage ./pkgs/computer-use-linux {
+    inherit mkMultiArchUpdateScript;
+  };
+  zapfast = pkgs.callPackage ./pkgs/zapfast { inherit mkMultiArchUpdateScript; };
   appium-mcp = pkgs.callPackage ./pkgs/appium-mcp { };
   mobile-mcp = pkgs.callPackage ./pkgs/mobile-mcp { };
   chronicle = pkgs.callPackage ./pkgs/chronicle { };
@@ -52,7 +57,7 @@ in
   nuvio = pkgs.callPackage ./pkgs/nuvio { };
   dota2-rpc-client = pkgs.callPackage ./pkgs/dota2-rpc-client { };
   agent-device = pkgs.callPackage ./pkgs/agent-device { };
-  browse = pkgs.callPackage ./pkgs/browse { };
+  browse = pkgs.callPackage ./pkgs/browse { inherit mkMultiArchUpdateScript; };
   nectarlink = pkgs.callPackage ./pkgs/nectarlink { };
 
   mpvScripts =

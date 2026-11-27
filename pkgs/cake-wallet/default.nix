@@ -24,6 +24,7 @@
   libgpg-error,
   makeWrapper,
   writeShellScript,
+  coreutils,
   curl,
   jq,
   gnused,
@@ -100,17 +101,14 @@ stdenv.mkDerivation {
       ${lib.getExe curl} -fsSL "''${auth_args[@]}" \
         "https://api.github.com/repos/cake-tech/cake_wallet/releases?per_page=30" \
       | ${lib.getExe jq} -r '
-          [ .[]
-            | select((.draft | not) and (.prerelease | not))
-            | .assets[]
-            | select(.name | test("^Cake_Wallet_v[0-9.]+_Linux\\.tar\\.xz$"))
-            | {
-                version: (.name | capture("^Cake_Wallet_v(?<v>[0-9.]+)_Linux\\.tar\\.xz$").v),
-                url: .browser_download_url
-              }
-          ][0] // empty
-          | "\(.version)\t\(.url)"
-        '
+          .[]
+          | select((.draft | not) and (.prerelease | not))
+          | .assets[]
+          | select(.name | test("^Cake_Wallet_v[0-9.]+_Linux\\.tar\\.xz$"))
+          | "\(.name | capture("^Cake_Wallet_v(?<v>[0-9.]+)_Linux\\.tar\\.xz$").v)\t\(.browser_download_url)"
+        ' \
+      | ${coreutils}/bin/sort -t$'\t' -k1,1V \
+      | ${coreutils}/bin/tail -n 1
     )
 
     if [ -z "$match" ]; then
@@ -123,6 +121,12 @@ stdenv.mkDerivation {
 
     if [ "$new_version" = "$old_version" ]; then
       echo "cake-wallet is already at the latest Linux version ($old_version)"
+      exit 0
+    fi
+
+    # Never downgrade if upstream publishes a patch for an older release branch.
+    if [ -n "$old_version" ] && [ "$(printf '%s\n%s\n' "$old_version" "$new_version" | ${coreutils}/bin/sort -V | ${coreutils}/bin/tail -n 1)" = "$old_version" ]; then
+      echo "Skipping cake-wallet: newest Linux asset ($new_version) is older than current ($old_version)"
       exit 0
     fi
 

@@ -89,7 +89,10 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    updateScript = nix-update-script { };
+    extraBuildAttrs = [ "hyprism" ];
+  };
 
   meta = {
     description = "Hytale launcher with mod management";

@@ -3,18 +3,18 @@
   stdenv,
   appimageTools,
   fetchurl,
-  nix-update-script,
+  mkMultiArchUpdateScript,
 }:
 
 let
   pname = "motrix";
-  version = "2.4.7";
+  version = "2.4.8";
 
   # Upstream names x86_64 AppImages `x86_64` but arm64 ones `arm64`.
   arch = if stdenv.hostPlatform.isAarch64 then "arm64" else "x86_64";
   hashes = {
-    x86_64 = "sha256-mejJDnigA9WZcsTxUS+aicRutdjqsGrqrRiEpIfyMjQ=";
-    arm64 = "sha256-61jFyis781ajuC3FctQUCzNTa9DPbz7Q7kUPPEj9w30=";
+    x86_64 = "sha256-Y53RISV+jJD/gZJlt9MfA/NzkEUjgh6Tl6eaBilUalw=";
+    arm64 = "sha256-RlL6DuLb09mkVugzW0sgZ3ikTh0ohKObYlzdAHaeB5A=";
   };
 
   src = fetchurl {
@@ -36,7 +36,11 @@ appimageTools.wrapType2 {
 
   # Upstream only ships prereleases on the v2 line (stable is still 1.x
   # from years ago), so the updater must follow unstable versions.
-  passthru.updateScript = nix-update-script { extraArgs = [ "--version=unstable" ]; };
+  passthru.updateScript = mkMultiArchUpdateScript {
+    file = "pkgs/motrix-beta/default.nix";
+    extraSystems = [ "aarch64-linux" ];
+    extraArgs = [ "--version=unstable" ];
+  };
 
   meta = with lib; {
     description = "A full-featured open-source download manager";

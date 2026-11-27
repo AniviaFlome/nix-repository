@@ -17,6 +17,7 @@ let
               name = prefix;
               hasUpdateScript = true;
               prReview = attrs.passthru.updatePr or false;
+              extraBuildAttrs = attrs.passthru.extraBuildAttrs or [ ];
             }
           ]
         else

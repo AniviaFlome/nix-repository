@@ -3,7 +3,7 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
-  nix-update-script,
+  mkMultiArchUpdateScript,
   testers,
 }:
 
@@ -19,7 +19,7 @@ stdenv.mkDerivation (finalAttrs: {
     let
       target =
         if stdenv.hostPlatform.isDarwin then
-          if stdenv.hostPlatform.isAarch64 then "darwin-arm64" else "darwin-x64"
+          "darwin-arm64"
         else if stdenv.hostPlatform.isAarch64 then
           "linux-arm64"
         else
@@ -27,7 +27,6 @@ stdenv.mkDerivation (finalAttrs: {
       hashes = {
         linux-x64 = "sha256-i6c/FjIqQlRMrTqXSQv9FJV7l7EItY9DkT5soIijzdc=";
         linux-arm64 = "sha256-C1UOi2YjmUqUe8mYcEtLxeeW4wcyPeX5R81KvXx9fas=";
-        darwin-x64 = "sha256-/PiaQKnbNIYY7cqRT+hLooS0jH7PWCmeF0gFYHJjtYk=";
         darwin-arm64 = "sha256-1jsw2bidBQcKMxDS2AQ14Gq5zDUha4AazGj5aeFCAr8=";
       };
     in
@@ -55,7 +54,13 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   passthru = {
-    updateScript = nix-update-script { };
+    updateScript = mkMultiArchUpdateScript {
+      file = "pkgs/browse/default.nix";
+      extraSystems = [
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+    };
     tests.version = testers.testVersion {
       package = finalAttrs.finalPackage;
     };
@@ -71,7 +76,6 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = [
       "x86_64-linux"
       "aarch64-linux"
-      "x86_64-darwin"
       "aarch64-darwin"
     ];
     sourceProvenance = [ sourceTypes.binaryNativeCode ];

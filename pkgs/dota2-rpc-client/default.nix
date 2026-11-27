@@ -60,7 +60,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--use-github-releases" ];
+  };
 
   meta = with lib; {
     description = "Show your Dota 2 match status on Discord via Rich Presence";

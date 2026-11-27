@@ -10,7 +10,7 @@
   xdotool,
   xprop,
   xwininfo,
-  nix-update-script,
+  mkMultiArchUpdateScript,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -90,12 +90,15 @@ stdenv.mkDerivation (finalAttrs: {
 
   passthru = {
     inherit (finalAttrs) cosmicSrc skillSrc;
-    updateScript = nix-update-script {
+    updateScript = mkMultiArchUpdateScript {
+      file = "pkgs/computer-use-linux/default.nix";
+      extraSystems = [ "aarch64-linux" ];
       extraArgs = [
         "--override-filename=pkgs/computer-use-linux/default.nix"
         "--subpackage=cosmicSrc"
         "--subpackage=skillSrc"
       ];
+      extraSystemAttrs = [ "cosmicSrc" ];
     };
   };
 

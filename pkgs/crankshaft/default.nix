@@ -26,7 +26,9 @@ appimageTools.wrapType2 {
     install -Dm444 ${appimageContents}/usr/share/icons/hicolor/512x512/apps/crankshaft.png $out/share/icons/hicolor/512x512/apps/crankshaft.png
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--use-github-releases" ];
+  };
 
   meta = with lib; {
     description = "A fast, feature-rich krunker client written in typescript";

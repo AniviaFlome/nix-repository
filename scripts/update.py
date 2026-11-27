@@ -18,6 +18,9 @@ class UpdateTarget(TypedDict):
     # Whether updates must land via a reviewed GitHub PR instead of direct
     # commits to main (malware guard for vendored third-party code).
     prReview: NotRequired[bool]
+    # Additional attribute paths to build alongside this target when `--build`
+    # verifies an update (e.g. an FHS wrapper paired with an unwrapped binary).
+    extraBuildAttrs: NotRequired[list[str]]
 
 
 BOT_NAME = "github-actions[bot]"
@@ -68,9 +71,9 @@ def nix_update_cmd(target: UpdateTarget) -> list[str]:
     return cmd
 
 
-def nix_build_cmd(name: str) -> list[str]:
+def nix_build_cmd(name: str, extra_attrs: list[str] | None = None) -> list[str]:
     """Builds the `nix build` verification command for an updated target."""
-    return ["nix", "build", "--no-link", "-L", "-f", ".", name]
+    return ["nix", "build", "--no-link", "-L", "-f", ".", name, *(extra_attrs or [])]
 
 
 def git(*args: str) -> str:
@@ -85,20 +88,43 @@ def git_has_identity() -> bool:
         return False
 
 
-def dirty_files() -> set[str]:
-    """Tracked files with uncommitted changes, for per-target cleanup."""
+def status_entries() -> dict[str, str]:
+    """Returns `{path: XY}` from `git status --porcelain`, for per-target cleanup."""
     # NOTE: plain `git status --porcelain` output, not the `git()` helper:
     # its `.strip()` would eat the leading status column of the first line.
     result = subprocess.run(
         ["git", "status", "--porcelain"], check=True, capture_output=True, text=True
     )
-    files = set()
+    entries: dict[str, str] = {}
     for line in result.stdout.splitlines():
+        if len(line) < 4:
+            continue
+        code = line[:2]
         # Format is `XY PATH` (or `XY ORIG -> NEW` for renames).
         path = line[3:].split(" -> ")[-1].strip().strip('"')
         if path:
-            files.add(path)
-    return files
+            entries[path] = code
+    return entries
+
+
+def dirty_files() -> set[str]:
+    """Modified or untracked paths from `git status --porcelain`."""
+    return set(status_entries())
+
+
+def rollback_paths(after: dict[str, str], before: set[str]) -> None:
+    """Reverts newly dirtied tracked files and removes newly created untracked paths."""
+    for path in sorted(set(after) - before):
+        try:
+            if after[path] == "??":
+                if os.path.isdir(path) and not os.path.islink(path):
+                    shutil.rmtree(path)
+                elif os.path.lexists(path):
+                    os.unlink(path)
+            else:
+                subprocess.run(["git", "checkout", "--", path], check=True)
+        except (subprocess.CalledProcessError, OSError) as ce:
+            print(f"Warning: Failed to restore {path} ({ce})", file=sys.stderr)
 
 
 def git_commit(message: str) -> None:
@@ -182,7 +208,7 @@ def update_pr_review_target(target: UpdateTarget, args: argparse.Namespace, base
         return False
 
     if args.build:
-        subprocess.run(nix_build_cmd(name), check=True)
+        subprocess.run(nix_build_cmd(name, target.get("extraBuildAttrs")), check=True)
 
     diff = git("diff", "HEAD")
     git_commit(f"pkgs: auto-update {name} (review required)")
@@ -309,7 +335,7 @@ def main() -> None:
             _ = subprocess.run(nix_update_cmd(target), check=True)
             changed = dirty_files() - before
             if changed and args.build:
-                _ = subprocess.run(nix_build_cmd(name), check=True)
+                _ = subprocess.run(nix_build_cmd(name, target.get("extraBuildAttrs")), check=True)
         except subprocess.CalledProcessError as e:
             print(f"Warning: Failed to update {name} (exit code {e.returncode})", file=sys.stderr)
             if os.environ.get("GITHUB_ACTIONS") == "true":
@@ -319,11 +345,7 @@ def main() -> None:
             # failed update can leave a half-bumped file behind. The workflow
             # auto-commits everything dirty at the end, so restore files this
             # target dirtied — but keep earlier targets' successful updates.
-            for path in sorted(dirty_files() - before):
-                try:
-                    subprocess.run(["git", "checkout", "--", path], check=True)
-                except subprocess.CalledProcessError as ce:
-                    print(f"Warning: Failed to restore {path} ({ce})", file=sys.stderr)
+            rollback_paths(status_entries(), before)
         else:
             if changed:
                 updated.append(name)

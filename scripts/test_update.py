@@ -80,6 +80,16 @@ def test_nix_build_cmd():
         ".",
         "mpvScripts.pkg7",
     ]
+    assert nix_build_cmd("hyprism-unwrapped", ["hyprism"]) == [
+        "nix",
+        "build",
+        "--no-link",
+        "-L",
+        "-f",
+        ".",
+        "hyprism-unwrapped",
+        "hyprism",
+    ]
 
 
 def test_update_basic_file_mode():
@@ -139,7 +149,7 @@ def test_update_multiple_packages_and_build_only_when_changed():
 
 
 def test_failed_build_rolls_back_changed_package():
-    input_data = [{"name": "pkg-broken", "hasUpdateScript": True}]
+    input_data = [{"name": "pkg-broken", "hasUpdateScript": True, "extraBuildAttrs": ["pkg-wrapper"]}]
     status_seq = [
         "",
         " M pkgs/pkg-broken/default.nix\n",
@@ -154,11 +164,33 @@ def test_failed_build_rolls_back_changed_package():
         with pytest.raises(SystemExit) as exc:
             run_main_with_argv(["update.py", "--build"])
         assert exc.value.code == 1
-        mock_run.assert_any_call(nix_build_cmd("pkg-broken"), check=True)
+        mock_run.assert_any_call(nix_build_cmd("pkg-broken", ["pkg-wrapper"]), check=True)
         mock_run.assert_any_call(
             ["git", "checkout", "--", "pkgs/pkg-broken/default.nix"],
             check=True,
         )
+
+
+def test_failed_update_removes_newly_created_untracked_file(tmp_path):
+    stray = tmp_path / "stray.tmp"
+    stray.write_text("leftover", encoding="utf-8")
+    input_data = [{"name": "pkg-fail", "hasUpdateScript": True}]
+    status_seq = [
+        "",
+        f"?? {stray}\n",
+    ]
+    with patch("subprocess.run") as mock_run:
+        mock_run.side_effect = create_mock_run(
+            input_data,
+            fail_on_cmds={"pkg-fail"},
+            status_seq=status_seq,
+        )
+        with pytest.raises(SystemExit) as exc:
+            run_main_with_argv(["update.py"])
+        assert exc.value.code == 1
+        assert not stray.exists()
+        for call in mock_run.call_args_list:
+            assert call.args[0][:2] != ["git", "checkout"]
 
 
 def test_update_without_build_flag():
