@@ -19,18 +19,22 @@
   libxcursor,
   libxext,
   libxfixes,
+  libayatana-appindicator,
+  libayatana-indicator,
+  ayatana-ido,
+  libdbusmenu,
 }:
 
 let
   pname = "bloomeetunes";
-  version = "3.1.0+207";
+  version = "3.1.2+208";
 in
 stdenv.mkDerivation {
   inherit pname version;
 
   src = fetchzip {
     url = "https://github.com/HemantKArya/BloomeeTunes/releases/download/v${version}/bloomee_tunes_linux_x64_v${version}.tar.gz";
-    hash = "sha256-jIn1ATPt/7xk5Dwkr+wg+1yCykrcPEflDm5ik3UB8Kc=";
+    hash = "sha256-rKJM6xHmsJSTsBrENsvKLktxYwOBa/9o0wtGbZtODNs=";
     stripRoot = false;
   };
 
@@ -53,6 +57,10 @@ stdenv.mkDerivation {
     libxrender
     libxinerama
     libxrandr
+    libayatana-appindicator
+    libayatana-indicator
+    ayatana-ido
+    libdbusmenu
   ];
 
   desktopItems = [
@@ -89,7 +97,9 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--use-github-releases" ];
+  };
 
   meta = with lib; {
     description = "Bloomee is a cross-platform music app designed to bring you ad-free tunes from various sources.";

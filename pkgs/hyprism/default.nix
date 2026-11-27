@@ -3,9 +3,25 @@
   buildFHSEnv,
   makeDesktopItem,
   hyprism-unwrapped,
+  expat,
+  fontconfig,
+  freetype,
+  glib,
   icu,
+  libglvnd,
+  libice,
+  libsm,
+  libx11,
+  libxcomposite,
+  libxcursor,
+  libxext,
+  libxi,
+  libxkbcommon,
+  libxrandr,
+  libxtst,
   openssl,
-  libGL,
+  wayland,
+  zlib,
 }:
 
 buildFHSEnv {
@@ -14,12 +30,28 @@ buildFHSEnv {
 
   targetPkgs = _: [
     hyprism-unwrapped
+    expat
+    fontconfig
+    freetype
+    glib
     icu
+    libglvnd
+    libice
+    libsm
+    libx11
+    libxcomposite
+    libxcursor
+    libxext
+    libxi
+    libxkbcommon
+    libxrandr
+    libxtst
     openssl
-    libGL
+    wayland
+    zlib
   ];
 
-  runScript = "${hyprism-unwrapped}/lib/hyprism/HyPrism";
+  runScript = "${hyprism-unwrapped}/lib/hyprism/hyprism";
 
   extraInstallCommands =
     let
@@ -39,10 +71,8 @@ buildFHSEnv {
       ${lib.concatMapStringsSep "\n" (
         item: "cp -r --no-preserve=mode ${item}/share/* $out/share/"
       ) desktopItems}
-      for size in 16 24 32 48 64 128 256 512; do
-        install -Dm644 ${hyprism-unwrapped}/lib/hyprism/resources/bin/wwwroot/icon.png \
-          $out/share/icons/hicolor/''${size}x''${size}/apps/hyprism.png
-      done
+      install -Dm644 ${hyprism-unwrapped}/share/icons/hicolor/scalable/apps/hyprism.svg \
+        $out/share/icons/hicolor/scalable/apps/hyprism.svg
     '';
 
   passthru.unwrapped = hyprism-unwrapped;

@@ -2,23 +2,28 @@
   lib,
   stdenv,
   fetchurl,
+  dpkg,
   autoPatchelfHook,
   nix-update-script,
-  gtk3,
-  glib,
-  nss,
-  nspr,
-  alsa-lib,
-  cups,
-  libdrm,
   expat,
+  fontconfig,
+  freetype,
+  glib,
+  icu,
+  libglvnd,
+  libice,
+  libsm,
+  libx11,
+  libxcomposite,
+  libxcursor,
+  libxext,
+  libxi,
   libxkbcommon,
-  mesa,
-  libGL,
-  pango,
-  cairo,
-  at-spi2-atk,
-  gdk-pixbuf,
+  libxrandr,
+  libxtst,
+  openssl,
+  wayland,
+  zlib,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -26,13 +31,20 @@ stdenv.mkDerivation (finalAttrs: {
   version = "4.0.0";
 
   src = fetchurl {
-    url = "https://github.com/hyprismteam/HyPrism/releases/download/v${finalAttrs.version}/HyPrism-linux-x64-${finalAttrs.version}.tar.xz";
-    hash = "sha256-qFBxurola/Nr3vx5+gZHIfR+ne25HUI43pHjxzC3nl8=";
+    url = "https://github.com/hyprismteam/HyPrism/releases/download/v${finalAttrs.version}/Hyprism-linux-x64-${finalAttrs.version}.deb";
+    hash = "sha256-Xpr3DyfuGxB/sfy4P/bwz8Bf5GJxETtvz1LwMQeTyxM=";
   };
 
   nativeBuildInputs = [
+    dpkg
     autoPatchelfHook
   ];
+
+  unpackPhase = ''
+    runHook preUnpack
+    dpkg-deb -x $src .
+    runHook postUnpack
+  '';
 
   dontConfigure = true;
   dontBuild = true;
@@ -40,21 +52,26 @@ stdenv.mkDerivation (finalAttrs: {
   preferLocalBuild = true;
 
   buildInputs = [
-    gtk3
-    glib
-    nss
-    nspr
-    alsa-lib
-    cups
-    libdrm
     expat
+    fontconfig
+    freetype
+    glib
+    icu
+    libglvnd
+    libice
+    libsm
+    libx11
+    libxcomposite
+    libxcursor
+    libxext
+    libxi
     libxkbcommon
-    mesa
-    libGL
-    pango
-    cairo
-    at-spi2-atk
-    gdk-pixbuf
+    libxrandr
+    libxtst
+    openssl
+    stdenv.cc.cc.lib
+    wayland
+    zlib
   ];
 
   autoPatchelfIgnoreMissingDeps = [ "liblttng-ust.so.0" ];
@@ -63,8 +80,11 @@ stdenv.mkDerivation (finalAttrs: {
     runHook preInstall
 
     mkdir -p $out/lib/hyprism
+    cp -r opt/hyprism/. $out/lib/hyprism/
+    ln -s "Hyprism Launcher" $out/lib/hyprism/hyprism
 
-    cp -r * $out/lib/hyprism/
+    install -Dm644 usr/share/icons/hicolor/scalable/apps/io.github.hyprismteam.Hyprism.svg \
+      $out/share/icons/hicolor/scalable/apps/hyprism.svg
 
     runHook postInstall
   '';

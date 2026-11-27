@@ -42,13 +42,18 @@ def get_targets() -> list[UpdateTarget]:
         sys.exit(1)
 
 
-def nix_update_cmd(target: UpdateTarget, build: bool) -> list[str]:
+def nix_update_cmd(target: UpdateTarget) -> list[str]:
     """Builds the nix-update command for a target.
 
     Runs all targets in file mode (`default.nix` + `maintainers/scripts/update.nix`):
     avoids Nix 2.35 lazy-trees `flakeImportPath` evaluation failures, uses
     the active `<nixpkgs>` channel instead of a potentially stale `flake.lock`,
     and honors `NIXPKGS_ALLOW_UNFREE`.
+
+    Never passes `--build` to `nix-update` directly: with `--use-update-script`,
+    `nix-update` runs `nix build` unconditionally even when no files changed,
+    rebuilding the entire repo on every run. Instead, `update.py` runs
+    `nix_build_cmd` only when files actually changed.
     """
     if shutil.which("nix-update"):
         cmd: list[str] = ["nix-update"]
@@ -60,10 +65,12 @@ def nix_update_cmd(target: UpdateTarget, build: bool) -> list[str]:
     if target.get("hasUpdateScript", False):
         cmd.append("--use-update-script")
 
-    if build:
-        cmd.append("--build")
-
     return cmd
+
+
+def nix_build_cmd(name: str) -> list[str]:
+    """Builds the `nix build` verification command for an updated target."""
+    return ["nix", "build", "--no-link", "-L", "-f", ".", name]
 
 
 def git(*args: str) -> str:
@@ -167,12 +174,15 @@ def update_pr_review_target(target: UpdateTarget, args: argparse.Namespace, base
     name = target["name"]
     branch = "auto-update/" + name.replace(".", "-")
 
-    print(f"Updating {name} (review-gated, branch {branch})...")
-    subprocess.run(nix_update_cmd(target, args.build), check=True)
+    print(f"Updating {name} (review-gated, branch {branch})...", flush=True)
+    subprocess.run(nix_update_cmd(target), check=True)
 
     if not git("status", "--porcelain"):
-        print(f"No changes for {name}")
+        print(f"No changes for {name}", flush=True)
         return False
+
+    if args.build:
+        subprocess.run(nix_build_cmd(name), check=True)
 
     diff = git("diff", "HEAD")
     git_commit(f"pkgs: auto-update {name} (review required)")
@@ -292,15 +302,18 @@ def main() -> None:
     for target in normal_targets:
         name = target["name"]
 
-        print(f"Updating {name}...")
+        print(f"Updating {name}...", flush=True)
 
         before = dirty_files()
         try:
-            _ = subprocess.run(nix_update_cmd(target, args.build), check=True)
+            _ = subprocess.run(nix_update_cmd(target), check=True)
+            changed = dirty_files() - before
+            if changed and args.build:
+                _ = subprocess.run(nix_build_cmd(name), check=True)
         except subprocess.CalledProcessError as e:
             print(f"Warning: Failed to update {name} (exit code {e.returncode})", file=sys.stderr)
             if os.environ.get("GITHUB_ACTIONS") == "true":
-                print(f"::warning::Failed to update {name} (exit code {e.returncode})")
+                print(f"::warning::Failed to update {name} (exit code {e.returncode})", flush=True)
             failed.append(name)
             # nix-update writes version/hash changes before it builds, so a
             # failed update can leave a half-bumped file behind. The workflow
@@ -312,7 +325,7 @@ def main() -> None:
                 except subprocess.CalledProcessError as ce:
                     print(f"Warning: Failed to restore {path} ({ce})", file=sys.stderr)
         else:
-            if dirty_files() - before:
+            if changed:
                 updated.append(name)
 
     write_step_summary(updated, failed)

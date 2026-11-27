@@ -7,12 +7,13 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from update import main, nix_update_cmd, prs_allowed
+from update import main, nix_build_cmd, nix_update_cmd, prs_allowed
 
 
-def create_mock_run(input_data, fail_on_cmds=None, status_seq=None):
-    """Helper to mock subprocess.run for nix eval, git status, and nix-update commands."""
+def create_mock_run(input_data, fail_on_cmds=None, fail_build_on=None, status_seq=None):
+    """Helper to mock subprocess.run for nix eval, git status, nix-update, and nix build."""
     fail_on_cmds = fail_on_cmds or set()
+    fail_build_on = fail_build_on or set()
     status_iter = iter(status_seq) if status_seq is not None else None
 
     def mock_run(cmd, *args, **kwargs):
@@ -28,6 +29,9 @@ def create_mock_run(input_data, fail_on_cmds=None, status_seq=None):
             return mock_result
         for target_name in fail_on_cmds:
             if target_name in cmd and "nix-update" in " ".join(cmd):
+                raise subprocess.CalledProcessError(1, cmd)
+        for target_name in fail_build_on:
+            if cmd[:2] == ["nix", "build"] and target_name in cmd:
                 raise subprocess.CalledProcessError(1, cmd)
         mock_result.stdout = ""
         return mock_result
@@ -48,13 +52,13 @@ def run_main_with_argv(argv, nix_update_bin="/usr/bin/nix-update"):
 
 def test_nix_update_cmd_uses_direct_binary_when_on_path():
     with patch("shutil.which", return_value="/nix/store/xxx/bin/nix-update"):
-        cmd = nix_update_cmd({"name": "pkg1", "hasUpdateScript": True}, build=False)
+        cmd = nix_update_cmd({"name": "pkg1", "hasUpdateScript": True})
     assert cmd == ["nix-update", "pkg1", "--use-update-script"]
 
 
 def test_nix_update_cmd_falls_back_to_nix_shell():
     with patch("shutil.which", return_value=None):
-        cmd = nix_update_cmd({"name": "pkg1", "hasUpdateScript": True}, build=True)
+        cmd = nix_update_cmd({"name": "pkg1", "hasUpdateScript": True})
     assert cmd == [
         "nix",
         "shell",
@@ -63,7 +67,18 @@ def test_nix_update_cmd_falls_back_to_nix_shell():
         "nix-update",
         "pkg1",
         "--use-update-script",
-        "--build",
+    ]
+
+
+def test_nix_build_cmd():
+    assert nix_build_cmd("mpvScripts.pkg7") == [
+        "nix",
+        "build",
+        "--no-link",
+        "-L",
+        "-f",
+        ".",
+        "mpvScripts.pkg7",
     ]
 
 
@@ -98,35 +113,63 @@ def test_update_skips_targets_without_update_script():
         mock_run.assert_any_call(["nix-update", "pkg-ok", "--use-update-script"], check=True)
 
 
-def test_update_multiple_packages_and_build_flag():
+def test_update_multiple_packages_and_build_only_when_changed():
     input_data = [
         {"name": "pkg5", "hasUpdateScript": True},
         {"name": "pkg6", "hasUpdateScript": False},
         {"name": "mpvScripts.pkg7", "hasUpdateScript": True},
     ]
+    # pkg5 changes a file (should trigger nix build); pkg7 has no changes (should skip nix build).
+    status_seq = [
+        "",
+        " M pkgs/pkg5/default.nix\n",
+        " M pkgs/pkg5/default.nix\n",
+        " M pkgs/pkg5/default.nix\n",
+    ]
     with patch("subprocess.run") as mock_run:
-        mock_run.side_effect = create_mock_run(input_data)
+        mock_run.side_effect = create_mock_run(input_data, status_seq=status_seq)
         run_main_with_argv(["update.py", "--build"])
-        # 1 eval + 2 targets * (before status + nix-update + after status) = 7
-        assert mock_run.call_count == 7
-        mock_run.assert_any_call(
-            ["nix-update", "pkg5", "--use-update-script", "--build"],
-            check=True,
+        # 1 eval + pkg5 (before, nix-update, after, nix build) + pkg7 (before, nix-update, after) = 8
+        assert mock_run.call_count == 8
+        mock_run.assert_any_call(["nix-update", "pkg5", "--use-update-script"], check=True)
+        mock_run.assert_any_call(nix_build_cmd("pkg5"), check=True)
+        mock_run.assert_any_call(["nix-update", "mpvScripts.pkg7", "--use-update-script"], check=True)
+        for call in mock_run.call_args_list:
+            assert call.args[0] != nix_build_cmd("mpvScripts.pkg7")
+
+
+def test_failed_build_rolls_back_changed_package():
+    input_data = [{"name": "pkg-broken", "hasUpdateScript": True}]
+    status_seq = [
+        "",
+        " M pkgs/pkg-broken/default.nix\n",
+        " M pkgs/pkg-broken/default.nix\n",
+    ]
+    with patch("subprocess.run") as mock_run:
+        mock_run.side_effect = create_mock_run(
+            input_data,
+            fail_build_on={"pkg-broken"},
+            status_seq=status_seq,
         )
+        with pytest.raises(SystemExit) as exc:
+            run_main_with_argv(["update.py", "--build"])
+        assert exc.value.code == 1
+        mock_run.assert_any_call(nix_build_cmd("pkg-broken"), check=True)
         mock_run.assert_any_call(
-            ["nix-update", "mpvScripts.pkg7", "--use-update-script", "--build"],
+            ["git", "checkout", "--", "pkgs/pkg-broken/default.nix"],
             check=True,
         )
 
 
 def test_update_without_build_flag():
     input_data = [{"name": "pkg9", "hasUpdateScript": True}]
+    status_seq = ["", " M pkgs/pkg9/default.nix\n"]
     with patch("subprocess.run") as mock_run:
-        mock_run.side_effect = create_mock_run(input_data)
+        mock_run.side_effect = create_mock_run(input_data, status_seq=status_seq)
         run_main_with_argv(["update.py"])
         mock_run.assert_any_call(["nix-update", "pkg9", "--use-update-script"], check=True)
         for call in mock_run.call_args_list:
-            assert "--build" not in call.args[0]
+            assert call.args[0][:2] != ["nix", "build"]
 
 
 def test_failed_update_rolls_back_only_new_dirty_files_and_exits_nonzero(tmp_path):

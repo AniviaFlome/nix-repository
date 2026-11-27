@@ -5,6 +5,7 @@
   autoPatchelfHook,
   makeWrapper,
   alsa-lib,
+  pipewire,
   libglvnd,
   wayland,
   libxkbcommon,
@@ -17,15 +18,15 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "zapfast";
-  version = "0.19.0";
+  version = "0.21.3";
 
   src =
     let
       arch =
         if stdenv.hostPlatform.isAarch64 then "aarch64-unknown-linux-gnu" else "x86_64-unknown-linux-gnu";
       hashes = {
-        x86_64-unknown-linux-gnu = "sha256-DKx8fdoTJiZcmhbcxWK6bQe9C4rl1TTzUpt4Z2ADZmM=";
-        aarch64-unknown-linux-gnu = "sha256-JoOYcmi/Xnv4BfBDHaqIV2qM+IRQjA6YNcxgTycUijQ=";
+        x86_64-unknown-linux-gnu = "sha256-CJ3FpvVno0J9e9zcPYR4E5eBkSS5CnSSAvYkLf3SWcg=";
+        aarch64-unknown-linux-gnu = "sha256-YGxJdzN2xEq5QcziTirGiXuBMWSbUyJULh6zxVdaKdY=";
       };
     in
     fetchurl {
@@ -41,12 +42,13 @@ stdenv.mkDerivation (finalAttrs: {
     makeWrapper
   ];
 
-  # DT_NEEDED is only libasound + libstdc++; the Wayland/X11/EGL
+  # DT_NEEDED is libpipewire + libasound + libstdc++; the Wayland/X11/EGL
   # libraries are dlopen()ed at runtime (see upstream
   # packaging/check-runtime-libs.c) so they are wrapped into
   # LD_LIBRARY_PATH below.
   buildInputs = [
     alsa-lib
+    pipewire
     stdenv.cc.cc.lib
   ];
 

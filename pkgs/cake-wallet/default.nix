@@ -23,16 +23,19 @@
   lz4,
   libgpg-error,
   makeWrapper,
-  nix-update-script,
+  writeShellScript,
+  curl,
+  jq,
+  gnused,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "cake-wallet";
-  version = "6.5.0";
+  version = "6.4.4";
 
   src = fetchurl {
-    url = "https://github.com/cake-tech/cake_wallet/releases/download/v${version}/Cake_Wallet_v${version}_Linux.tar.xz";
-    hash = "sha256-r/cAC5vK8qfnY27HvPRmfxbWsfWzola5+yVahBSZyoQ=";
+    url = "https://github.com/cake-tech/cake_wallet/releases/download/v6.4.4/Cake_Wallet_v6.4.4_Linux.tar.xz";
+    hash = "sha256-wkMQuPChEVgOWfOLSM/UD2bG5DU9dim+44sEnla5ECU=";
   };
 
   nativeBuildInputs = [
@@ -80,7 +83,59 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  # Upstream frequently ships mobile-only releases without a Linux tarball,
+  # or re-attaches an older Linux build (e.g. Cake_Wallet_v6.4.4_Linux.tar.xz
+  # under tag v6.5.4). Scan releases for the newest Linux tarball asset and
+  # track its actual version and download URL.
+  passthru.updateScript = writeShellScript "update-cake-wallet" ''
+    set -euo pipefail
+
+    auth_args=()
+    token="''${GITHUB_TOKEN:-''${GH_TOKEN:-}}"
+    if [ -n "$token" ]; then
+      auth_args=(-H "Authorization: Bearer $token")
+    fi
+
+    match=$(
+      ${lib.getExe curl} -fsSL "''${auth_args[@]}" \
+        "https://api.github.com/repos/cake-tech/cake_wallet/releases?per_page=30" \
+      | ${lib.getExe jq} -r '
+          [ .[]
+            | select((.draft | not) and (.prerelease | not))
+            | .assets[]
+            | select(.name | test("^Cake_Wallet_v[0-9.]+_Linux\\.tar\\.xz$"))
+            | {
+                version: (.name | capture("^Cake_Wallet_v(?<v>[0-9.]+)_Linux\\.tar\\.xz$").v),
+                url: .browser_download_url
+              }
+          ][0] // empty
+          | "\(.version)\t\(.url)"
+        '
+    )
+
+    if [ -z "$match" ]; then
+      echo "No Linux tarball asset found in recent cake_wallet releases" >&2
+      exit 1
+    fi
+
+    IFS=$'\t' read -r new_version new_url <<<"$match"
+    old_version="''${UPDATE_NIX_OLD_VERSION:-}"
+
+    if [ "$new_version" = "$old_version" ]; then
+      echo "cake-wallet is already at the latest Linux version ($old_version)"
+      exit 0
+    fi
+
+    raw_hash=$(nix-prefetch-url --type sha256 "$new_url")
+    sri_hash=$(nix-hash --to-sri --type sha256 "$raw_hash")
+
+    file="pkgs/cake-wallet/default.nix"
+    ${lib.getExe gnused} -i \
+      -e "s|version = \"[^\"]*\";|version = \"$new_version\";|" \
+      -e "s|url = \"[^\"]*\";|url = \"$new_url\";|" \
+      -e "s|hash = \"[^\"]*\";|hash = \"$sri_hash\";|" \
+      "$file"
+  '';
 
   desktopItems = [
     (makeDesktopItem {

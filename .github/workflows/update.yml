@@ -22,6 +22,7 @@ jobs:
         run: nix shell -f '<nixpkgs>' nix-update -c python3 ./scripts/update.py --build --open-prs
         env:
           NIXPKGS_ALLOW_UNFREE: '1'
+          PYTHONUNBUFFERED: '1'
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
       - uses: stefanzweifel/git-auto-commit-action@v7

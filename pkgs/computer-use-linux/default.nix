@@ -15,35 +15,37 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "computer-use-linux";
-  version = "0.5.0";
+  version = "0.7.66";
 
-  srcs =
+  src =
     let
       arch =
         if stdenv.hostPlatform.isAarch64 then "aarch64-unknown-linux-gnu" else "x86_64-unknown-linux-gnu";
       hashes = {
-        main = {
-          x86_64-unknown-linux-gnu = "sha256-0h55gzb1xrae98hTKIZjmVD+JIVeLbsgXMPzRSiUAg4=";
-          aarch64-unknown-linux-gnu = "sha256-UScY62T5HNjvyWEHJ/ZfQOyTIYv+dRprtg/jYmaOIqY=";
-        };
-        cosmic = {
-          x86_64-unknown-linux-gnu = "sha256-wet2Dul9UNwVfWcRlWzYT5dwHJmIVbI8HvG9d2GaFFg=";
-          aarch64-unknown-linux-gnu = "sha256-IlALWHrGUKw8yMTd2MdcD9ov0B9Or/0cpIKA3btiCvo=";
-        };
+        x86_64-unknown-linux-gnu = "sha256-HK6YOawwIQ4w36Cej9V5iGHWEl9uIjVwE76G3qP60cw=";
+        aarch64-unknown-linux-gnu = "sha256-NfuQBit8WJa5xvRlAuCMcjZj0qcVcBmdXLXM7jEYOEU=";
       };
     in
-    [
-      (fetchurl {
-        url = "https://github.com/agent-sh/computer-use-linux/releases/download/v${finalAttrs.version}/computer-use-linux-${arch}";
-        hash = hashes.main.${arch};
-        name = "computer-use-linux";
-      })
-      (fetchurl {
-        url = "https://github.com/agent-sh/computer-use-linux/releases/download/v${finalAttrs.version}/computer-use-linux-cosmic-${arch}";
-        hash = hashes.cosmic.${arch};
-        name = "computer-use-linux-cosmic";
-      })
-    ];
+    fetchurl {
+      url = "https://github.com/agent-sh/computer-use-linux/releases/download/v${finalAttrs.version}/computer-use-linux-${arch}";
+      hash = hashes.${arch};
+      name = "computer-use-linux";
+    };
+
+  cosmicSrc =
+    let
+      arch =
+        if stdenv.hostPlatform.isAarch64 then "aarch64-unknown-linux-gnu" else "x86_64-unknown-linux-gnu";
+      hashes = {
+        x86_64-unknown-linux-gnu = "sha256-45lf2mGhA0rpsFDh2qY0KnB1KBkjUjn5WkIGXSIL/ro=";
+        aarch64-unknown-linux-gnu = "sha256-F7xtqxtOv2YCgJFypGuFnL39Cm4mOWPFyek2Ec5SyGU=";
+      };
+    in
+    fetchurl {
+      url = "https://github.com/agent-sh/computer-use-linux/releases/download/v${finalAttrs.version}/computer-use-linux-cosmic-${arch}";
+      hash = hashes.${arch};
+      name = "computer-use-linux-cosmic";
+    };
 
   dontUnpack = true;
 
@@ -51,7 +53,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "agent-sh";
     repo = "computer-use-linux";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-D4UF1gdPcfBmgVdVquQXo8i5WGutquXgXa41Du8Pq0Q=";
+    hash = "sha256-mwcG1HUc7oSARZMMfdsIJr8dlhs265u/ll+L7z4WzKo=";
   };
 
   nativeBuildInputs = [
@@ -66,8 +68,8 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -Dm755 ${builtins.elemAt finalAttrs.srcs 0} $out/bin/computer-use-linux
-    install -Dm755 ${builtins.elemAt finalAttrs.srcs 1} $out/bin/computer-use-linux-cosmic
+    install -Dm755 $src $out/bin/computer-use-linux
+    install -Dm755 ${finalAttrs.cosmicSrc} $out/bin/computer-use-linux-cosmic
 
     wrapProgram $out/bin/computer-use-linux \
       --prefix PATH : "${
@@ -86,7 +88,16 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    inherit (finalAttrs) cosmicSrc skillSrc;
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--override-filename=pkgs/computer-use-linux/default.nix"
+        "--subpackage=cosmicSrc"
+        "--subpackage=skillSrc"
+      ];
+    };
+  };
 
   meta = with lib; {
     description = "Linux desktop control over MCP — accessibility tree, window targeting, screenshots, and input";

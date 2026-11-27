@@ -10,6 +10,12 @@
   gtk4,
   gtk4-layer-shell,
   libadwaita,
+  ffmpeg,
+  libdrm,
+  libgbm,
+  libglvnd,
+  pipewire,
+  rubberband,
   tesseract4,
   wayland,
   wayland-protocols,
@@ -20,13 +26,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "waytator";
-  version = "1.4.0";
+  version = "1.6.0";
 
   src = fetchFromGitHub {
     owner = "faetalize";
     repo = "waytator";
     rev = "refs/tags/v${finalAttrs.version}";
-    hash = "sha256-OnEUDSxKJCZsN0v2BV/QQ8ceI4BSaY9LH+QucziY1EA=";
+    hash = "sha256-u4YP5zX1pMw5Efa6b/pmcLhXNB5UbCj1gNyCDialTTU=";
   };
 
   nativeBuildInputs = [
@@ -39,9 +45,15 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   buildInputs = [
+    ffmpeg
     gtk4
     gtk4-layer-shell
     libadwaita
+    libdrm
+    libgbm
+    libglvnd
+    pipewire
+    rubberband
     tesseract4
     wayland
     wayland-protocols

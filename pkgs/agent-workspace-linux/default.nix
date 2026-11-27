@@ -27,15 +27,15 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "agent-workspace-linux";
-  version = "0.3.3";
+  version = "0.6.4";
 
   src =
     let
       arch =
         if stdenv.hostPlatform.isAarch64 then "aarch64-unknown-linux-gnu" else "x86_64-unknown-linux-gnu";
       hashes = {
-        x86_64-unknown-linux-gnu = "sha256-0oNDqZnTGl2G5SMdh6VwFz4IWTNbgKYJOeul+ODlC4g=";
-        aarch64-unknown-linux-gnu = "sha256-zgFrJSUTuWdCTcH1QUW00PgwbNAHOySpk6Y767ubRFg=";
+        x86_64-unknown-linux-gnu = "sha256-2RklPmNUC1fG59VmzXRoBUOYH995BS8Ak2fsPiZ9uBs=";
+        aarch64-unknown-linux-gnu = "sha256-j0npXqdW4WTvaCupv1MqEm0iCIFhfzFm5nfpydBIKe0=";
       };
     in
     fetchurl {
@@ -49,7 +49,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "agent-sh";
     repo = "agent-workspace-linux";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-vhvMmrxOEpjZOdVN83tng1aBwmfotuiuw6OWH9jPcNE=";
+    hash = "sha256-pJdjk9YzXPMG4JLqHUMc/0Qg+eN97+6GMkuHXz26H8g=";
   };
 
   nativeBuildInputs = [
@@ -100,7 +100,12 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    inherit (finalAttrs) skillSrc;
+    updateScript = nix-update-script {
+      extraArgs = [ "--subpackage=skillSrc" ];
+    };
+  };
 
   meta = with lib; {
     description = "Isolated Linux desktop workspaces for AI agents";
