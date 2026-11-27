@@ -33,18 +33,18 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "agent-device";
-  version = "0.21.43";
+  version = "0.21.44";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/agent-device/-/agent-device-${finalAttrs.version}.tgz";
-    hash = "sha256-dGz69T+hRTc6SwsUvncStPvbgnuLw5vW4/qdiyzS+SM=";
+    hash = "sha256-PVAqkzJcoVtbGGAldHiWzFKHorg6b9nBDrTj+Zo/Qwc=";
   };
 
   sourceRoot = "package";
 
   skill-agent-device =
     mkSkill finalAttrs.version "agent-device"
-      "sha256-/JMUcPRCtkd0rLmTfGdFzHQxsN1gDp2tFEVQrbEVQOU=";
+      "sha256-mN0seFHirts1Ia0lYuYFIKTjP8phXHb4/l2KXmV6UMU=";
   skill-android-emulator =
     mkSkill finalAttrs.version "android-emulator"
       "sha256-qqqt/Dukpl6lYb/5gm8ii4Wa0rUck8JEPcXljAwcjJs=";
