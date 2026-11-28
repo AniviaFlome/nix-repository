@@ -1,61 +1,33 @@
 {
   lib,
-  stdenvNoCC,
+  stdenv,
   fetchzip,
   autoPatchelfHook,
-  makeWrapper,
-  openssl,
-  krb5,
-  icu,
-  zlib,
   nix-update-script,
 }:
 
-stdenvNoCC.mkDerivation (finalAttrs: {
+stdenv.mkDerivation (finalAttrs: {
   pname = "osu-beatmap-manager";
-  version = "0.1.0";
+  version = "0.2.0";
 
   src = fetchzip {
     url = "https://github.com/AniviaFlome/osu-beatmap-manager/releases/download/v${finalAttrs.version}/obm-v${finalAttrs.version}-linux-x64.tar.gz";
-    hash = "sha256-SnwBAr9oirjAIMnzmLiGinNFLBjlcEzGlKnW3fQBxJE=";
+    hash = "sha256-yWxmJaBLkhV/YIbpgL/9e8v6j3GXorLGKOEvlRwHqsk=";
     stripRoot = false;
   };
 
   nativeBuildInputs = [
     autoPatchelfHook
-    makeWrapper
   ];
 
   buildInputs = [
-    openssl
-    krb5
-    icu
-    zlib
+    stdenv.cc.cc.lib
   ];
 
   installPhase = ''
     runHook preInstall
 
-    appDir=$out/share/osu-beatmap-manager
-    mkdir -p $appDir $out/bin
-    cp $src/obm $src/librealm-wrappers.so $appDir/
-    chmod +x $appDir/obm
-
-    # The self-contained apphost links ICU/OpenSSL/Kerberos by unversioned
-    # linker names that only exist in dev outputs, so autoPatchelf drops
-    # them; the .NET host dlopens the versioned libs at runtime instead.
-    # Expose them via LD_LIBRARY_PATH. $appDir stays the app directory
-    # (wrapper execs the real binary), so librealm-wrappers.so next to
-    # it is still found.
-    makeWrapper $appDir/obm $out/bin/obm \
-      --prefix LD_LIBRARY_PATH : "${
-        lib.makeLibraryPath [
-          openssl
-          krb5
-          icu
-          zlib
-        ]
-      }"
+    install -Dm755 obm $out/bin/obm
 
     runHook postInstall
   '';
